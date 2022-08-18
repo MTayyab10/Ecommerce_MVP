@@ -1,0 +1,51 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="DjangoBrokenLineCommentInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="DjangoCloseTagInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="DjangoIncompatibleInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="DjangoOrmInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="DjangoRelationInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="DjangoUnresolvedFilterInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="DjangoUnresolvedLoadInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="DjangoUnresolvedStaticReferenceInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="DjangoUnresolvedTagInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="DjangoUnresolvedTemplateReferenceInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="DjangoUnresolvedUrlInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="DjangoUrlArgumentsInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="DuplicatedBlockNamesInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="DuplicatedCode" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="EndBlockNamesInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="ExtendsTagPositionInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="3">
+            <item index="0" class="java.lang.String" itemvalue="validate" />
+            <item index="1" class="java.lang.String" itemvalue="class" />
+            <item index="2" class="java.lang.String" itemvalue="rules" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PyInterpreterInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="2">
+            <item index="0" class="java.lang.String" itemvalue="filelock" />
+            <item index="1" class="java.lang.String" itemvalue="charset-normalizer" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="backend.home1" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
