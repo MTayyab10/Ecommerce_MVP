@@ -59,8 +59,16 @@ const UserInfo = ({user, isAuthenticated}) => {
 
                     {userInfo()}
 
-                    <button className="btn btn-primary">
-                        Change Info
+                    <button className="btn btn-primary me-2">
+                        Change info
+                    </button>
+
+                    <button className="btn btn-secondary me-2">
+                        Logout
+                    </button>
+
+                    <button className="btn btn-danger me-2">
+                        Delete
                     </button>
 
                 </div>

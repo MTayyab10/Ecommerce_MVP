@@ -600,9 +600,11 @@ export const refresh = () => async dispatch => {
 };
 
 export const logout = () => dispatch => {
+
     dispatch({
         type: LOGOUT
     });
+
     dispatch(setAlert("You are logout, Successfully", "info"))
 
     // toast.success("You are logout Successfully.",

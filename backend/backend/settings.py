@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # local apps
     'accounts0',
+    'category1',
 
     # DRF
     'rest_framework',

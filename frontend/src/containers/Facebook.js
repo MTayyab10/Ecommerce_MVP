@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
-import {Link, useLocation, useNavigate} from 'react-router-dom';
+import {Link, Navigate, useLocation, useNavigate} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {facebookAuthenticate} from '../actions/auth';
 import queryString from 'query-string';
 
-const Facebook = ({facebookAuthenticate}) => {
+const Facebook = ({facebookAuthenticate, isAuthenticated}) => {
     let location = useLocation();
 
     const navigate = useNavigate();
@@ -23,6 +23,13 @@ const Facebook = ({facebookAuthenticate}) => {
         }
     }, [location]);
 
+    // if user is authenticated then redirect to home
+
+    if (isAuthenticated){
+        return <Navigate to={'/'} />
+    }
+
+
     return (
 
         <>
@@ -39,11 +46,15 @@ const Facebook = ({facebookAuthenticate}) => {
             <br/>
 
             <div className={"mt-2 text-center"}>
-                <h2>Please wait...</h2>
+                <h2>Please wait ...</h2>
             </div>
 
         </>
     );
 };
 
-export default connect(null, {facebookAuthenticate})(Facebook);
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, {facebookAuthenticate})(Facebook);

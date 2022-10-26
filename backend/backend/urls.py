@@ -21,11 +21,12 @@ urlpatterns = [
 
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
-
     # for social auth like google
     path('auth/', include('djoser.social.urls')),
 
     path('api/user/', include('accounts0.urls')),
+    path('api/category/', include('category1.urls')),
+
     path('admin/', admin.site.urls),
 ]
 

@@ -25,9 +25,10 @@ const Navbar = ({logout, isAuthenticated, user}) => {
                 Hi, <strong>
                 {
                     user && true && true ?
-                        user.first_name : " Guest"
+                        user.first_name.toUpperCase()[0] + user.first_name.slice(1)
+                        : " Guest"
                 }
-            </strong>
+               </strong>
             </>
         )
     };
@@ -38,7 +39,7 @@ const Navbar = ({logout, isAuthenticated, user}) => {
         <>
             <li className="nav-item">
 
-                <a className="nav-link position-relative" href="/orders/cart/">
+                <NavLink className="nav-link position-relative" to="/orders/cart/">
                     <i className="fas fa-shopping-cart fs-6 pt-2 pe-2 "/>
                     <span className="position-absolute translate-middle badge rounded-pill bg-danger">
                               3
@@ -46,7 +47,7 @@ const Navbar = ({logout, isAuthenticated, user}) => {
                             total items
                         </span>
                     </span>
-                </a>
+                </NavLink>
 
             </li>
 
@@ -63,10 +64,9 @@ const Navbar = ({logout, isAuthenticated, user}) => {
 
     const guestLinks = () => (
         <>
-
             <li className="nav-item">
 
-                <a className="nav-link position-relative" href="/orders/cart/">
+                <NavLink className="nav-link position-relative" to="/orders/cart/">
                     <i className="fas fa-shopping-cart fs-6 pt-2 pe-2 "/>
                     <span className="position-absolute translate-middle badge rounded-pill bg-danger">
                               0
@@ -74,7 +74,7 @@ const Navbar = ({logout, isAuthenticated, user}) => {
                             total items
                         </span>
                     </span>
-                </a>
+                </NavLink>
 
             </li>
 
@@ -134,7 +134,6 @@ const Navbar = ({logout, isAuthenticated, user}) => {
                             </li>
 
                         </ul>
-
 
                         <ul className="navbar-nav ms-auto">
 

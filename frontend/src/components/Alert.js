@@ -7,7 +7,7 @@ import {toast, ToastContainer} from "react-toastify";
 const errorIcon = <i className="fa-solid fa-circle-exclamation me-1"/>
 const successIcon = <i className="fa-solid fa-circle-check me-1"/>
 
-const Alert = ({ alerts }) => alerts !== null &&
+export const Alert = ({ alerts }) => alerts !== null &&
     alerts.length > 0 && alerts.map(alert => (
 
     <div key={alert.id}
