@@ -7,10 +7,17 @@ import {
     USER_LOADED_FAIL,
     AUTHENTICATED_SUCCESS,
     AUTHENTICATED_FAIL,
+
     PASSWORD_RESET_SUCCESS,
     PASSWORD_RESET_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
     PASSWORD_RESET_CONFIRM_FAIL,
+
+    EMAIL_RESET_SUCCESS,
+    EMAIL_RESET_FAIL,
+    EMAIL_RESET_CONFIRM_SUCCESS,
+    EMAIL_RESET_CONFIRM_FAIL,
+
     SIGNUP_SUCCESS,
     SIGNUP_FAIL,
     ACTIVATION_SUCCESS,
@@ -29,9 +36,12 @@ import {
     REMOVE_AUTH_LOADING,
 
     LOGOUT,
+    DELETE_USER_SUCCESS,
+    DELETE_USER_FAIL,
 } from '../actions/types';
 
 const initialState = {
+
     access: localStorage.getItem("access"),
     refresh: localStorage.getItem("refresh"),
     isAuthenticated: null,
@@ -50,6 +60,7 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: true
             }
+
         case REMOVE_AUTH_LOADING:
             return {
                 ...state,
@@ -78,6 +89,7 @@ export default function (state = initialState, action) {
                 ...state,
                 user: payload
             }
+
         case USER_LOADED_FAIL:
             return {
                 ...state,
@@ -100,12 +112,21 @@ export default function (state = initialState, action) {
 
         case ACTIVATION_SUCCESS:
         case ACTIVATION_FAIL:
+
         case PASSWORD_RESET_SUCCESS:
         case PASSWORD_RESET_FAIL:
         case PASSWORD_RESET_CONFIRM_SUCCESS:
         case PASSWORD_RESET_CONFIRM_FAIL:
+
+        case EMAIL_RESET_SUCCESS:
+        case EMAIL_RESET_FAIL:
+        case EMAIL_RESET_CONFIRM_SUCCESS:
+        case EMAIL_RESET_CONFIRM_FAIL:
+
         case RESEND_ACTIVATION_SUCCESS:
         case RESEND_ACTIVATION_FAIL:
+
+        case DELETE_USER_FAIL:
 
             return {
                 ...state
@@ -113,6 +134,7 @@ export default function (state = initialState, action) {
 
         case REFRESH_SUCCESS:
             localStorage.setItem('access', payload.access);
+
             return {
                 ...state,
                 access: localStorage.getItem('access')
@@ -125,6 +147,8 @@ export default function (state = initialState, action) {
         case LOGIN_FAIL:
         case REFRESH_FAIL:
         case LOGOUT:
+
+        case DELETE_USER_SUCCESS:
 
             localStorage.removeItem('access');
             localStorage.removeItem('refresh');

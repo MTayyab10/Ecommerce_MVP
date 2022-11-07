@@ -19,10 +19,12 @@ import {
     ACTIVATION_FAIL,
     RESEND_ACTIVATION_SUCCESS,
     RESEND_ACTIVATION_FAIL,
+
     GOOGLE_AUTH_SUCCESS,
     GOOGLE_AUTH_FAIL,
     FACEBOOK_AUTH_SUCCESS,
     FACEBOOK_AUTH_FAIL,
+
     SET_AUTH_LOADING,
     REMOVE_AUTH_LOADING,
 
@@ -30,12 +32,19 @@ import {
     REFRESH_FAIL,
 
     LOGOUT,
+
+    DELETE_USER_SUCCESS,
+    DELETE_USER_FAIL, EMAIL_RESET_SUCCESS, EMAIL_RESET_FAIL, EMAIL_RESET_CONFIRM_SUCCESS, EMAIL_RESET_CONFIRM_FAIL
 } from "./types";
+
 import React from "react";
 
-// Note: Add Redux DevTool to check the data
+// Note: Add Redux DevTool to check the states
+// Also using ModHeader chrome with JWT access token
+
 
 // To check weather user is login or not
+
 export const checkAuthenticated = () => async dispatch => {
 
     if (localStorage.getItem('access')) {
@@ -65,6 +74,7 @@ export const checkAuthenticated = () => async dispatch => {
 
             }
         } catch (err) {
+
             dispatch({
                 type: AUTHENTICATED_FAIL
             });
@@ -100,13 +110,17 @@ export const load_user = () => async dispatch => {
                 type: USER_LOADED_SUCCESS,
                 payload: res.data
             });
+            console.log("user load success:", res.data)
 
         } catch (err) {
+
             dispatch({
                 type: USER_LOADED_FAIL
             });
-            console.log(err)
+
+            console.log("user load fail: ", err.response.data)
         }
+
     } else {
         dispatch({
             type: USER_LOADED_FAIL,
@@ -115,9 +129,11 @@ export const load_user = () => async dispatch => {
 };
 
 // User registration/signup
+
+
 export const signup = (first_name, last_name, email, password, re_password, navigate) => async dispatch => {
 
-    // for show loading
+    // for showing loading
     dispatch({
         type: SET_AUTH_LOADING
     });
@@ -129,19 +145,18 @@ export const signup = (first_name, last_name, email, password, re_password, navi
     };
 
     const body = JSON.stringify({
-        // first_name, last_name,
         first_name, last_name, email, password, re_password
     });
 
-    // if (password !== reset_password) {
-    //
-    //      dispatch({
-    //         type: REMOVE_AUTH_LOADING
-    //     });
-    //
-    //     return dispatch(setAlert("Your passwords didn't matched, Try again.",
-    //         "error"))
-    // }
+    if (password !== re_password) {
+
+        dispatch({
+            type: REMOVE_AUTH_LOADING
+        });
+
+        return dispatch(setAlert("The two password fields didn't match, try again.",
+            "error"))
+    }
 
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/`, body, config);
@@ -150,6 +165,7 @@ export const signup = (first_name, last_name, email, password, re_password, navi
             type: SIGNUP_SUCCESS,
             payload: res.data
         });
+
         dispatch(setAlert("Your account has been created.",
             "success"))
 
@@ -159,13 +175,13 @@ export const signup = (first_name, last_name, email, password, re_password, navi
             type: REMOVE_AUTH_LOADING
         });
 
+        // toast.success("User Signup Success");
+        console.log("Signup Success: ", res)
+
         if (res.status === 201) {
             // return <Navigate to='/activate/sent'/>;
             return navigate('/activate/sent', {replace: true})
         }
-
-        // toast.success("User Signup Success");
-        console.log("Signup Success ", res.data)
 
     } catch (err) {
 
@@ -173,10 +189,70 @@ export const signup = (first_name, last_name, email, password, re_password, navi
             type: SIGNUP_FAIL,
         })
 
-        dispatch(setAlert("Username/Email is already taken." +
-            " Try another.", "error"))
+        // Try to show the user same error as HTTP give
 
-        console.log("Signup Error ", err.response)
+        if (err.response) {
+
+            // The request was made & server responded with status code
+            // that falls out of the range of 2xx
+
+            const emailError = err.response.data.email
+            const passwordError = err.response.data.password
+            const otherError = err.response.data
+
+            if (emailError) {
+
+                dispatch(setAlert(emailError[0], "error"))
+                console.log("Email err: ", emailError[0])
+
+            } else if (passwordError) {
+
+                dispatch(setAlert(passwordError[0], "error"))
+                console.log("Password err: ", err.response.data.password[0])
+
+            } else if (otherError) {
+
+                console.log("error after email/pass: ", err.response.data[0])
+
+                dispatch(setAlert(err.response.data[0], "error"))
+
+            } else {
+
+                dispatch(setAlert("Something went wrong at err.resp, please try again.", "error"))
+
+            }
+
+            // just for understanding these four lines
+
+            const statusCode = err.response.status
+            const statusText = err.response.statusText
+            // const msg = err.response.data.email[0]
+            // const msg = err.response.data.password[0]
+
+            console.log(`Error: statusCode - ${statusCode} statusText - ${statusText}`)
+            console.log("Signup fail response: ", err.response)
+
+            // dispatch(setAlert("Something went wrong, in err.response please try again.", "error"))
+
+        } else if (err.request) {
+
+            // The request was made but no response was received
+            console.log("Request error: ", err.request)
+            dispatch(setAlert("Something went wrong at err.req, please try again.", "error"))
+
+
+        } else {
+
+            // Something happened in setting up the request that triggered an Error
+            console.log("Signup Error: ", err.response)
+            dispatch(setAlert("Something went wrong, please try again.", "error"))
+
+        }
+
+        // dispatch(setAlert("Username/Email is already taken." +
+        //     " Try another.", "error"))
+
+        console.log("Signup Error: ", err.config);
 
         dispatch({
             type: REMOVE_AUTH_LOADING
@@ -185,7 +261,9 @@ export const signup = (first_name, last_name, email, password, re_password, navi
 
 };
 
+
 // For activate/verify account
+
 export const verify = (uid, token, navigate) => async dispatch => {
 
     dispatch({
@@ -209,7 +287,7 @@ export const verify = (uid, token, navigate) => async dispatch => {
 
         dispatch(
             setAlert("Your account is activated, Please login.",
-            "info")
+                "info")
         )
 
         dispatch({
@@ -231,7 +309,7 @@ export const verify = (uid, token, navigate) => async dispatch => {
 
         dispatch(setAlert("Activation fails, Try again.", "error"))
 
-         dispatch({
+        dispatch({
             type: REMOVE_AUTH_LOADING
         })
 
@@ -240,7 +318,9 @@ export const verify = (uid, token, navigate) => async dispatch => {
     }
 };
 
+
 // reset verification account
+
 export const resend_verify = (email, navigate) => async dispatch => {
 
     dispatch({
@@ -268,7 +348,7 @@ export const resend_verify = (email, navigate) => async dispatch => {
             type: REMOVE_AUTH_LOADING
         })
 
-         if (res.status === 204) {
+        if (res.status === 204) {
             // return <Navigate to='/activate/sent'/>;
             return navigate('/activate/sent', {replace: true})
         }
@@ -292,7 +372,9 @@ export const resend_verify = (email, navigate) => async dispatch => {
     }
 }
 
-// signin
+
+// signin user
+
 export const login = (email, password) => async dispatch => {
 
     dispatch({
@@ -315,7 +397,7 @@ export const login = (email, password) => async dispatch => {
             payload: res.data,
         });
 
-        dispatch(setAlert("You are login to MyShop", "success"))
+        dispatch(setAlert("You are login to our app.", "success"))
 
         dispatch({
             type: REMOVE_AUTH_LOADING
@@ -325,23 +407,55 @@ export const login = (email, password) => async dispatch => {
         dispatch(load_user())
 
     } catch (err) {
+
         dispatch({
             type: LOGIN_FAIL,
         })
 
-        dispatch(setAlert("Invalid Email/Password, Try again.", "error"))
+        if (err.response) {
+
+            const credentialError = err.response.data.detail
+
+            if (credentialError) {
+
+                dispatch(setAlert(credentialError, "error"))
+                console.log("Credential err: ", credentialError)
+
+            } else {
+
+                dispatch(setAlert("Something went wrong at else, please try again.", "error"))
+            }
+
+            console.log("err res data: ", err.response.data)
+            console.log("err res: ", err.response)
+
+
+        } else if (err.request) {
+
+            console.log("err req: ", err.request)
+            dispatch(setAlert("Something went wrong at err.req, please try again.", "error"))
+
+
+        } else {
+
+            console.log("login Error: ", err.response)
+            dispatch(setAlert("Something went wrong ok, please try again.", "error"))
+        }
+
+        // dispatch(setAlert("Invalid Email/Password, Try again.", "error"))
 
         dispatch({
             type: REMOVE_AUTH_LOADING
         })
 
-        //     {position: "top-center"})
         // console.log("Invalid Email or Password, Try again.");
-        console.log(err.response.data)
+        console.log("Login error end: ", err.config);
     }
 };
 
+
 // user can reset password
+
 export const reset_password = (email, navigate) => async dispatch => {
 
     dispatch({
@@ -374,7 +488,7 @@ export const reset_password = (email, navigate) => async dispatch => {
             return navigate("/reset-password/sent", {replace: true})
         }
 
-         console.log("Reset Password Success");
+        console.log("Reset Password Success");
 
     } catch (err) {
 
@@ -382,7 +496,7 @@ export const reset_password = (email, navigate) => async dispatch => {
             type: PASSWORD_RESET_FAIL,
         });
 
-        dispatch(setAlert("Reset Password Fail", "error"))
+        dispatch(setAlert("Reset password fail, Try again.", "error"))
 
         dispatch({
             type: REMOVE_AUTH_LOADING
@@ -393,7 +507,9 @@ export const reset_password = (email, navigate) => async dispatch => {
     }
 };
 
+
 // user can set new password
+
 export const reset_password_confirm = (uid, token, new_password,
                                        re_new_password, navigate) => async dispatch => {
 
@@ -409,6 +525,16 @@ export const reset_password_confirm = (uid, token, new_password,
 
     const body = JSON.stringify({uid, token, new_password, re_new_password});
 
+    if (new_password !== re_new_password) {
+
+        dispatch({
+            type: REMOVE_AUTH_LOADING
+        });
+
+        return dispatch(setAlert("Your passwords didn't matched, Try again.",
+            "error"))
+    }
+
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_password_confirm/`, body, config);
 
@@ -423,7 +549,8 @@ export const reset_password_confirm = (uid, token, new_password,
         })
 
         console.log("Status code is: ", res.status)
-          if (res.status === 204) {
+
+        if (res.status === 204) {
             // return <Navigate to='/activate/sent'/>;
             return navigate("/login", {replace: true})
         }
@@ -437,7 +564,7 @@ export const reset_password_confirm = (uid, token, new_password,
 
         dispatch(setAlert("Rest Password Fail.", 'error'))
 
-         dispatch({
+        dispatch({
             type: REMOVE_AUTH_LOADING
         })
 
@@ -446,7 +573,135 @@ export const reset_password_confirm = (uid, token, new_password,
     }
 };
 
-// signup & signin with Google
+
+// user can set new email
+
+export const reset_email = (email, navigate) => async dispatch => {
+
+    dispatch({
+        type: SET_AUTH_LOADING
+    });
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    console.log(email)
+
+    const body = JSON.stringify({email});
+    console.log("error json body", body)
+
+
+    try {
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_email/`, body, config);
+
+        dispatch({
+            type: EMAIL_RESET_SUCCESS
+        });
+
+        dispatch(setAlert("Reset Email Sent", "info"))
+
+        dispatch({
+            type: REMOVE_AUTH_LOADING
+        })
+
+        if (res.status === 204) {
+            // return <Navigate to='/activate/sent'/>;
+            return navigate("/reset-email/sent", {replace: true})
+        }
+
+        console.log("Reset Email Success");
+
+    } catch (err) {
+
+        dispatch({
+            type: EMAIL_RESET_FAIL,
+        });
+
+        dispatch(setAlert("Reset email fail, Try again.", "error"))
+
+        dispatch({
+            type: REMOVE_AUTH_LOADING
+        })
+
+        // console.log(err.response.data.detail)
+        console.log("Error for Rest Email", err)
+    }
+}
+
+
+// reset email confirm
+
+export const reset_email_confirm = (uid, token, new_email,
+                                       re_new_email, navigate) => async dispatch => {
+
+    dispatch({
+        type: SET_AUTH_LOADING
+    })
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+
+    const body = JSON.stringify({uid, token, new_email, re_new_email});
+
+    console.log("error json body", body)
+
+    // if (new_email !== re_new_email) {
+    //
+    //     dispatch({
+    //         type: REMOVE_AUTH_LOADING
+    //     });
+    //
+    //     return dispatch(setAlert("Your email didn't matched, Try again.",
+    //         "error"))
+    // }
+
+    try {
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_email_confirm/`, body, config);
+
+        dispatch({
+            type: EMAIL_RESET_CONFIRM_SUCCESS,
+        });
+
+        dispatch(setAlert("Your email has been reset.", "success"))
+
+        dispatch({
+            type: REMOVE_AUTH_LOADING
+        })
+
+        console.log("Status code is: ", res.status)
+
+        if (res.status === 204) {
+            // return <Navigate to='/activate/sent'/>;
+            return navigate("/login", {replace: true})
+        }
+        console.log("Email has been reset.")
+
+    } catch (err) {
+
+        dispatch({
+            type: EMAIL_RESET_CONFIRM_FAIL
+        });
+
+        dispatch(setAlert("Rest email failed, try again.", "error"))
+
+        dispatch({
+            type: REMOVE_AUTH_LOADING
+        })
+
+        console.log("Error", err.response.data)
+        console.log("Reset Email Fail", err)
+    }
+};
+
+
+// auth with Google
+
 export const googleAuthenticate = (state, code, navigate) => async dispatch => {
 
     dispatch({
@@ -516,7 +771,9 @@ export const googleAuthenticate = (state, code, navigate) => async dispatch => {
     }
 };
 
-// signup & signin with Facebook
+
+// auth with Facebook
+
 export const facebookAuthenticate = (state, code, navigate) => async dispatch => {
 
     if (state && code && !localStorage.getItem('access')) {
@@ -559,9 +816,11 @@ export const facebookAuthenticate = (state, code, navigate) => async dispatch =>
     }
 };
 
+
 // refresh token
 
 export const refresh = () => async dispatch => {
+
     if (localStorage.getItem('refresh')) {
         const config = {
             headers: {
@@ -578,26 +837,35 @@ export const refresh = () => async dispatch => {
             const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/jwt/refresh/`, body, config);
 
             if (res.status === 200) {
+
                 dispatch({
                     type: REFRESH_SUCCESS,
                     payload: res.data
                 });
+
             } else {
                 dispatch({
                     type: REFRESH_FAIL
                 });
             }
+
         } catch (err) {
+
             dispatch({
                 type: REFRESH_FAIL
             });
         }
+
     } else {
+
         dispatch({
             type: REFRESH_FAIL
         });
     }
 };
+
+
+// logout user
 
 export const logout = () => dispatch => {
 
@@ -605,8 +873,71 @@ export const logout = () => dispatch => {
         type: LOGOUT
     });
 
-    dispatch(setAlert("You are logout, Successfully", "info"))
+    dispatch(setAlert("You are logout, successfully", "info"))
 
     // toast.success("You are logout Successfully.",
     //     {position: "top-center"})
 };
+
+
+// delete user, with accounts0/views.py APIView
+
+export const delete_user = () => async dispatch => {
+
+    dispatch({
+        type: SET_AUTH_LOADING
+    })
+
+    // const body = JSON.stringify({current_password});
+
+    if (localStorage.getItem('access')) {
+
+        const config = {
+
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${localStorage.getItem('access')}`,
+                'Accept': 'application/json',
+            }
+        };
+
+        try {
+            // const res = await axios.delete(`${process.env.REACT_APP_API_URL}/auth/users/me/`, body, config);
+            const res = await axios.delete(`${process.env.REACT_APP_API_URL}/api/user/delete-account/`, config)
+
+            dispatch({
+                type: DELETE_USER_SUCCESS,
+                // payload: res.data
+            });
+
+            dispatch({
+                type: REMOVE_AUTH_LOADING
+            })
+
+            dispatch(setAlert("Your account deleted, Successfully", "info"))
+            console.log("user has deleted:", res.data)
+
+            // return navigate('/', {replace: true})
+
+        } catch (err) {
+
+            dispatch({
+                type: DELETE_USER_FAIL
+            });
+
+            dispatch(setAlert("User delete failed, try again", "error"))
+
+            console.log("user deleted fail: ", err.response)
+
+             dispatch({
+                type: REMOVE_AUTH_LOADING
+            })
+        }
+
+    } else {
+
+        dispatch({
+            type: DELETE_USER_FAIL
+        })
+    }
+}

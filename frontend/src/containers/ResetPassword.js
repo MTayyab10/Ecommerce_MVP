@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import {Navigate, useNavigate} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {reset_password} from '../actions/auth';
@@ -22,7 +22,7 @@ const ResetPassword = ({reset_password, loading}) => {
 
     const onSubmit = e => {
         e.preventDefault();
-        reset_password(email, navigate);
+        reset_password(email.toLowerCase(), navigate);
         setRequestSent(true);
     };
 
@@ -37,13 +37,14 @@ const ResetPassword = ({reset_password, loading}) => {
 
                 <div className="offset-md-3 col-md-6 offset-1 col-10">
 
-                    <div className="p-3 text-center">
-                        <h3><strong>Forgot Password</strong></h3>
+                    <div className="p-3 m-2 text-center">
+                        <h2>Forgot Password</h2>
                         {/*<i className="lead">*/}
                         {/*    Enter your email address and send.*/}
                         {/*</i>*/}
                     </div>
-                    <form onSubmit={e => onSubmit(e)}>
+
+                    <form onSubmit={e => onSubmit(e)} className="p-2">
                         <div className='form-group'>
 
                             <label className="form-label" htmlFor="email">
@@ -62,15 +63,25 @@ const ResetPassword = ({reset_password, loading}) => {
                         </div>
 
                         {loading ? (
-                            <div className="text-center mt-3">
-                                <div className="spinner-border" role="status">
-                                    <span className="visually-hidden">Loading...</span>
-                                </div>
-                            </div>
+
+                            <Fragment>
+
+                                <button className="btn btn-primary mt-4 p-2" type="button" disabled>
+                                    <span className="spinner-border spinner-border-sm" role="status"
+                                          aria-hidden="true"/> Loading...
+                                </button>
+
+                                {/*    <div className="text-center mt-3">*/}
+                                {/*    <div className="spinner-border" role="status">*/}
+                                {/*        <span className="visually-hidden">Loading...</span>*/}
+                                {/*    </div>*/}
+                                {/*</div>*/}
+                            </Fragment>
+
                         ) : (
 
-                        <input type="submit" value="Rest Password"
-                               className="btn btn-pill text-white btn-primary mt-3" />
+                            <input type="submit" value="Rest Password "
+                                   className="btn btn-pill text-white btn-primary mt-4 p-2"/>
                         )
                         }
 

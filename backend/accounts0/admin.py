@@ -70,7 +70,7 @@ class UserAdmin(admin.ModelAdmin):
 
     list_display = ('id',
                     'first_name', 'last_name',
-                    'email')
+                    'email', 'date_joined')
     # list_display_links = ('id', 'name', 'email', )
     # search_fields = ('email',
     #                   'name' )

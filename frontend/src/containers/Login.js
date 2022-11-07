@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import {Link, Navigate} from 'react-router-dom';
 import {connect, useSelector} from 'react-redux';
 import {login} from '../actions/auth';
@@ -53,8 +53,7 @@ const Login = ({login, isAuthenticated, loading}) => {
         }
     };
 
-    // If user is authenticated
-    // redirect to home page
+    // If user is authenticated, redirect to home page
 
     if (isAuthenticated) {
         return <Navigate to={'/'}/>
@@ -101,133 +100,150 @@ const Login = ({login, isAuthenticated, loading}) => {
 
     return (
 
-        <div className="container mt-2">
+        <Fragment>
 
-            {/*Display error and success alerts*/}
+            <div className="container mt-2">
 
-            {/*<ToastContainer />*/}
+                <h2 className={"text-center p-2"}>Sign In</h2>
 
-            <h2 className={"text-center p-2"}>Sign In</h2>
+                <form onSubmit={e => onSubmit(e)}
+                      className="row g-3 needs-validation" noValidate>
 
-            {/*<h4>{alert}</h4>*/}
+                    {/* 1. Email */}
 
-            <form onSubmit={e => onSubmit(e)}
-                  className="row g-3 needs-validation" noValidate>
+                    <div className="col-md-4 offset-1 col-10">
 
-                <div className="col-md-4 offset-1 col-10">
+                        <label htmlFor="validateEmail"
+                               className="form-label">
+                            Email
+                        </label>
 
-                    <label htmlFor="validateEmail"
-                           className="form-label">
-                        Email
-                    </label>
-
-                    <input type="email"
-                           className="form-control"
-                           id="validateEmail"
-                        // placeholder='Email'
-                           name='email'
-                           value={email}
-                           onChange={e => onChange(e)}
-                           required/>
-                    {/*<div className="valid-feedback">*/}
-                    {/*    Looks good!*/}
-                    {/*</div>*/}
-                    <div className="invalid-feedback">
-                        Please provide a email.
-                    </div>
-                </div>
-
-                <div className="col-md-4 offset-1 col-10">
-
-                    <label htmlFor="validatePassword" className="form-label">
-                        Password
-                    </label>
-
-                    <input type="password"
-                           className="form-control"
-                           id="validatePassword"
-                           name='password'
-                           value={password}
-                           onChange={e => onChange(e)}
-                           required
-                           autoComplete={"true"}/>
-                    {/*<div className="valid-feedback">*/}
-                    {/*    Looks good!*/}
-                    {/*</div>*/}
-                    <div className="invalid-feedback">
-                        Please provide a password.
-                    </div>
-                </div>
-
-                {/*  Forgot Password  */}
-
-                <div className="text-center">
-
-                    <Link to={'/reset-password'}
-                          className="text-decoration-none
-                               fw-normal">
-                        Forgot your password?
-                    </Link>
-                </div>
-
-                {/*  Submit  */}
-
-                {/* If clicked btn then remove signin btn
-                 & show spinner */}
-
-                {loading ? (
-
-                    <div className="text-center">
-                        <div className="spinner-border" role="status">
-                            <span className="visually-hidden">Loading...</span>
+                        <input type="email"
+                               className="form-control"
+                               id="validateEmail"
+                            // placeholder='Email'
+                               name='email'
+                               value={email}
+                               onChange={e => onChange(e)}
+                               required/>
+                        {/*<div className="valid-feedback">*/}
+                        {/*    Looks good!*/}
+                        {/*</div>*/}
+                        <div className="invalid-feedback">
+                            Please provide a email.
                         </div>
                     </div>
-                ) : (
-                    <div className="col-md-8 offset-1 col-10">
 
-                        <button className="btn btn-primary" type="submit">
-                            Sign In
-                        </button>
+                    {/* 2. Password */}
+
+                    <div className="col-md-4 offset-1 col-10">
+
+                        <label htmlFor="validatePassword" className="form-label">
+                            Password
+                        </label>
+
+                        <input type="password"
+                               className="form-control"
+                               id="validatePassword"
+                               name='password'
+                               value={password}
+                               onChange={e => onChange(e)}
+                               required
+                               autoComplete={"true"}/>
+                        {/*<div className="valid-feedback">*/}
+                        {/*    Looks good!*/}
+                        {/*</div>*/}
+                        <div className="invalid-feedback">
+                            Please provide a password.
+                        </div>
                     </div>
-                )
-                }
 
-            </form>
+                    {/*  Forgot Password link  */}
 
-            {/*<hr className={"offset-1 col-md-10  col-10"} />*/}
+                    <div className="text-center">
 
-            <div className={"offset-1 col-md-10 col-10 pt-2"}>
+                        <Link to={'/reset-password'}
+                              className="text-decoration-none
+                               fw-normal">
+                            Forgot Password?
+                        </Link>
+                    </div>
 
-                <h2 className={"text-secondary"} style={h2}>
+                    {/*  Submit  */}
+
+                    {/* If clicked btn then remove signin btn
+                 & show spinner */}
+
+                    {loading ? (
+
+                             // spinner
+
+                        <Fragment>
+                            <div className="col-md-8 offset-1 col-10">
+
+                                <button className="btn btn-primary" type="button" disabled>
+                                    <span className="spinner-border spinner-border-sm" role="status"
+                                          aria-hidden="true"/> Sign In
+                                </button>
+                            </div>
+
+                            {/*simple black spinner*/}
+
+                            {/*<div className="text-center">*/}
+                            {/*    <div className="spinner-border" role="status">*/}
+                            {/*        <span className="visually-hidden">Loading...</span>*/}
+                            {/*    </div>*/}
+
+                            {/*</div>*/}
+
+                        </Fragment>
+
+
+                    ) : (
+                        <div className="col-md-8 offset-1 col-10">
+
+                            <button className="btn btn-primary" type="submit">
+                                Sign In
+                            </button>
+                        </div>
+                    )
+                    }
+
+                </form>
+
+                {/*<hr className={"offset-1 col-md-10  col-10"} />*/}
+
+                <div className={"offset-1 col-md-10 col-10 pt-2"}>
+
+                    <h2 className={"text-secondary"} style={h2}>
 
                     <span className={"text-dark"} style={h2Span}>
                        or
                     </span>
-                </h2>
+                    </h2>
 
-            </div>
+                </div>
 
-            <div className={"text-center"}>
+                <div className={"text-center"}>
 
-                <button type="button" onClick={continueWithGoogle}
-                        className="btn btn-link">
-                    <img src={googleImg} width={"220px"} alt={"Continue with Google"}/>
-                </button>
+                    <button type="button" onClick={continueWithGoogle}
+                            className="btn btn-link">
+                        <img src={googleImg} width={"220px"} alt={"Continue with Google"}/>
+                    </button>
 
+                    <button type="button" onClick={continueWithFacebook}
+                            className="btn btn-link">
+                        <img src={facebookImg} width={"260px"} alt={"Continue with Google"}/>
+                    </button>
 
-                <button type="button" onClick={continueWithFacebook}
-                        className="btn btn-link">
-                    <img src={facebookImg} width={"260px"} alt={"Continue with Google"}/>
-                </button>
+                    {/*<button className="btn btn-primary btn-sm" onClick={continueWithFacebook}>*/}
+                    {/*    Continue With Facebook*/}
+                    {/*</button>*/}
+                </div>
 
-                {/*<button className="btn btn-primary btn-sm" onClick={continueWithFacebook}>*/}
-                {/*    Continue With Facebook*/}
-                {/*</button>*/}
-            </div>
+                {/* SingUp Option */}
 
-            {/* SingUp Option */}
-
-            <h5 className={"text-center fw-normal pt-2 mt-2"}>
+                <h5 className={"text-center fw-normal pt-2 mt-2"}>
 
                 <span className="p-3 m-3">
                     Don't have an
@@ -236,10 +252,12 @@ const Login = ({login, isAuthenticated, loading}) => {
                     Register </Link>
                 </span>
 
-            </h5>
+                </h5>
+
+            </div>
+        </Fragment>
 
 
-        </div>
     );
 };
 
