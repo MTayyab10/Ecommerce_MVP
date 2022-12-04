@@ -18,7 +18,7 @@ export default function ActivateMsg() {
 
                     <div className="alert alert-success" role="alert">
 
-                        <h4 className="alert-heading">Thank you for Signup</h4>
+                        {/*<h4 className="alert-heading">Thank you for Signup</h4>*/}
 
                         <div className={"text-center"}>
 

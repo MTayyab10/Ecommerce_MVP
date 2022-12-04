@@ -70,6 +70,13 @@ CORS_ALLOWED_ORIGINS = (
     # 'http://192.168.10.45:3000',  # for network
 )
 
+# In Django 4.x versions
+
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://127.0.0.1:8000',
+#     'http://localhost:3000',
+# ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -48,6 +48,7 @@ import React from "react";
 export const checkAuthenticated = () => async dispatch => {
 
     if (localStorage.getItem('access')) {
+
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -88,6 +89,7 @@ export const checkAuthenticated = () => async dispatch => {
         // console.log("Error is here too")
     }
 };
+
 
 // function for getting user data
 

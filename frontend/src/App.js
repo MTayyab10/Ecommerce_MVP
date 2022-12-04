@@ -17,7 +17,7 @@ import Layout from './hocs/Layout';
 import ResetPasswordMsg from "./containers/ResetPasswordMsg";
 import ActivateMsg from "./containers/ActivateMsg";
 import ResendActivation from "./containers/ResendActivation";
-import UserInfo from "./containers/UserProfile";
+import UserProfile from "./containers/UserProfile";
 import NotFound from './containers/NotFound';
 import ResetEmailMsg from "./containers/ResetEmailMsg";
 import ResetEmail from "./containers/ResetEmail";
@@ -37,7 +37,7 @@ const App = () => (
                     <Route exact path='/google' element={<Google />} />
                     <Route exact path='/facebook' element={<Facebook />} />
 
-                    <Route exact path='/user_profile' element={<UserInfo/>}/>
+                    <Route exact path='/user_profile' element={<UserProfile />}/>
 
                     <Route exact path='/reset-password' element={<ResetPassword />} />
                     <Route exact path='/reset-password/sent' element={<ResetPasswordMsg /> } />

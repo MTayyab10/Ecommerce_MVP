@@ -1,7 +1,7 @@
 import React, {Fragment, useState} from "react";
 import {Link, Redirect} from "react-router-dom";
 import {connect, useSelector} from "react-redux";
-import {logout} from "../actions/auth";
+import {logout} from "../actions/auth"
 import {NavLink} from "react-router-dom";
 import {Navigate} from "react-router-dom";
 
@@ -13,7 +13,7 @@ const Navbar = ({logout, isAuthenticated, user}) => {
     const [redirect, setRedirect] = useState(false);
 
     const logoutHandler = () => {
-        logout();
+        logout()
         setRedirect(true);
     };
 
@@ -21,7 +21,7 @@ const Navbar = ({logout, isAuthenticated, user}) => {
     //     return <Navigate to={'/'} />
     // };
 
-    // show username to login users & guest to not login users
+    // username to login users & guest to not login users
     const userName = () => {
         return (
             <Fragment>
@@ -56,7 +56,7 @@ const Navbar = ({logout, isAuthenticated, user}) => {
 
             <li className="nav-item">
                 <a className="nav-link" href="#"
-                   onClick={logoutHandler}>Logout</a>
+                   onClick={() => logoutHandler()}>Logout</a>
             </li>
         </Fragment>
     );
@@ -94,7 +94,8 @@ const Navbar = ({logout, isAuthenticated, user}) => {
         </Fragment>
     );
 
-    const navbar = () => (
+    const navbarLinks = () => (
+
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
             <div className="container-fluid">
 
@@ -134,9 +135,7 @@ const Navbar = ({logout, isAuthenticated, user}) => {
                     </ul>
 
                     <ul className="navbar-nav ms-auto">
-
                         {isAuthenticated ? authLinks() : guestLinks()}
-
                     </ul>
 
                 </div>
@@ -151,7 +150,7 @@ const Navbar = ({logout, isAuthenticated, user}) => {
             return (
                 <Fragment>
 
-                    {navbar()}
+                    {navbarLinks()}
                     {/*For showing msgs/alerts to user what is going on*/}
 
                     <Alert/>
@@ -163,15 +162,12 @@ const Navbar = ({logout, isAuthenticated, user}) => {
 
             return (
                 <Fragment>
-
-                    {Navbar()}
+                    {navbarLinks()}
                     <Alert/>
-
                 </Fragment>
             );
         }
     };
-
 
     return (
         renderNavbar()
