@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import Navbar from '../components/Navbar';
 import { connect } from 'react-redux';
 import { checkAuthenticated, load_user, refresh } from '../actions/auth';
+import OfferNoticeMsg from "../components/OfferNoticeMsg";
 
 
 const Layout = ({ checkAuthenticated, load_user, refresh,
@@ -16,10 +17,14 @@ const Layout = ({ checkAuthenticated, load_user, refresh,
     }, []);
 
     return (
-        <div>
+        <Fragment>
+
+            {/* For offer, notice */}
+            <OfferNoticeMsg />
+
             <Navbar />
             {children}
-        </div>
+        </Fragment>
     );
 };
 

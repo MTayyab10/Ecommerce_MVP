@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import {Link, Navigate} from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
 import {connect, useDispatch, useSelector} from 'react-redux';
@@ -40,18 +40,21 @@ const Signup = ({signup, isAuthenticated, loading}) => {
 
         e.preventDefault();
 
-        // signup(first_name, last_name, email, password, re_password, navigate);
-        // setAccountCreated(true)
+        // here email.toLower to handle create account with same email
+        // at the backend email normalize lower in accounts0/models.py
 
-        if (password !== re_password) {
-            toast.error("Passwords didn't matched, Try again.",
-                {position: "top-center"})
+        signup(first_name, last_name, email.toLowerCase(), password, re_password, navigate);
+        setAccountCreated(true)
 
-        } else {
-            signup(first_name, last_name, email, password, re_password, navigate);
-            setAccountCreated(true)
-            // return <Navigate to='/activate/sent'/>
-        }
+        // if (password !== re_password) {
+        //     toast.error("Passwords didn't matched, Try again.",
+        //         {position: "top-center"})
+        //
+        // } else {
+        //     signup(first_name, last_name, email, password, re_password, navigate);
+        //     setAccountCreated(true)
+        //     // return <Navigate to='/activate/sent'/>
+        // }
     };
 
     const continueWithGoogle = async () => {
@@ -85,7 +88,6 @@ const Signup = ({signup, isAuthenticated, loading}) => {
     // Bootstrap To handle the Form Validation
 
     // Example starter JavaScript for disabling form submissions
-    // if there are invalid fields
     (function () {
         'use strict'
 
@@ -122,188 +124,209 @@ const Signup = ({signup, isAuthenticated, loading}) => {
 
 
     return (
-        <div className='container mt-2'>
+        <Fragment>
+            <div className='container mt-2'>
 
-            <h2 className={"text-center p-2"}>Register</h2>
+                <h2 className={"text-center p-2"}>Register</h2>
 
-            {/*Official Docs https://fkhadra.github.io/react-toastify/introduction*/}
+                <form onSubmit={e => onSubmit(e)}
+                      className="row g-3 needs-validation" noValidate>
 
-            {/*This is just to display password didn't match error.*/}
+                    {/* 1. First name */}
 
-            <ToastContainer/>
+                    <div className="col-md-4 offset-1 col-10">
 
-            <form onSubmit={e => onSubmit(e)}
-                  className="row g-3 needs-validation" noValidate>
+                        <label htmlFor="validateFirstName"
+                               className="form-label">
+                            First Name
+                        </label>
 
-                <div className="col-md-4 offset-1 col-10">
-
-                    <label htmlFor="validateFirstName"
-                           className="form-label">
-                        First Name
-                    </label>
-
-                    <input type="text"
-                           className="form-control"
-                           id="validateFirstName"
-                        // placeholder='Email'
-                           name="first_name"
-                           value={first_name}
-                           onChange={e => onChange(e)}
-                           required/>
-                    {/*<div className="valid-feedback">*/}
-                    {/*    Looks good!*/}
-                    {/*</div>*/}
-                    <div className="invalid-feedback">
-                        Please provide a name.
-                    </div>
-                </div>
-
-                <div className="col-md-4 offset-1 col-10">
-
-                    <label htmlFor="validateLastName"
-                           className="form-label">
-                        Last Name
-                    </label>
-
-                    <input type="text"
-                           className="form-control"
-                           id="validateLastName"
-                        // placeholder='Email'
-                           name="last_name"
-                           value={last_name}
-                           onChange={e => onChange(e)}
-                           required/>
-                    {/*<div className="valid-feedback">*/}
-                    {/*    Looks good!*/}
-                    {/*</div>*/}
-                    <div className="invalid-feedback">
-                        Please provide a name.
-                    </div>
-                </div>
-
-                <div className="col-md-4 offset-1 col-10">
-
-                    <label htmlFor="validateEmail"
-                           className="form-label">
-                        Email
-                    </label>
-
-                    <input type="email"
-                           className="form-control"
-                           id="validateEmail"
-                        // placeholder='Email'
-                           name='email'
-                           value={email}
-                           onChange={e => onChange(e)}
-                           required/>
-                    {/*<div className="valid-feedback">*/}
-                    {/*    Looks good!*/}
-                    {/*</div>*/}
-                    <div className="invalid-feedback">
-                        Please provide a email.
-                    </div>
-                </div>
-
-                <div className="col-md-4 offset-1 col-10">
-
-                    <label htmlFor="validatePassword" className="form-label">
-                        Password
-                    </label>
-
-                    <input type="password"
-                           className="form-control"
-                           id="validatePassword"
-                           name='password'
-                           value={password}
-                           onChange={e => onChange(e)}
-                           required
-                           minLength='6'
-                           autoComplete={"true"}/>
-                    {/*<div className="valid-feedback">*/}
-                    {/*    Looks good!*/}
-                    {/*</div>*/}
-                    <div className="invalid-feedback">
-                        Please provide a password.
-                    </div>
-                </div>
-
-                <div className="col-md-4 offset-1 col-10">
-
-                    <label htmlFor="validateConfirmPassword" className="form-label">
-                        Confirm Password
-                    </label>
-
-                    <input type="password"
-                           className="form-control"
-                           id="validateConfirmPassword"
-                           name="re_password"
-                           value={re_password}
-                           onChange={e => onChange(e)}
-                           required
-                           minLength='6'
-                           autoComplete={"true"}/>
-                    {/*<div className="valid-feedback">*/}
-                    {/*    Looks good!*/}
-                    {/*</div>*/}
-                    <div className="invalid-feedback">
-                        Please provide a password.
-                    </div>
-                </div>
-
-                {/*  Submit  */}
-
-                {/* If clicked btn then remove register btn
-                 and show spinner */}
-
-                {loading ? (
-
-                    <div className="text-center">
-                        <div className="spinner-border" role="status">
-                            <span className="visually-hidden">Loading...</span>
+                        <input type="text"
+                               className="form-control"
+                               id="validateFirstName"
+                            // placeholder='Email'
+                               name="first_name"
+                               value={first_name}
+                               onChange={e => onChange(e)}
+                               required/>
+                        {/*<div className="valid-feedback">*/}
+                        {/*    Looks good!*/}
+                        {/*</div>*/}
+                        <div className="invalid-feedback">
+                            Please provide a name.
                         </div>
                     </div>
-                ) : (
-                    <div className="col-md-8 offset-1 col-10">
 
-                        <button className="btn btn-primary" type="submit">
-                            Sign Up
-                        </button>
+                    {/* 2. Last name */}
+
+                    <div className="col-md-4 offset-1 col-10">
+
+                        <label htmlFor="validateLastName"
+                               className="form-label">
+                            Last Name
+                        </label>
+
+                        <input type="text"
+                               className="form-control"
+                               id="validateLastName"
+                            // placeholder='Email'
+                               name="last_name"
+                               value={last_name}
+                               onChange={e => onChange(e)}
+                               required/>
+                        {/*<div className="valid-feedback">*/}
+                        {/*    Looks good!*/}
+                        {/*</div>*/}
+                        <div className="invalid-feedback">
+                            Please provide a name.
+                        </div>
                     </div>
-                )
-                }
 
-            </form>
+                    {/* 3. Email */}
 
-            {/*// Horizontal line*/}
+                    <div className="col-md-4 offset-1 col-10">
 
-            <div className={"offset-1 col-md-10 col-10 pt-2"}>
+                        <label htmlFor="validateEmail"
+                               className="form-label">
+                            Email
+                        </label>
 
-                <h2 className={"text-secondary"} style={h2}>
+                        <input type="email"
+                               className="form-control"
+                               id="validateEmail"
+                            // placeholder='Email'
+                               name='email'
+                               value={email}
+                               onChange={e => onChange(e)}
+                               required/>
+                        {/*<div className="valid-feedback">*/}
+                        {/*    Looks good!*/}
+                        {/*</div>*/}
+                        <div className="invalid-feedback">
+                            Please provide a email.
+                        </div>
+                    </div>
+
+                    {/* 4. Password */}
+
+                    <div className="col-md-4 offset-1 col-10">
+
+                        <label htmlFor="validatePassword" className="form-label">
+                            Password
+                        </label>
+
+                        <input type="password"
+                               className="form-control"
+                               id="validatePassword"
+                               name='password'
+                               value={password}
+                               onChange={e => onChange(e)}
+                               required
+                               minLength='6'
+                               autoComplete={"true"}/>
+                        {/*<div className="valid-feedback">*/}
+                        {/*    Looks good!*/}
+                        {/*</div>*/}
+                        <div className="invalid-feedback">
+                            Please provide a password.
+                        </div>
+                    </div>
+
+                    {/* 5. confirm password */}
+
+                    <div className="col-md-4 offset-1 col-10">
+
+                        <label htmlFor="validateConfirmPassword" className="form-label">
+                            Confirm Password
+                        </label>
+
+                        <input type="password"
+                               className="form-control"
+                               id="validateConfirmPassword"
+                               name="re_password"
+                               value={re_password}
+                               onChange={e => onChange(e)}
+                               required
+                               minLength='6'
+                               autoComplete={"true"}/>
+                        {/*<div className="valid-feedback">*/}
+                        {/*    Looks good!*/}
+                        {/*</div>*/}
+                        <div className="invalid-feedback">
+                            Please provide a password.
+                        </div>
+                    </div>
+
+                    {/*  Submit  */}
+
+                    {/* If clicked btn then remove register btn
+                 and show spinner */}
+
+                    {loading ? (
+
+                        <Fragment>
+                            <div className="col-md-8 offset-1 col-10">
+
+                                <button className="btn btn-primary mt-3" type="button" disabled>
+                                <span className="spinner-border spinner-border-sm" role="status"
+                                      aria-hidden="true"/> Sign Up
+                                </button>
+
+                            </div>
+
+                            {/*simple black spinner*/}
+
+                            {/*<div className="text-center">*/}
+                            {/*    <div className="spinner-border" role="status">*/}
+                            {/*        <span className="visually-hidden">Loading...</span>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+                        </Fragment>
+
+                    ) : (
+                        <div className="col-md-8 offset-1 col-10">
+
+                            <button className="btn btn-primary mt-3" type="submit">
+                                Sign Up
+                            </button>
+                        </div>
+                    )
+                    }
+
+                </form>
+
+                {/*// Horizontal line*/}
+
+                <div className={"offset-1 col-md-10 col-10 pt-2"}>
+
+                    <h2 className={"text-secondary"} style={h2}>
 
                     <span className={"text-dark"} style={h2Span}>
                        or
                     </span>
-                </h2>
+                    </h2>
 
-            </div>
+                </div>
 
-            <div className={"text-center"}>
+                {/* Signup with social media */}
 
-                <button type="button" onClick={continueWithGoogle}
-                        className="btn btn-link">
-                    <img src={googleImg} width={"220px"} alt={"Continue with Google"}/>
-                </button>
+                <div className={"text-center"}>
 
-                <button type="button" onClick={continueWithFacebook}
-                        className="btn btn-link">
-                    <img src={facebookImg} width={"260px"} alt={"Continue with Google"}/>
-                </button>
+                    <button type="button" onClick={continueWithGoogle}
+                            className="btn btn-link">
+                        <img src={googleImg} width={"220px"} alt={"Continue with Google"}/>
+                    </button>
 
-            </div>
+                    <button type="button" onClick={continueWithFacebook}
+                            className="btn btn-link">
+                        <img src={facebookImg} width={"260px"} alt={"Continue with Google"}/>
+                    </button>
 
-            {/* SingIn Option */}
+                </div>
 
-            <h5 className={"text-center fw-normal pt-2 mt-2"}>
+                {/* SingIn Option */}
+
+                <h5 className={"text-center fw-normal pt-2 mt-2"}>
 
                 <span className="p-3 m-3">
                     Already have an
@@ -312,9 +335,11 @@ const Signup = ({signup, isAuthenticated, loading}) => {
                     Login </Link>
                 </span>
 
-            </h5>
+                </h5>
 
-        </div>
+            </div>
+        </Fragment>
+
     );
 };
 

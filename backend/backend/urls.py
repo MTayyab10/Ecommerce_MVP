@@ -30,5 +30,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
+# for connecting with frontend React.js
+
 urlpatterns += [re_path(r'.*', TemplateView.as_view(template_name='index.html'))]
 

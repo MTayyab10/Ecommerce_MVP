@@ -17,8 +17,11 @@ import Layout from './hocs/Layout';
 import ResetPasswordMsg from "./containers/ResetPasswordMsg";
 import ActivateMsg from "./containers/ActivateMsg";
 import ResendActivation from "./containers/ResendActivation";
-import UserInfo from "./containers/UserInfo";
+import UserProfile from "./containers/UserProfile";
 import NotFound from './containers/NotFound';
+import ResetEmailMsg from "./containers/ResetEmailMsg";
+import ResetEmail from "./containers/ResetEmail";
+import ResetEmailConfirm from "./containers/ResetEmailConfirm";
 
 const App = () => (
 
@@ -34,12 +37,17 @@ const App = () => (
                     <Route exact path='/google' element={<Google />} />
                     <Route exact path='/facebook' element={<Facebook />} />
 
-                    <Route exact path='/user_info' element={<UserInfo/>}/>
+                    <Route exact path='/user_profile' element={<UserProfile />}/>
 
                     <Route exact path='/reset-password' element={<ResetPassword />} />
                     <Route exact path='/reset-password/sent' element={<ResetPasswordMsg /> } />
                     <Route exact path='/password/reset/confirm/:uid/:token'
                            element={<ResetPasswordConfirm />} />
+
+                    <Route exact path='/reset-email' element={<ResetEmail />} />
+                    <Route exact path='/reset-email/sent' element={<ResetEmailMsg /> } />
+                    <Route exact path='/email/reset/confirm/:uid/:token'
+                           element={<ResetEmailConfirm />} />
 
                     <Route exact path='/activate/:uid/:token' element={<Activate />} />
                     <Route exact path='/activate/sent' element={<ActivateMsg />} />

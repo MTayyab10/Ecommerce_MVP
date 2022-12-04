@@ -18,7 +18,7 @@ export default function ActivateMsg() {
 
                     <div className="alert alert-success" role="alert">
 
-                        <h4 className="alert-heading">Thank you for Signup</h4>
+                        {/*<h4 className="alert-heading">Thank you for Signup</h4>*/}
 
                         <div className={"text-center"}>
 
@@ -46,7 +46,7 @@ export default function ActivateMsg() {
                     {/*Primary*/}
                     <Link to='/resend/activation'
                           className="btn btn-primary m-3">
-                        Send Email Again
+                        Send email again
                     </Link>
                     {/*</button>*/}
 
@@ -55,7 +55,7 @@ export default function ActivateMsg() {
                     </Link>
 
                     <Link to='/' className="btn btn-secondary m-3">
-                        Go to Home
+                        Go to home
                     </Link>
 
                 </div>

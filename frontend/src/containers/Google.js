@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {googleAuthenticate} from '../actions/auth';
@@ -27,7 +27,7 @@ const Google = ({googleAuthenticate}) => {
 
     return (
 
-        <>
+        <Fragment>
             <div className='mt-5 d-flex justify-content-center align-items-center'>
                 <div className="text-center">
                     <div style={{"height": "3rem", "width": "3rem"}}
@@ -44,7 +44,7 @@ const Google = ({googleAuthenticate}) => {
                 <h2>Please wait...</h2>
             </div>
 
-        </>
+        </Fragment>
     );
 };
 

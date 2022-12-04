@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import {Navigate, useMatch, useNavigate} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {reset_password_confirm} from '../actions/auth';
@@ -22,7 +22,7 @@ const ResetPasswordConfirm = ({reset_password_confirm, loading}) => {
         [e.target.name]: e.target.value
     });
 
-    let match = useMatch('/password/reset/confirm/:uid/:token');
+    let match = useMatch('auth/users/password/reset/confirm/:uid/:token');
 
     const navigate = useNavigate()
 
@@ -33,15 +33,18 @@ const ResetPasswordConfirm = ({reset_password_confirm, loading}) => {
         const uid = match.params.uid
         const token = match.params.token;
 
-        if (new_password !== re_new_password) {
-            toast.error("Passwords didn't matched, Try again.",
-                {position: "top-center"})
+        reset_password_confirm(uid, token, new_password, re_new_password, navigate);
 
-        } else {
-            setAlert("Successfully, your password has been reset.",
-                "success")
-            reset_password_confirm(uid, token, new_password, re_new_password, navigate);
-        }
+
+        // if (new_password !== re_new_password) {
+        //     toast.error("Passwords didn't matched, Try again.",
+        //         {position: "top-center"})
+        //
+        // } else {
+        //     setAlert("Successfully, your password has been reset.",
+        //         "success")
+        //     reset_password_confirm(uid, token, new_password, re_new_password, navigate);
+        // }
 
     };
 
@@ -52,13 +55,16 @@ const ResetPasswordConfirm = ({reset_password_confirm, loading}) => {
 
 
     return (
+
         <div className="container mt-3">
 
-            <ToastContainer/>
+            <div className="m-2 p-2">
 
-            <h3 className={"text-center p-1"}>
-                Set New Password
-            </h3>
+                <h2 className={"text-center p-2 m-2"}>
+                    New Password
+                </h2>
+
+            </div>
 
             <form onSubmit={e => onSubmit(e)}>
 
@@ -111,11 +117,23 @@ const ResetPasswordConfirm = ({reset_password_confirm, loading}) => {
                 </div>
 
                 {loading ? (
-                    <div className="text-center mt-3">
-                        <div className="spinner-border" role="status">
-                            <span className="visually-hidden">Loading...</span>
+
+                    <Fragment>
+
+                        <div className="offset-md-4 offset-1 mt-3">
+                            <button className="btn btn-primary" type="button" disabled>
+                                <span className="spinner-border spinner-border-sm" role="status"
+                                      aria-hidden="true"/> Loading...
+                            </button>
                         </div>
-                    </div>
+
+                        {/*<div className="text-center mt-3">*/}
+                        {/*    <div className="spinner-border" role="status">*/}
+                        {/*        <span className="visually-hidden">Loading...</span>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+
+                    </Fragment>
                 ) : (
 
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import {Navigate, useNavigate} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {resend_verify} from '../actions/auth';
@@ -37,16 +37,18 @@ const ResendActivation = ({resend_verify, loading}) => {
                 <div className="offset-md-3 col-md-6 offset-1 col-10">
 
                     <div className="p-3 text-center">
-                        <h3><strong>Resend Activation</strong></h3>
+                        <h2>Resend Activation</h2>
                         {/*<i className="lead">*/}
                         {/*    Enter your email address and send.*/}
                         {/*</i>*/}
                     </div>
-                    <form onSubmit={e => onSubmit(e)}>
-                        <div className='form-group'>
+
+                    <form onSubmit={e => onSubmit(e)} className={'p-2'}>
+
+                        <div className='form-group '>
 
                             <label className="form-label" htmlFor="email">
-                                Enter registered email
+                                Enter registered email:
                             </label>
 
                             <input
@@ -61,11 +63,21 @@ const ResendActivation = ({resend_verify, loading}) => {
                         </div>
 
                         {loading ? (
-                            <div className="text-center mt-3">
-                                <div className="spinner-border" role="status">
-                                    <span className="visually-hidden">Loading...</span>
-                                </div>
-                            </div>
+
+                            <Fragment>
+
+                                <button className="btn btn-primary mt-3" type="button" disabled>
+                                    <span className="spinner-border spinner-border-sm" role="status"
+                                          aria-hidden="true"/> Loading...
+                                </button>
+
+                                {/*<div className="text-center mt-3">*/}
+                                {/*    <div className="spinner-border" role="status">*/}
+                                {/*        <span className="visually-hidden">Loading...</span>*/}
+                                {/*    </div>*/}
+                                {/*</div>*/}
+                            </Fragment>
+
                         ) : (
                             <input type="submit" value="Resend Link"
                                    className="btn btn-pill text-white btn-primary mt-3"/>

@@ -1,7 +1,7 @@
 import React, {Fragment, useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {connect, useSelector} from "react-redux";
-import {logout} from "../actions/auth";
+import {logout} from "../actions/auth"
 import {NavLink} from "react-router-dom";
 import {Navigate} from "react-router-dom";
 
@@ -12,33 +12,35 @@ const Navbar = ({logout, isAuthenticated, user}) => {
 
     const [redirect, setRedirect] = useState(false);
 
-    const logout_user = () => {
-        logout();
+    const logoutHandler = () => {
+        logout()
         setRedirect(true);
     };
 
-    // username
+    // if (redirect) {
+    //     return <Navigate to={'/'} />
+    // };
 
+    // username to login users & guest to not login users
     const userName = () => {
         return (
-            <>
+            <Fragment>
                 Hi, <strong>
                 {
                     user && true && true ?
                         user.first_name.toUpperCase()[0] + user.first_name.slice(1)
                         : " Guest"
                 }
-               </strong>
-            </>
+            </strong>
+            </Fragment>
         )
     };
 
-    // If user is login/authenticated
-
+    // login/authenticated links
     const authLinks = () => (
-        <>
-            <li className="nav-item">
+        <Fragment>
 
+            <li className="nav-item">
                 <NavLink className="nav-link position-relative" to="/orders/cart/">
                     <i className="fas fa-shopping-cart fs-6 pt-2 pe-2 "/>
                     <span className="position-absolute translate-middle badge rounded-pill bg-danger">
@@ -48,22 +50,21 @@ const Navbar = ({logout, isAuthenticated, user}) => {
                         </span>
                     </span>
                 </NavLink>
-
             </li>
 
             {/*Logout*/}
 
             <li className="nav-item">
                 <a className="nav-link" href="#"
-                   onClick={logout_user}>Logout</a>
+                   onClick={() => logoutHandler()}>Logout</a>
             </li>
-        </>
+        </Fragment>
     );
 
-    // If user is not login/authenticated
+    // Not login/authenticated links
 
     const guestLinks = () => (
-        <>
+        <Fragment>
             <li className="nav-item">
 
                 <NavLink className="nav-link position-relative" to="/orders/cart/">
@@ -90,68 +91,89 @@ const Navbar = ({logout, isAuthenticated, user}) => {
                 </NavLink>
             </li>
 
-        </>
+        </Fragment>
     );
 
+    const navbarLinks = () => (
+
+        <nav className="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+            <div className="container-fluid">
+
+                <Link className="navbar-brand" to="/">
+                    E-Commerce
+                </Link>
+
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"/>
+                </button>
+
+                <div className="collapse navbar-collapse"
+                     id="navbarSupportedContent">
+
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+
+                        <li className="nav-item">
+
+                            {/*<Link className={}*/}
+                            {/*    // className="nav-link active"*/}
+                            {/*      to='/'>Home</Link>*/}
+                            <NavLink to={"/"} className="nav-link">
+                                <i className="fas fa-home"/> Home
+                            </NavLink>
+                        </li>
+
+                        {/*If user is login then Hi, username otherwise hi guest*/}
+
+                        <li className="nav-item">
+                            <NavLink to={"/user_profile"} className="nav-link" href="#">
+                                {userName()}
+                            </NavLink>
+                        </li>
+
+                    </ul>
+
+                    <ul className="navbar-nav ms-auto">
+                        {isAuthenticated ? authLinks() : guestLinks()}
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+    )
+
+    const renderNavbar = () => {
+
+        if (redirect) {
+
+            return (
+                <Fragment>
+
+                    {navbarLinks()}
+                    {/*For showing msgs/alerts to user what is going on*/}
+
+                    <Alert/>
+                    <Link to='/'/>
+                </Fragment>
+            );
+
+        } else {
+
+            return (
+                <Fragment>
+                    {navbarLinks()}
+                    <Alert/>
+                </Fragment>
+            );
+        }
+    };
 
     return (
-        <Fragment>
-
-            <nav className="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
-                <div className="container-fluid">
-
-                    <Link className="navbar-brand" to="/">
-                        E-Commerce
-                    </Link>
-
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"/>
-                    </button>
-
-                    <div className="collapse navbar-collapse"
-                         id="navbarSupportedContent">
-
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-
-                            <li className="nav-item">
-
-                                {/*<Link className={}*/}
-                                {/*    // className="nav-link active"*/}
-                                {/*      to='/'>Home</Link>*/}
-                                <NavLink to={"/"} className="nav-link">
-                                    <i className="fas fa-home"/> Home
-                                </NavLink>
-                            </li>
-
-                            {/*If user is login then Hi, username otherwise hi guest*/}
-
-                            <li className="nav-item">
-                                <NavLink to={"/user_info"} className="nav-link" href="#">
-                                    {userName()}
-                                </NavLink>
-                            </li>
-
-                        </ul>
-
-                        <ul className="navbar-nav ms-auto">
-
-                            {isAuthenticated ? authLinks() : guestLinks()}
-
-                        </ul>
-
-                    </div>
-                </div>
-            </nav>
-
-            <Alert/>
-
-            {/*For clearing url data */}
-
-            {redirect ? <Navigate to={'/'}/> : <Fragment></Fragment>}
-
-        </Fragment>
+        renderNavbar()
+        // <Fragment>
+        //     {renderNavbar()}
+        // </Fragment>
     );
 };
 
