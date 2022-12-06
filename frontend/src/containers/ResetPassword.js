@@ -37,7 +37,7 @@ const ResetPassword = ({reset_password, loading}) => {
 
                 <div className="offset-md-3 col-md-6 offset-1 col-10">
 
-                    <div className="p-3 m-2 text-center">
+                    <div className="p-2 m-2 text-center">
                         <h2>Forgot Password</h2>
                         {/*<i className="lead">*/}
                         {/*    Enter your email address and send.*/}
@@ -48,7 +48,7 @@ const ResetPassword = ({reset_password, loading}) => {
                         <div className='form-group'>
 
                             <label className="form-label" htmlFor="email">
-                                Enter registered email
+                                Registered email:
                             </label>
 
                             <input
@@ -66,9 +66,9 @@ const ResetPassword = ({reset_password, loading}) => {
 
                             <Fragment>
 
-                                <button className="btn btn-primary mt-4 p-2" type="button" disabled>
+                                <button className="btn btn-primary btn-lg mt-4" type="button" disabled>
                                     <span className="spinner-border spinner-border-sm" role="status"
-                                          aria-hidden="true"/> Loading...
+                                          aria-hidden="true"/> Send
                                 </button>
 
                                 {/*    <div className="text-center mt-3">*/}
@@ -79,9 +79,11 @@ const ResetPassword = ({reset_password, loading}) => {
                             </Fragment>
 
                         ) : (
-
-                            <input type="submit" value="Rest Password "
-                                   className="btn btn-pill text-white btn-primary mt-4 p-2"/>
+                            <button type={"submit"} className="btn btn-lg btn-primary mt-4 ">
+                                Send
+                            </button>
+                            // <input type="submit" value="Send"
+                            //        className="btn btn-lg btn-primary mt-4 "/>
                         )
                         }
 

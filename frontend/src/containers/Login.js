@@ -26,7 +26,7 @@ const Login = ({login, isAuthenticated, loading}) => {
     const onSubmit = e => {
         e.preventDefault();
         // toast.success("You are login, Successfully.")
-        login(email, password);
+        login(email.toLowerCase(), password);
     };
 
     // Login with Google
@@ -104,7 +104,7 @@ const Login = ({login, isAuthenticated, loading}) => {
 
             <div className="container mt-2">
 
-                <h2 className={"text-center p-2"}>Sign In</h2>
+                <h2 className={"text-center p-2 m-2"}>Sign In</h2>
 
                 <form onSubmit={e => onSubmit(e)}
                       className="row g-3 needs-validation" noValidate>
@@ -176,12 +176,12 @@ const Login = ({login, isAuthenticated, loading}) => {
 
                     {loading ? (
 
-                             // spinner
+                        // spinner
 
                         <Fragment>
                             <div className="col-md-8 offset-1 col-10">
 
-                                <button className="btn btn-primary" type="button" disabled>
+                                <button className="btn btn-primary btn-lg" type="button" disabled>
                                     <span className="spinner-border spinner-border-sm" role="status"
                                           aria-hidden="true"/> Sign In
                                 </button>
@@ -202,7 +202,7 @@ const Login = ({login, isAuthenticated, loading}) => {
                     ) : (
                         <div className="col-md-8 offset-1 col-10">
 
-                            <button className="btn btn-primary" type="submit">
+                            <button className="btn btn-lg btn-primary" type="submit">
                                 Sign In
                             </button>
                         </div>

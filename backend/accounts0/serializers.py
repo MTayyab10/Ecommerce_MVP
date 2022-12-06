@@ -17,9 +17,9 @@ class UserCreateSerializer(UserCreateSerializer):
         # fields = '__all__'
 
         fields = ('id', 'email',
-                  # 'name',
-                  'first_name', 'last_name',
-                  'password',
+                  'username',
+                  # 'first_name', 'last_name',
+                  'password', 'last_login',
                   'date_joined',
                   # 'is_active'
                   # 'last_login'
