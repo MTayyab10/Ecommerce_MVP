@@ -28,7 +28,8 @@ const Navbar = ({logout, isAuthenticated, user}) => {
                 Hi, <strong>
                 {
                     user && true && true ?
-                        user.first_name.toUpperCase()[0] + user.first_name.slice(1)
+                        // user.first_name.toUpperCase()[0] + user.first_name.slice(1)
+                        user.username.toUpperCase()[0] + user.username.slice(1)
                         : " Guest"
                 }
             </strong>

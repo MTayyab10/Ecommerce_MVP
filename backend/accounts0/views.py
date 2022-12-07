@@ -10,6 +10,7 @@ User = get_user_model()
 
 
 class DeleteUserAccountView(APIView):
+    """User can delete account in UserProfile.js"""
 
     def delete(self, request, format=None):
         user = self.request.user

@@ -21,14 +21,15 @@ export default function ResetPasswordMsg() {
 
                 <div className={"container text-center"}>
 
-                    <h2 className={"p-2 m-2"}>Password Reset Sent</h2>
+                    <h2 className={"p-2 m-2"}>Password Reset</h2>
 
                     <div className="alert alert-warning" role="alert">
                         {/*<h4 className="alert-heading">Well done!</h4>*/}
                         <p>
-                            We've emailed you for
-                            {/*instructions*/}
-                            <i>Password Reset</i>, If an account exists with the email
+                            {/*We've emailed you for*/}
+                            {/*/!*instructions*!/*/}
+                            {/*<i>Password Reset</i>,*/}
+                            If an account exists with the email
                             you entered. You should receive a email, shortly.
                         </p>
                         <hr/>
@@ -45,11 +46,11 @@ export default function ResetPasswordMsg() {
 
                     <Link to='/reset-password'
                           className="btn btn-primary m-3">
-                        Send email again
+                        Email again
                     </Link>
                     {/*</button>*/}
 
-                    <Link to='/' className="btn btn-secondary">
+                    <Link to='/' className="btn btn-outline-secondary">
                         Go to home
                     </Link>
 

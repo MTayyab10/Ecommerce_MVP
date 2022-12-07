@@ -38,10 +38,9 @@ class UserAccountManager(BaseUserManager):
 class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(max_length=200, unique=True)
-
-    # name = models.CharField(max_length=70, unique=True)
-    first_name = models.CharField(max_length=70)
-    last_name = models.CharField(max_length=70)
+    username = models.CharField(max_length=70)
+    # first_name = models.CharField(max_length=70)
+    # last_name = models.CharField(max_length=70)
 
     # Django manage fields.
 
@@ -54,15 +53,16 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    # REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['username']
 
     def get_full_name(self):
-        return self.first_name
-        # return self.name
+        # return self.first_name
+        return self.username
 
     def get_short_name(self):
-        return self.last_name
-        # return self.name
+        # return self.last_name
+        return self.username
 
     def get_date_joined(self):
         return self.date_joined

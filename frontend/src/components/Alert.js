@@ -22,18 +22,20 @@ export const Alert = ({alerts}) => alerts !== null &&
         >
             {alert.alertType === "error" ? errorIcon : successIcon}
 
-            {/*{alert.msg.toUpperCase()}*/}
             {alert.msg}
 
-            <button type="button" className="btn-close small pt-4 pb-1"
-                    data-bs-dismiss="alert" aria-label="Close"/>
+            {/* There is an error if close the Alert then
+            It display an error it crashes website  */}
+
+            {/*<button type="button" className="btn-close small pt-4 pb-1"*/}
+            {/*        data-bs-dismiss="alert" aria-label="Close"/>*/}
 
         </div>
     ));
 
-Alert.propTypes = {
-    alerts: PropTypes.array.isRequired
-};
+// Alert.propTypes = {
+//     alerts: PropTypes.array.isRequired
+// };
 
 const mapStateToProps = state => ({
     alerts: state.alert

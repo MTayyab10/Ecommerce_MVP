@@ -112,7 +112,7 @@ export const load_user = () => async dispatch => {
                 type: USER_LOADED_SUCCESS,
                 payload: res.data
             });
-            console.log("user load success:", res.data)
+            console.log("User load success:", res.data)
 
         } catch (err) {
 
@@ -120,20 +120,24 @@ export const load_user = () => async dispatch => {
                 type: USER_LOADED_FAIL
             });
 
-            console.log("user load fail: ", err.response.data)
+            console.log("User load fail: ", err.response.data)
         }
 
     } else {
+
         dispatch({
             type: USER_LOADED_FAIL,
         });
+        console.log("User load fail")
+
     }
 };
 
 // User registration/signup
 
 
-export const signup = (first_name, last_name, email, password, re_password, navigate) => async dispatch => {
+export const signup = (username, // first_name, last_name,
+    email, password, re_password, navigate) => async dispatch => {
 
     // for showing loading
     dispatch({
@@ -147,8 +151,11 @@ export const signup = (first_name, last_name, email, password, re_password, navi
     };
 
     const body = JSON.stringify({
-        first_name, last_name, email, password, re_password
+        // first_name, last_name,
+        username, email, password, re_password
     });
+
+    // Check if both passwords are not correct show error
 
     if (password !== re_password) {
 
@@ -156,7 +163,7 @@ export const signup = (first_name, last_name, email, password, re_password, navi
             type: REMOVE_AUTH_LOADING
         });
 
-        return dispatch(setAlert("The two password fields didn't match, try again.",
+        return dispatch(setAlert("Two password fields didn't match, try again.",
             "error"))
     }
 
@@ -180,6 +187,8 @@ export const signup = (first_name, last_name, email, password, re_password, navi
         // toast.success("User Signup Success");
         console.log("Signup Success: ", res)
 
+        // If signup success then redirect to activate msg
+
         if (res.status === 201) {
             // return <Navigate to='/activate/sent'/>;
             return navigate('/activate/sent', {replace: true})
@@ -193,7 +202,7 @@ export const signup = (first_name, last_name, email, password, re_password, navi
 
         // Try to show the user same error as HTTP give
 
-        if (err.response) {
+        if (err.response.data) {
 
             // The request was made & server responded with status code
             // that falls out of the range of 2xx
@@ -240,15 +249,13 @@ export const signup = (first_name, last_name, email, password, re_password, navi
 
             // The request was made but no response was received
             console.log("Request error: ", err.request)
-            dispatch(setAlert("Something went wrong at err.req, please try again.", "error"))
-
+            dispatch(setAlert("Something went wrong, please try again.", "error"))
 
         } else {
 
             // Something happened in setting up the request that triggered an Error
             console.log("Signup Error: ", err.response)
             dispatch(setAlert("Something went wrong, please try again.", "error"))
-
         }
 
         // dispatch(setAlert("Username/Email is already taken." +
@@ -287,14 +294,15 @@ export const verify = (uid, token, navigate) => async dispatch => {
             type: ACTIVATION_SUCCESS,
         });
 
-        dispatch(
-            setAlert("Your account is activated, Please login.",
+        dispatch(setAlert("Your account is activated, Please login.",
                 "info")
         )
 
         dispatch({
             type: REMOVE_AUTH_LOADING
         })
+
+        // If account activate success redirect to login page
 
         if (res.status === 204) {
             // return <Navigate to='/activate/sent'/>;
@@ -375,7 +383,7 @@ export const resend_verify = (email, navigate) => async dispatch => {
 }
 
 
-// signin user
+// signin/login user
 
 export const login = (email, password) => async dispatch => {
 
@@ -406,6 +414,8 @@ export const login = (email, password) => async dispatch => {
         })
 
         console.log("Login Success", res.data)
+
+        // after login user data will load
         dispatch(load_user())
 
     } catch (err) {
@@ -414,34 +424,35 @@ export const login = (email, password) => async dispatch => {
             type: LOGIN_FAIL,
         })
 
-        if (err.response) {
+        if (err.response.data) {
 
-            const credentialError = err.response.data.detail
+            // const credentialError = err.response.data.detail
+            //
+            // if (credentialError) {
+            //
+            //     dispatch(setAlert(credentialError, "error"))
+            //     console.log("Credential err: ", credentialError)
 
-            if (credentialError) {
-
-                dispatch(setAlert(credentialError, "error"))
-                console.log("Credential err: ", credentialError)
-
-            } else {
-
-                dispatch(setAlert("Something went wrong at else, please try again.", "error"))
-            }
+            // } else {
+            //
+            //     dispatch(setAlert("Something went wrong at else, please try again.", "error"))
+            // }
 
             console.log("err res data: ", err.response.data)
             console.log("err res: ", err.response)
+
+            dispatch(setAlert("Invalid email or password. ", "error"))
 
 
         } else if (err.request) {
 
             console.log("err req: ", err.request)
-            dispatch(setAlert("Something went wrong at err.req, please try again.", "error"))
-
+            dispatch(setAlert("Something went wrong, please try again.", "error"))
 
         } else {
 
             console.log("login Error: ", err.response)
-            dispatch(setAlert("Something went wrong ok, please try again.", "error"))
+            dispatch(setAlert("Something went wrong, please try again.", "error"))
         }
 
         // dispatch(setAlert("Invalid Email/Password, Try again.", "error"))
@@ -476,21 +487,23 @@ export const reset_password = (email, navigate) => async dispatch => {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_password/`, body, config);
 
         dispatch({
-            type: PASSWORD_RESET_SUCCESS
+            type: PASSWORD_RESET_SUCCESS,
+            payload: res.data,
         });
 
-        dispatch(setAlert("Reset Password Email Sent", "info"))
+        dispatch(setAlert("Reset password email sent", "info"))
+        console.log("Reset password success: ", res.data)
 
         dispatch({
             type: REMOVE_AUTH_LOADING
         })
 
+        console.log("Reset password Success");
+
         if (res.status === 204) {
             // return <Navigate to='/activate/sent'/>;
             return navigate("/reset-password/sent", {replace: true})
         }
-
-        console.log("Reset Password Success");
 
     } catch (err) {
 
@@ -498,14 +511,14 @@ export const reset_password = (email, navigate) => async dispatch => {
             type: PASSWORD_RESET_FAIL,
         });
 
-        dispatch(setAlert("Reset password fail, Try again.", "error"))
+        dispatch(setAlert("Reset password email fail, Try again.", "error"))
 
         dispatch({
             type: REMOVE_AUTH_LOADING
         })
 
         // console.log(err.response.data.detail)
-        console.log("Error for Rest Password", err)
+        console.log("Rest password email error: ", err)
     }
 };
 
@@ -603,7 +616,7 @@ export const reset_email = (email, navigate) => async dispatch => {
             type: EMAIL_RESET_SUCCESS
         });
 
-        dispatch(setAlert("Reset Email Sent", "info"))
+        dispatch(setAlert("Reset email sent, successfully.", "info"))
 
         dispatch({
             type: REMOVE_AUTH_LOADING
@@ -614,7 +627,7 @@ export const reset_email = (email, navigate) => async dispatch => {
             return navigate("/reset-email/sent", {replace: true})
         }
 
-        console.log("Reset Email Success");
+        console.log("Reset email success");
 
     } catch (err) {
 
@@ -629,7 +642,7 @@ export const reset_email = (email, navigate) => async dispatch => {
         })
 
         // console.log(err.response.data.detail)
-        console.log("Error for Rest Email", err)
+        console.log("Error for rest email", err)
     }
 }
 
@@ -882,34 +895,37 @@ export const logout = () => dispatch => {
 };
 
 
-// delete user, with accounts0/views.py APIView
+// Delete user with default Djoser method
 
-export const delete_user = () => async dispatch => {
+// Helpful stackoverflow.com/questions/51069552/axios-delete-request-with-request-body-and-headers
+
+export const delete_user = (current_password, navigate) => async dispatch => {
 
     dispatch({
         type: SET_AUTH_LOADING
     })
 
-    // const body = JSON.stringify({current_password});
-
     if (localStorage.getItem('access')) {
 
-        const config = {
+         const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${localStorage.getItem('access')}`,
+            // 'Accept': 'application/json',
+        }
 
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `JWT ${localStorage.getItem('access')}`,
-                'Accept': 'application/json',
-            }
-        };
+        console.log("JWT local : ", localStorage.getItem('access'))
+
+        const data = {
+            current_password: current_password
+        }
 
         try {
-            // const res = await axios.delete(`${process.env.REACT_APP_API_URL}/auth/users/me/`, body, config);
-            const res = await axios.delete(`${process.env.REACT_APP_API_URL}/api/user/delete-account/`, config)
+            const res = await axios.delete(`${process.env.REACT_APP_API_URL}/auth/users/me/`, {headers, data });
+            // const res = await axios.delete(`${process.env.REACT_APP_API_URL}/api/user/delete-account/`, config)
 
             dispatch({
                 type: DELETE_USER_SUCCESS,
-                // payload: res.data
+                payload: res.data
             });
 
             dispatch({
@@ -919,7 +935,7 @@ export const delete_user = () => async dispatch => {
             dispatch(setAlert("Your account deleted, Successfully", "info"))
             console.log("user has deleted:", res.data)
 
-            // return navigate('/', {replace: true})
+            return navigate('/', {replace: true})
 
         } catch (err) {
 
@@ -927,19 +943,101 @@ export const delete_user = () => async dispatch => {
                 type: DELETE_USER_FAIL
             });
 
-            dispatch(setAlert("User delete failed, try again", "error"))
+            // dispatch(setAlert("User account delete failed, try again", "error"))
 
-            console.log("user deleted fail: ", err.response)
+            if (err.response.data) {
+                const msg = err.response.data.current_password[0]
+                console.log("user deleted fail: ", msg)
 
-             dispatch({
-                type: REMOVE_AUTH_LOADING
-            })
+                dispatch(setAlert(msg, "error"))
+
+            } else {
+                dispatch(setAlert("User account delete failed, try again", "error"))
+            }
+
+            // dispatch({
+            //     type: REMOVE_AUTH_LOADING
+            // })
+
+            console.log("user deleted fail: ", err.response.data.current_password[0])
         }
 
     } else {
+
+        dispatch(setAlert("User account delete failed, try again", "error"))
 
         dispatch({
             type: DELETE_USER_FAIL
         })
     }
+
+    dispatch({
+        type: REMOVE_AUTH_LOADING
+    })
 }
+
+
+// delete user, with accounts0/views.py APIView
+
+// export const delete_user = () => async dispatch => {
+//
+//     dispatch({
+//         type: SET_AUTH_LOADING
+//     })
+//
+//     // const body = JSON.stringify({current_password});
+//
+//     if (localStorage.getItem('access')) {
+//
+//         const config = {
+//
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorization': `JWT ${localStorage.getItem('access')}`,
+//                 'Accept': 'application/json',
+//             }
+//         };
+//
+//         try {
+//             // const res = await axios.delete(`${process.env.REACT_APP_API_URL}/auth/users/me/`, body, config);
+//             const res = await axios.delete(`${process.env.REACT_APP_API_URL}/api/user/delete-account/`, config)
+//
+//             dispatch({
+//                 type: DELETE_USER_SUCCESS,
+//                 // payload: res.data
+//             });
+//
+//             dispatch({
+//                 type: REMOVE_AUTH_LOADING
+//             })
+//
+//             dispatch(setAlert("Your account deleted, Successfully", "info"))
+//             console.log("user has deleted:", res.data)
+//
+//             // return navigate('/', {replace: true})
+//
+//         } catch (err) {
+//
+//             dispatch({
+//                 type: DELETE_USER_FAIL
+//             });
+//
+//             dispatch(setAlert("User account delete failed, try again", "error"))
+//
+//             console.log("user deleted fail: ", err.response)
+//
+//         }
+//
+//     } else {
+//
+//         dispatch(setAlert("User account delete failed, try again", "error"))
+//
+//         dispatch({
+//             type: DELETE_USER_FAIL
+//         })
+//     }
+//
+//     dispatch({
+//         type: REMOVE_AUTH_LOADING
+//     })
+// }

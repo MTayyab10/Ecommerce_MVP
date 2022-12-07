@@ -64,18 +64,23 @@ INSTALLED_APPS = [
 # Added CORS (cross-origin resource sharing)
 # it allows calling API in other domains/hosts
 
-CORS_ALLOWED_ORIGINS = (
+CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:3000',  # for localhost (REACT Default)
+    'http://127.0.0.1:3000'
     # 'http://192.168.10.45:3000',  # for network
-)
+]
 
 # In Django 4.x versions
 
-# CSRF_TRUSTED_ORIGINS = [
-#     'http://127.0.0.1:8000',
-#     'http://localhost:3000',
-# ]
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+]
+
+# CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_HTTPONLY = True
 
 
 MIDDLEWARE = [

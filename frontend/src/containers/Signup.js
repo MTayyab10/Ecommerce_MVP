@@ -16,17 +16,16 @@ const Signup = ({signup, isAuthenticated, loading}) => {
     const [accountCreated, setAccountCreated] = useState(false);
 
     const [formData, setFormData] = useState({
-        first_name: '',
-        last_name: '',
-        // name: '',
+        // first_name: '',
+        // last_name: '',
+        username: '',
         email: '',
         password: '',
         re_password: '',
     });
 
-    const {
-        first_name, last_name,
-        email, password, re_password
+    const { // first_name, last_name,
+        username, email, password, re_password
     } = formData;
 
     const onChange = e => setFormData({
@@ -43,7 +42,9 @@ const Signup = ({signup, isAuthenticated, loading}) => {
         // here email.toLower to handle create account with same email
         // at the backend email normalize lower in accounts0/models.py
 
-        signup(first_name, last_name, email.toLowerCase(), password, re_password, navigate);
+        signup(
+            // first_name, last_name,
+            username, email.toLowerCase(), password, re_password, navigate);
         setAccountCreated(true)
 
         // if (password !== re_password) {
@@ -122,7 +123,6 @@ const Signup = ({signup, isAuthenticated, loading}) => {
         "padding": "0 20px"
     }
 
-
     return (
         <Fragment>
             <div className='container mt-2'>
@@ -132,21 +132,21 @@ const Signup = ({signup, isAuthenticated, loading}) => {
                 <form onSubmit={e => onSubmit(e)}
                       className="row g-3 needs-validation" noValidate>
 
-                    {/* 1. First name */}
+                    {/* Username */}
 
                     <div className="col-md-4 offset-1 col-10">
 
-                        <label htmlFor="validateFirstName"
+                        <label htmlFor="validateUsername"
                                className="form-label">
-                            First Name
+                            Username
                         </label>
 
                         <input type="text"
                                className="form-control"
-                               id="validateFirstName"
+                               id="validateUsername"
                             // placeholder='Email'
-                               name="first_name"
-                               value={first_name}
+                               name="username"
+                               value={username}
                                onChange={e => onChange(e)}
                                required/>
                         {/*<div className="valid-feedback">*/}
@@ -156,31 +156,57 @@ const Signup = ({signup, isAuthenticated, loading}) => {
                             Please provide a name.
                         </div>
                     </div>
+
+
+                    {/* 1. First name */}
+
+                    {/*<div className="col-md-4 offset-1 col-10">*/}
+
+                    {/*    <label htmlFor="validateFirstName"*/}
+                    {/*           className="form-label">*/}
+                    {/*        First Name*/}
+                    {/*    </label>*/}
+
+                    {/*    <input type="text"*/}
+                    {/*           className="form-control"*/}
+                    {/*           id="validateFirstName"*/}
+                    {/*        // placeholder='Email'*/}
+                    {/*           name="first_name"*/}
+                    {/*           value={first_name}*/}
+                    {/*           onChange={e => onChange(e)}*/}
+                    {/*           required/>*/}
+                    {/*    /!*<div className="valid-feedback">*!/*/}
+                    {/*    /!*    Looks good!*!/*/}
+                    {/*    /!*</div>*!/*/}
+                    {/*    <div className="invalid-feedback">*/}
+                    {/*        Please provide a name.*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
 
                     {/* 2. Last name */}
 
-                    <div className="col-md-4 offset-1 col-10">
+                    {/*<div className="col-md-4 offset-1 col-10">*/}
 
-                        <label htmlFor="validateLastName"
-                               className="form-label">
-                            Last Name
-                        </label>
+                    {/*    <label htmlFor="validateLastName"*/}
+                    {/*           className="form-label">*/}
+                    {/*        Last Name*/}
+                    {/*    </label>*/}
 
-                        <input type="text"
-                               className="form-control"
-                               id="validateLastName"
-                            // placeholder='Email'
-                               name="last_name"
-                               value={last_name}
-                               onChange={e => onChange(e)}
-                               required/>
-                        {/*<div className="valid-feedback">*/}
-                        {/*    Looks good!*/}
-                        {/*</div>*/}
-                        <div className="invalid-feedback">
-                            Please provide a name.
-                        </div>
-                    </div>
+                    {/*    <input type="text"*/}
+                    {/*           className="form-control"*/}
+                    {/*           id="validateLastName"*/}
+                    {/*        // placeholder='Email'*/}
+                    {/*           name="last_name"*/}
+                    {/*           value={last_name}*/}
+                    {/*           onChange={e => onChange(e)}*/}
+                    {/*           required/>*/}
+                    {/*    /!*<div className="valid-feedback">*!/*/}
+                    {/*    /!*    Looks good!*!/*/}
+                    {/*    /!*</div>*!/*/}
+                    {/*    <div className="invalid-feedback">*/}
+                    {/*        Please provide a name.*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
 
                     {/* 3. Email */}
 
@@ -267,9 +293,9 @@ const Signup = ({signup, isAuthenticated, loading}) => {
                         <Fragment>
                             <div className="col-md-8 offset-1 col-10">
 
-                                <button className="btn btn-primary mt-3" type="button" disabled>
+                                <button className="btn btn-primary btn-lg mt-3" type="button" disabled>
                                 <span className="spinner-border spinner-border-sm" role="status"
-                                      aria-hidden="true"/> Sign Up
+                                      aria-hidden="true"/> Signup
                                 </button>
 
                             </div>
@@ -286,8 +312,8 @@ const Signup = ({signup, isAuthenticated, loading}) => {
                     ) : (
                         <div className="col-md-8 offset-1 col-10">
 
-                            <button className="btn btn-primary mt-3" type="submit">
-                                Sign Up
+                            <button className="btn btn-lg btn-primary mt-3" type="submit">
+                                Signup
                             </button>
                         </div>
                     )

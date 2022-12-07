@@ -12,8 +12,10 @@ export default function ActivateMsg() {
 
                 <div className={"container"}>
 
-                    <div className={"text-center"}>
-                        <h2 className={"p-2"}>Verify Account</h2>
+                    <div className={"text-center p-2"}>
+                        <h2 className={"p-2 m-2"}>
+                            Verify Account
+                        </h2>
                     </div>
 
                     <div className="alert alert-success" role="alert">
@@ -23,8 +25,8 @@ export default function ActivateMsg() {
                         <div className={"text-center"}>
 
                             <p style={{"fontSize": "18px"}}>
-                                Please check your email box for
-                                <i> Activate Account </i>
+                                Please check your email box to
+                                <i> Activate Account</i>.
                             </p>
                             <hr/>
 
@@ -45,16 +47,17 @@ export default function ActivateMsg() {
                     {/*<button type="button" className="btn btn-primary">*/}
                     {/*Primary*/}
                     <Link to='/resend/activation'
-                          className="btn btn-primary m-3">
-                        Send email again
+                          className="btn btn-primary m-2">
+                        Email again
+                        {/*Send email again*/}
                     </Link>
                     {/*</button>*/}
 
-                    <Link to='/login' className="btn btn-dark m-3">
+                    <Link to='/login' className="btn btn-outline-primary m-2">
                         Login
                     </Link>
 
-                    <Link to='/' className="btn btn-secondary m-3">
+                    <Link to='/' className="btn btn-secondary m-2">
                         Go to home
                     </Link>
 
