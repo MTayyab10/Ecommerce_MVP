@@ -187,17 +187,7 @@ const Login = ({login, isAuthenticated, loading}) => {
                                 </button>
                             </div>
 
-                            {/*simple black spinner*/}
-
-                            {/*<div className="text-center">*/}
-                            {/*    <div className="spinner-border" role="status">*/}
-                            {/*        <span className="visually-hidden">Loading...</span>*/}
-                            {/*    </div>*/}
-
-                            {/*</div>*/}
-
                         </Fragment>
-
 
                     ) : (
                         <div className="col-md-8 offset-1 col-10">
