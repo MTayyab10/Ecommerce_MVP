@@ -211,11 +211,17 @@ export const signup = (username, // first_name, last_name,
             // The request was made & server responded with status code
             // that falls out of the range of 2xx
 
+            const usernameError = err.response.data.username
             const emailError = err.response.data.email
             const passwordError = err.response.data.password
             const otherError = err.response.data
 
-            if (emailError) {
+            if (usernameError) {
+                dispatch(setAlert("Please enter a short username. ", "error"))
+                console.log("Username err: ", usernameError[0])
+            }
+
+            else if (emailError) {
 
                 dispatch(setAlert(emailError[0], "error"))
                 console.log("Email err: ", emailError[0])
