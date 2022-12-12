@@ -1,32 +1,35 @@
 import React, {Fragment} from "react";
-import {logout, setAlert} from "../actions/auth";
 import {connect} from "react-redux";
-import "react-toastify/dist/ReactToastify.css";
-// import {Alert} from "../components/Alert";
-// import { get_categories } from "../actions/categories";
+import Categories from "./products/Categories"
+import DisplayProducts from "./products/DisplayProducts"
 
 
-const Home = ({logout, isAuthenticated}) => {
-
-    // const logout_user = () => {
-    //     logout();
-    // };
+const Home = ({isAuthenticated}) => {
 
     return (
 
-        <Fragment>
+        <Fragment >
 
-            <div className="container">
-                <div className="text-center p-3">
-                    <h1>Buy Now</h1>
+            <div className="bg-light">
+                <div className="container">
+
+                    <div className="text-center p-3">
+                        <h1>Buy Now</h1>
+                    </div>
+
+                    <Categories/>
+
+                    <DisplayProducts/>
+
                 </div>
-
-                <h2>Hello Tayyab!</h2>
             </div>
 
         </Fragment>
     );
 }
+
+// How to get data from action to frontend
+// https://github.com/MTayyab10/shop_time/blob/main/frontend/src/components/LandingPage.js
 
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,

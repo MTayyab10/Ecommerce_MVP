@@ -21,10 +21,10 @@ def app_resort(func):
         app_ordering = {
             "Authentication and Authorization": 0,
             "Accounts0": 1,
-            "Auth Token": 2,
-            "Home1": 3,
-            # "Shops2": 4,
-            # "Products3": 4,
+            "Shops1": 2,
+            "Products2": 3,
+            "Auth Token": 4,
+
             # "Orders4": 5,
             # "Jobs8": 7,
             # "Delivery_Address5": 6,
@@ -38,9 +38,9 @@ def app_resort(func):
 
         model_sort_key = 'object_name'
         model_ordering = {
-            # "Customer": 1,
-            # "Category": 2,
-            # "Shop": 3,
+            "Customer": 1,
+            "Category": 2,
+            "Shop": 3,
             # "Product": 4,
 
             "Order": 1,
@@ -71,9 +71,10 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ('id', 'username',
                     # 'first_name', 'last_name',
                     'email', 'date_joined')
-    # list_display_links = ('id', 'name', 'email', )
-    # search_fields = ('email',
-    #                   'name' )
+    list_display_links = ('id', 'username',)  # 'email', )
+
+    # by email & username can do search
+    search_fields = ('email', 'username')
 
     list_per_page = 25
 

@@ -34,7 +34,11 @@ import {
     LOGOUT,
 
     DELETE_USER_SUCCESS,
-    DELETE_USER_FAIL, EMAIL_RESET_SUCCESS, EMAIL_RESET_FAIL, EMAIL_RESET_CONFIRM_SUCCESS, EMAIL_RESET_CONFIRM_FAIL
+    DELETE_USER_FAIL,
+    EMAIL_RESET_SUCCESS,
+    EMAIL_RESET_FAIL,
+    EMAIL_RESET_CONFIRM_SUCCESS,
+    EMAIL_RESET_CONFIRM_FAIL
 } from "./types";
 
 import React from "react";
@@ -137,7 +141,7 @@ export const load_user = () => async dispatch => {
 
 
 export const signup = (username, // first_name, last_name,
-    email, password, re_password, navigate) => async dispatch => {
+    email, password, re_password, navigate) => async dispatch =>  {
 
     // for showing loading
     dispatch({
@@ -426,17 +430,17 @@ export const login = (email, password) => async dispatch => {
 
         if (err.response.data) {
 
-            // const credentialError = err.response.data.detail
-            //
-            // if (credentialError) {
-            //
-            //     dispatch(setAlert(credentialError, "error"))
-            //     console.log("Credential err: ", credentialError)
+            const credentialError = err.response.data.detail
 
-            // } else {
-            //
-            //     dispatch(setAlert("Something went wrong at else, please try again.", "error"))
-            // }
+            if (credentialError) {
+
+                dispatch(setAlert(credentialError, "error"))
+                console.log("Credential err: ", credentialError)
+
+            } else {
+
+                dispatch(setAlert("Something went wrong at else, please try again.", "error"))
+            }
 
             console.log("err res data: ", err.response.data)
             console.log("err res: ", err.response)
