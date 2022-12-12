@@ -4,10 +4,10 @@ import {connect} from "react-redux";
 import {Navigate} from "react-router-dom";
 import {logout, delete_user, reset_email} from "../actions/auth";
 import {CopyToClipboard} from "react-copy-to-clipboard";
+import moment from 'moment'
 
 
-const UserProfile = ({
-                         user, isAuthenticated, logout,
+const UserProfile = ({user, isAuthenticated, logout,
                          loading, reset_email, delete_user
                      }) => {
 
@@ -144,12 +144,12 @@ const UserProfile = ({
                         <strong className="me-2">Date Joined: </strong>
                         {/*{user.email}*/}
                         {
-                            user &&
-                            user !== null &&
-                            user !== undefined ?
-                                // user.date_joined
-                                // user.email : <Fragment></Fragment>
-                                user.date_joined.slice(0, 10) + " " + user.date_joined.slice(11, 16) :
+                            user && true && true ?
+                                // by do this can add hours & mints too "MMMM Do, YYYY, h:mm"
+                                moment(user.date_joined).format("MMMM Do, YYYY")
+
+                                :
+                                // user.date_joined.slice(0, 10) + " " + user.date_joined.slice(11, 16) :
                                 <Fragment></Fragment>
                         }
                     </li>

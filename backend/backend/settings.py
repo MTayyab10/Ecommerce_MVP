@@ -34,7 +34,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # local apps
     'accounts0',
-    'category1',
+    'shops1',
+    'products2',
 
     # DRF
     'rest_framework',
@@ -299,6 +300,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

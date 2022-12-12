@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
 
@@ -25,12 +27,16 @@ urlpatterns = [
     path('auth/', include('djoser.social.urls')),
 
     path('api/auth/', include('accounts0.urls')),
-    path('api/category/', include('category1.urls')),
+
+    path('api/shop/', include('shops1.urls')),
+    path('api/product/', include('products2.urls')),
 
     path('admin/', admin.site.urls),
 ]
 
 # for connecting with frontend React.js
-
 urlpatterns += [re_path(r'.*', TemplateView.as_view(template_name='index.html'))]
+
+# for static files like pics, css etc..
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
