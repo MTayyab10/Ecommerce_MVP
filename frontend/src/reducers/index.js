@@ -4,11 +4,13 @@ import auth from './auth';
 import categories from "./categories"
 import shops from "./shops"
 import products from "./products"
+import cart from "./cart"
 
 export default combineReducers({
     alert,
     auth,
     categories,
     shops,
-    products
+    products,
+    cart
 });

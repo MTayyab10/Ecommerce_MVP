@@ -1,14 +1,15 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {Link, Redirect} from "react-router-dom";
 import {connect, useSelector} from "react-redux";
 import {logout} from "../actions/auth"
 import {NavLink} from "react-router-dom";
 import {Navigate} from "react-router-dom";
+import {add_item, get_item_total} from "../actions/cart"
 
 import Alert from "./Alert";
 
 
-const Navbar = ({logout, isAuthenticated, user}) => {
+const Navbar = ({logout, isAuthenticated, user, total_items}) => {
 
     const [redirect, setRedirect] = useState(false);
 
@@ -42,10 +43,12 @@ const Navbar = ({logout, isAuthenticated, user}) => {
         <Fragment>
 
             <li className="nav-item">
-                <NavLink className="nav-link position-relative" to="/orders/cart/">
+                <NavLink className="nav-link position-relative"
+                         to="/cart">
                     <i className="fas fa-shopping-cart fs-6 pt-2 pe-2 "/>
                     <span className="position-absolute translate-middle badge rounded-pill bg-danger">
-                              3
+                        {/*Show total items on the cart       */}
+                        {total_items}
                         <span className="visually-hidden">
                             total items
                         </span>
@@ -68,10 +71,11 @@ const Navbar = ({logout, isAuthenticated, user}) => {
         <Fragment>
             <li className="nav-item">
 
-                <NavLink className="nav-link position-relative" to="/orders/cart/">
+                <NavLink className="nav-link position-relative"
+                         to="/cart">
                     <i className="fas fa-shopping-cart fs-6 pt-2 pe-2 "/>
                     <span className="position-absolute translate-middle badge rounded-pill bg-danger">
-                              0
+                              {total_items}
                         <span className="visually-hidden">
                             total items
                         </span>
@@ -180,7 +184,13 @@ const Navbar = ({logout, isAuthenticated, user}) => {
 
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
-    user: state.auth.user
+    user: state.auth.user,
+
+    // Get total items from the cart
+    total_items: state.cart.total_items
+
 });
 
-export default connect(mapStateToProps, {logout})(Navbar);
+export default connect(mapStateToProps, {
+    logout,
+})(Navbar);
