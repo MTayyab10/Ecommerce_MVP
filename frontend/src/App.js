@@ -25,6 +25,8 @@ import ResetEmailConfirm from "./containers/accounts/ResetEmailConfirm";
 import SpecificProduct from "./containers/products/SpecificProduct"
 import ShopProducts from "./containers/products/ShopProducts";
 import CategorizedProducts from "./containers/products/CategorizedProducts"
+import Cart from "./containers/Cart"
+
 
 const App = () => (
 
@@ -61,14 +63,16 @@ const App = () => (
                 <Route exact path={'/:category/:name/:id'}
                        element={<SpecificProduct/>}/>
 
-                {/* shop product */}
+                {/* shop products */}
                 <Route exact path={'/shops/:name'} element={<ShopProducts/>}/>
 
                 {/* categorized products */}
                 <Route exact path={"/products/:category/"} element={<CategorizedProducts/>}/>
 
-                {/* If none path matched then redirect to NotFound */}
+                {/* Cart */}
+                <Route exact path='/cart' element={<Cart />} />
 
+                {/* If none path matched then redirect to NotFound */}
                 <Route path="*" element={<NotFound/>}/>
 
             </Routes>

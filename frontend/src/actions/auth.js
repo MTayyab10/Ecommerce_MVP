@@ -436,17 +436,16 @@ export const login = (email, password) => async dispatch => {
 
         if (err.response.data) {
 
-            const credentialError = err.response.data.detail
-
-            if (credentialError) {
-
-                dispatch(setAlert(credentialError, "error"))
-                console.log("Credential err: ", credentialError)
-
-            } else {
-
-                dispatch(setAlert("Something went wrong at else, please try again.", "error"))
-            }
+            // const credentialError = err.response.data.detail
+            //
+            // if (credentialError) {
+            //
+            //     dispatch(setAlert(credentialError, "error"))
+            //     console.log("Credential err: ", credentialError)
+            //
+            // } else {
+            //     dispatch(setAlert("Something went wrong at else, please try again.", "error"))
+            // }
 
             console.log("err res data: ", err.response.data)
             console.log("err res: ", err.response)

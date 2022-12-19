@@ -39,9 +39,7 @@ const UserProfile = ({user, isAuthenticated, logout,
     })
 
     const userId = (
-        user &&
-        user !== null &&
-        user !== undefined ?
+        user && true && true ?
             user.id : <Fragment></Fragment>
     )
 

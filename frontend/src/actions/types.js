@@ -1,4 +1,4 @@
-// User Auth dispatch states
+// User Authentication dispatch states
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
@@ -23,7 +23,7 @@ export const EMAIL_RESET_FAIL = 'EMAIL_RESET_FAIL'
 export const EMAIL_RESET_CONFIRM_SUCCESS = 'EMAIL_RESET_CONFIRM_SUCCESS'
 export const EMAIL_RESET_CONFIRM_FAIL = 'EMAIL_RESET_CONFIRM_FAIL'
 
-// Social auth section
+// Social Auth Section
 export const GOOGLE_AUTH_SUCCESS = 'GOOGLE_AUTH_SUCCESS';
 export const GOOGLE_AUTH_FAIL = 'GOOGLE_AUTH_FAIL';
 export const FACEBOOK_AUTH_SUCCESS = 'FACEBOOK_AUTH_SUCCESS';
@@ -32,7 +32,7 @@ export const FACEBOOK_AUTH_FAIL = 'FACEBOOK_AUTH_FAIL';
 export const REFRESH_SUCCESS = 'REFRESH_SUCCESS'
 export const REFRESH_FAIL = 'REFRESH_FAIL'
 
-// loading/spinner
+// Loading for User-Auth
 export const SET_AUTH_LOADING = 'SET_AUTH_LOADING';
 export const REMOVE_AUTH_LOADING = 'REMOVE_AUTH_LOADING';
 
@@ -41,19 +41,21 @@ export const GET_USER_PROFILE_SUCCESS = 'GET_USER_PROFILE_SUCCESS';
 export const GET_USER_PROFILE_FAIL = 'GET_USER_PROFILE_FAIL';
 export const UPDATE_USER_PROFILE_SUCCESS = 'UPDATE_USER_PROFILE_SUCCESS';
 export const UPDATE_USER_PROFILE_FAIL = 'UPDATE_USER_PROFILE_FAIL';
+// Delete User
+export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
+export const DELETE_USER_FAIL = 'DELETE_USER_FAIL';
+
 
 // Alerts dispatch states
 export const SET_ALERT = 'SET_ALERT';
 export const REMOVE_ALERT = 'REMOVE_ALERT';
 
-// Delete User
-export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
-export const DELETE_USER_FAIL = 'DELETE_USER_FAIL';
 
 // Categories
 export const GET_CATEGORIES_SUCCESS = 'GET_CATEGORIES_SUCCESS';
 export const GET_CATEGORIES_FAIL = 'GET_CATEGORIES_FAIL';
-// show loading
+
+// Loading for Categories
 export const SET_CATEGORIES_LOADING = 'SET_CATEGORIES_LOADING';
 export const REMOVE_CATEGORIES_LOADING = 'REMOVE_CATEGORIES_LOADING';
 
@@ -61,7 +63,7 @@ export const REMOVE_CATEGORIES_LOADING = 'REMOVE_CATEGORIES_LOADING';
 export const GET_SHOPS_SUCCESS = 'GET_SHOPS_SUCCESS'
 export const GET_SHOPS_FAIL = 'GET_SHOPS_FAIL';
 
-// loading for shops
+// Loading for Shops
 export const SET_SHOPS_LOADING = 'SET_SHOPS_LOADING';
 export const REMOVE_SHOPS_LOADING = 'REMOVE_SHOPS_LOADING';
 
@@ -69,7 +71,35 @@ export const REMOVE_SHOPS_LOADING = 'REMOVE_SHOPS_LOADING';
 // Products
 export const GET_PRODUCTS_SUCCESS = 'GET_PRODUCTS_SUCCESS';
 export const GET_PRODUCTS_FAIL = 'GET_PRODUCTS_FAIL';
-// show loading
+// Loading for Products
 export const SET_PRODUCTS_LOADING = 'SET_PRODUCTS_LOADING';
 export const REMOVE_PRODUCTS_LOADING = 'REMOVE_PRODUCTS_LOADING';
+
+
+// Local Cart
+export const ADD_ITEM = 'ADD_ITEM';
+export const GET_TOTAL = 'GET_TOTAL';
+export const GET_ITEM_TOTAL = 'GET_ITEM_TOTAL';
+export const GET_ITEMS = 'GET_ITEMS';
+export const UPDATE_ITEM = 'UPDATE_ITEM';
+export const REMOVE_ITEM = 'REMOVE_ITEM';
+export const EMPTY_CART = 'EMPTY_CART';
+
+// Database Cart
+export const ADD_ITEM_SUCCESS = 'ADD_ITEM_SUCCESS';
+export const ADD_ITEM_FAIL = 'ADD_ITEM_FAIL';
+export const GET_TOTAL_SUCCESS = 'GET_TOTAL_SUCCESS';
+export const GET_TOTAL_FAIL = 'GET_TOTAL_FAIL';
+export const GET_ITEM_TOTAL_SUCCESS = 'GET_ITEM_TOTAL_SUCCESS';
+export const GET_ITEM_TOTAL_FAIL = 'GET_ITEM_TOTAL_FAIL';
+export const GET_ITEMS_SUCCESS = 'GET_ITEMS_SUCCESS';
+export const GET_ITEMS_FAIL = 'GET_ITEMS_FAIL';
+export const UPDATE_ITEM_SUCCESS = 'UPDATE_ITEM_SUCCESS';
+export const UPDATE_ITEM_FAIL = 'UPDATE_ITEM_FAIL';
+export const REMOVE_ITEM_SUCCESS = 'REMOVE_ITEM_SUCCESS';
+export const REMOVE_ITEM_FAIL = 'REMOVE_ITEM_FAIL';
+export const EMPTY_CART_SUCCESS = 'EMPTY_CART_SUCCESS';
+export const EMPTY_CART_FAIL = 'EMPTY_CART_FAIL';
+export const SYNCH_CART_SUCCESS = 'SYNCH_CART_SUCCESS';
+export const SYNCH_CART_FAIL = 'SYNCH_CART_FAIL';
 
