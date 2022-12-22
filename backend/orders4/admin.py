@@ -3,8 +3,8 @@ from .models import Order, OrderItem
 
 
 class OrderAdmin(admin.ModelAdmin):
-    def has_delete_permission(self, request, obj=None):
-        return False
+    # def has_delete_permission(self, request, obj=None):
+    #     return False
 
     list_display = ('id', 'transaction_id', 'amount', 'status', )
     list_display_links = ('id', 'transaction_id', )
@@ -17,8 +17,8 @@ admin.site.register(Order, OrderAdmin)
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    def has_delete_permission(self, request, obj=None):
-        return False
+    # def has_delete_permission(self, request, obj=None):
+    #     return False
 
     list_display = ('id', 'name', 'price', 'count', )
     list_display_links = ('id', 'name', )
