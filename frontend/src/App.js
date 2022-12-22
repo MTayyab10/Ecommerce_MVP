@@ -26,7 +26,7 @@ import SpecificProduct from "./containers/products/SpecificProduct"
 import ShopProducts from "./containers/products/ShopProducts";
 import CategorizedProducts from "./containers/products/CategorizedProducts"
 import Cart from "./containers/Cart"
-
+import Checkout from "./containers/Checkout"
 
 const App = () => (
 
@@ -70,7 +70,9 @@ const App = () => (
                 <Route exact path={"/products/:category/"} element={<CategorizedProducts/>}/>
 
                 {/* Cart */}
-                <Route exact path='/cart' element={<Cart />} />
+                <Route exact path={'/cart'} element={<Cart />} />
+
+                <Route exact path={'/checkout'} element={<Checkout />} />
 
                 {/* If none path matched then redirect to NotFound */}
                 <Route path="*" element={<NotFound/>}/>
