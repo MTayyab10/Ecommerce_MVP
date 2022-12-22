@@ -21,6 +21,12 @@ class UserAccountManager(BaseUserManager):
 
         user.set_password(password)
         user.save()
+
+        # after creating user account, it will also create
+        # cart as that is OneToOneField
+
+        # Cart.objects.create(user=user, count=0)
+
         return user
 
     # def create_superuser(self, email, name, password):
