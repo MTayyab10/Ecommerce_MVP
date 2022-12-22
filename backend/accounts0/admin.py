@@ -24,7 +24,8 @@ def app_resort(func):
             "Shops1": 2,
             "Products2": 3,
             "Cart3": 4,
-            "Auth Token": 5,
+            "Orders4": 5,
+            "Auth Token": 6,
 
             # "Orders4": 5,
             # "Jobs8": 7,
@@ -35,8 +36,7 @@ def app_resort(func):
         }
 
         resorted_app_list = sorted(app_list, key=lambda x: app_ordering[x[app_sort_key]] if x[
-                                                                                                app_sort_key] in app_ordering else 1000)
-
+                                    app_sort_key] in app_ordering else 1000)
         model_sort_key = 'object_name'
         model_ordering = {
             "Customer": 1,
@@ -46,6 +46,9 @@ def app_resort(func):
 
             "Cart": 1,
             "CartItem": 2,
+
+            "Order": 1,
+            "OrderItem": 2,
 
             "Team": 1,
             "WorkForce": 2,
