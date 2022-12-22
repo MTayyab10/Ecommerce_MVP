@@ -261,56 +261,6 @@ const UserProfile = ({user, isAuthenticated, logout,
                         Delete
                     </button>
 
-                    {/*<form onSubmit={e => onSubmit(e)}>*/}
-
-                    {/*    /!*  Password *!/*/}
-
-                    {/*    <div className="offset-1 col-10">*/}
-
-                    {/*        <label htmlFor="validatePassword" className="form-label">*/}
-                    {/*            Current Password*/}
-                    {/*        </label>*/}
-
-                    {/*        <input type="password"*/}
-                    {/*               className="form-control"*/}
-                    {/*               id="validatePassword"*/}
-                    {/*               name='current_password'*/}
-                    {/*               value={current_password}*/}
-                    {/*               onChange={e => onChange(e)}*/}
-                    {/*               required*/}
-                    {/*               />*/}
-
-                    {/*    </div>*/}
-
-                    {/*    <div className="modal-footer">*/}
-
-                    {/*        <button type="button" className="btn btn-outline-secondary"*/}
-                    {/*                data-bs-dismiss="modal"> Cancel*/}
-                    {/*        </button>*/}
-
-                    {/*        /!*{loading ?*!/*/}
-                    {/*        /!*    (*!/*/}
-                    {/*        /!*        <button className="btn btn-danger" data-bs-dismiss="modal" type="button" disabled>*!/*/}
-                    {/*        /!*            <span className="spinner-border spinner-border-sm" role="status"*!/*/}
-                    {/*        /!*                  aria-hidden="true"/> Deleting...*!/*/}
-                    {/*        /!*        </button>*!/*/}
-                    {/*        /!*    )*!/*/}
-                    {/*        /!*    :*!/*/}
-                    {/*        /!*    (*!/*/}
-                    {/*                <button*/}
-                    {/*                    // onClick={() => delete_user(current_password)}*/}
-                    {/*                        type="submit"*/}
-                    {/*                        // data-bs-dismiss="modal"*/}
-                    {/*                        className="btn btn-danger">*/}
-                    {/*                    Yes, Delete*/}
-                    {/*                </button>*/}
-                    {/*            /!*)*!/*/}
-                    {/*        /!*}*!/*/}
-
-                    {/*    </div>*/}
-
-                    {/*</form>*/}
-
                 </div>
 
             </div>
@@ -325,6 +275,7 @@ const UserProfile = ({user, isAuthenticated, logout,
             <p className='lead p-1'>
                 To get access this page info.
             </p>
+
             <Link to='/login' className='btn btn-primary btn-lg m-2'>
                 Login
             </Link>
