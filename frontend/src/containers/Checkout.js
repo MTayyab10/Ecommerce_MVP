@@ -1,93 +1,74 @@
 import React, {Fragment, useState, useEffect} from 'react';
 import {Link, Navigate} from 'react-router-dom';
 import {connect} from 'react-redux';
-// import {
-//     check_coupon
-// } from '../actions/coupons';
 import moment from 'moment';
 
+import {refresh} from '../actions/auth';
+import {get_total_price, create_order} from '../actions/orders';
 
-import {
-    refresh
-} from '../actions/auth';
-
-// import {
-//     get_shipping_options
-// } from '../actions/shipping';
-
-
-import CartItem from '../components/CartItem';
 import CheckoutItem from "../components/CheckoutItem";
 
-import facebookImg from "../containers/accounts/Continue with Fb Btn.PNG"
+import DeliveryAddressForm from "../components/DeliveryAddressForm"
 
-const Checkout = ({isAuthenticated, user, refresh,
-                      items, total_items, amount}) => {
+
+const Checkout = ({
+                      isAuthenticated, user, refresh,
+                      items, total_items,
+                      create_order, loading,
+                      get_total_price, sub_total, delivery_fee,
+                      service_fee, total_amount
+                  }) => {
 
     const [formData, setFormData] = useState({
         full_name: '',
-        address_line_1: '',
-        address_line_2: '',
+        address: '',
         city: '',
-        state_province_region: '',
-        postal_zip_code: '',
-        country_region: 'Canada',
-        telephone_number: '',
-        coupon_name: '',
-        shipping_id: 0,
+        mobile: ''
     });
 
     const [data, setData] = useState({
         instance: {}
     });
 
-    const {
-        full_name,
-        address_line_1,
-        address_line_2,
-        city,
-        state_province_region,
-        postal_zip_code,
-        country_region,
-        telephone_number,
-        coupon_name,
-        shipping_id,
-    } = formData;
+    const {full_name, address, city, mobile} = formData;
 
     const onChange = e => setFormData({
         ...formData,
         [e.target.name]: e.target.value
     });
 
-    useEffect(() => {
-        if (
-            user
-        ) {
-            setFormData({
-                ...formData,
-                full_name: user.first_name + ' ' + user.last_name,
-                address_line_1: 'profile.address_line_1',
-                address_line_2: 'profile.address_line_2',
-                city: 'profile.city',
-                state_province_region: 'profile.state_province_region',
-                postal_zip_code: 'profile.zipcode',
-                telephone_number: 'profile.phone',
-                country_region: 'profile.country_region'
-            });
-        }
-    }, [user]);
+    const onSubmit = e => {
+        e.preventDefault();
+        // toast.success("You are login, Successfully.")
+        create_order(full_name, address, city, mobile);
+    };
+
+    // useEffect(() => {
+    //     if (
+    //         user
+    //     ) {
+    //         setFormData({
+    //             ...formData,
+    //             full_name: user.username,
+    //             address: '',
+    //             city: '',
+    //
+    //         });
+    //     }
+    // }, [user]);
 
 
     useEffect(() => {
         window.scrollTo(0, 0);
 
         refresh();
+        get_total_price();
+        // create_order();
 
         // get_shipping_options();
     }, []);
 
     // Product items
-
     const showItems = () => {
         return (
             <Fragment>
@@ -103,7 +84,7 @@ const Checkout = ({isAuthenticated, user, refresh,
 
                         return (
                             <Fragment key={index}>
-                                 <CheckoutItem
+                                <CheckoutItem
                                     item={item}
                                     count={count}
                                     // showViewProduct={false}
@@ -120,121 +101,133 @@ const Checkout = ({isAuthenticated, user, refresh,
         );
     };
 
-    // Delivery, service & total charges
-
-    const delivery_charges = (
-        amount > 10000 ? 200 : amount > 5000 ? 100 : 50
+    // Loading & Place an Order btn
+    const placeOrderBtn = (
+        loading ?
+            <button className="btn btn-success " type="button" disabled>
+                <span className="spinner-border spinner-border-sm" role="status"
+                      aria-hidden="true"/> Place an Order
+            </button>
+            :
+            <div className="pt-2">
+                <button onClick={() => create_order(full_name, address, city, mobile)} type='submit' className="btn btn-success">
+                    Place an Order
+                </button>
+            </div>
     )
-
-    const service_fee = (
-        amount > 10000 ? 0 : amount > 5000 ? 50 : 100
-    )
-
-    const all_total_fee = amount + delivery_charges + service_fee;
 
 
     // If user is auth then show the all info
 
     const orderSummary = (<div className="container mt-5 mb-5">
-            <div className="row">
+        <div className="row">
 
-                <div className="col-md-6 col-12">
-                    <div className="card shadow">
+            <div className="col-md-6 col-12">
+                <div className="card shadow">
 
-                        <h5 className="card-header">
-                            Order summary
-                            <span className="float-end">
+                    <h5 className="card-header">
+                        Order summary
+                        <span className="float-end">
                                 <Link className="btn btn-dark btn-sm"
-                              to="/cart">
-                                    <i className="fa fa-chevron-left small" /> Cart
-                                   {/*return to cart*/}
+                                      to="/cart">
+                                    <i className="fa fa-chevron-left small"/> Cart
+                                    {/*return to cart*/}
                                 </Link>
                             </span>
-                        </h5>
+                    </h5>
 
-                        {showItems()}
+                    {showItems()}
 
-                        <div className="card-body">
+                    <div className="card-body">
 
-                            {/*/!* 2 - subtotal  *!/*/}
+                        {/*/!* 2 - subtotal  *!/*/}
 
-                            <div className="row pt-1 ">
+                        <div className="row pt-1 ">
 
-                                <div className="col">
-                                    <h6 className="small">Sub-total</h6>
-                                </div>
-
-                                <div className="col">
-                                    <h6 className="small">
-                                        Rs. {amount}
-                                        {/*{{order.cart_total}}*/}
-                                    </h6>
-                                </div>
-
+                            <div className="col">
+                                <h6 className="small">Sub-total</h6>
                             </div>
 
-                            {/* 3 - delivery charges  */}
-
-                            <div className="row">
-
-                                <div className="col">
-                                    <h6 className="small">Delivery fee</h6>
-                                </div>
-
-                                <div className="col">
-                                    <h6 className="small">
-                                        Rs. {delivery_charges}
-                                        {/*{{order.delivery_charges}}*/}
-                                    </h6>
-                                </div>
-
-                            </div>
-
-                             {/* 4 - service charges  */}
-
-                            <div className="row">
-
-                                <div className="col">
-                                    <h6 className="small">Service fee</h6>
-                                </div>
-
-                                <div className="col">
-                                    <h6 className="small">
-                                        Rs. {service_fee}
-                                    </h6>
-                                </div>
-
-                            </div>
-
-                            {/*4 - All total charges*/}
-
-                            <hr className="pt-0 mt-0"/>
-
-                            <div className="row">
-
-                                <div className="col">
-                                    <h6 className="fw-bolder text-danger">
-                                        Total (Pkr)</h6>
-                                </div>
-
-                                <div className="col">
-                                    <h6 className="fw-bolder text-danger">
-                                        Rs. {all_total_fee}
-                                    </h6>
-                                </div>
-
-                            </div>
-
-                            <div>
-                                <button className="btn btn-success">Place an Order</button>
+                            <div className="col">
+                                <h6 className="small">
+                                    Rs. {sub_total}
+                                    {/*{{order.cart_total}}*/}
+                                </h6>
                             </div>
 
                         </div>
 
+                        {/* 3 - delivery charges  */}
+
+                        <div className="row">
+
+                            <div className="col">
+                                <h6 className="small">Delivery fee</h6>
+                            </div>
+
+                            <div className="col">
+                                <h6 className="small">
+                                    Rs. {delivery_fee}
+                                    {/*{{order.delivery_charges}}*/}
+                                </h6>
+                            </div>
+
+                        </div>
+
+                        {/* 4 - service charges  */}
+
+                        <div className="row">
+
+                            <div className="col">
+                                <h6 className="small">Service fee</h6>
+                            </div>
+
+                            <div className="col">
+                                <h6 className="small">
+                                    Rs. {service_fee}
+                                </h6>
+                            </div>
+
+                        </div>
+
+                        {/*4 - All total charges*/}
+
+                        <hr className="pt-0 mt-0"/>
+
+                        <div className="row">
+
+                            <div className="col">
+                                <h6 className="fw-bolder text-danger">
+                                    Total (Pkr)</h6>
+                            </div>
+
+                            <div className="col">
+                                <h6 className="fw-bolder text-danger">
+                                    Rs. {total_amount}
+                                </h6>
+                            </div>
+
+                        </div>
+
+                        {/*<DeliveryAddressForm*/}
+                        {/*    user={user}*/}
+                        {/*    full_name={full_name}*/}
+                        {/*    address={address}*/}
+                        {/*    city={city}*/}
+                        {/*    mobile={mobile}*/}
+                        {/*    // countries={countries}*/}
+                        {/*    onChange={onChange}*/}
+                        {/*    onSubmit={onSubmit}*/}
+                        {/*/>*/}
+
+                        {placeOrderBtn}
+
                     </div>
+
                 </div>
             </div>
-        </div>)
+        </div>
+    </div>)
 
     // If user is not login
 
@@ -249,25 +242,25 @@ const Checkout = ({isAuthenticated, user, refresh,
             </Link>
         </div>)
 
-     // If not have a single item show this one
+    // If not have a single item show this one
 
     const emptyCart = (
         <div className={"container pt-4"}>
             <div className="card shadow">
-            <div className="card-header">
-                Empty
+                <div className="card-header">
+                    Empty
+                </div>
+                <div className="card-body">
+                    {/*{#                    <h5 class="card-title">No Items</h5>#}*/}
+                    <p className="card-text">
+                        You do not have added any item yet.
+                        Please, first add items.
+                    </p>
+                    <Link to="/" className="btn btn-primary">
+                        Buy Items Now
+                    </Link>
+                </div>
             </div>
-            <div className="card-body">
-                {/*{#                    <h5 class="card-title">No Items</h5>#}*/}
-                <p className="card-text">
-                    You do not have added any item yet.
-                    Please, first add items.
-                </p>
-                <Link to="/" className="btn btn-primary">
-                    Buy Items Now
-                </Link>
-            </div>
-        </div>
         </div>
 
     )
@@ -313,7 +306,6 @@ const Checkout = ({isAuthenticated, user, refresh,
 
             {allRender()}
 
-
         </Fragment>
     )
 };
@@ -321,27 +313,32 @@ const Checkout = ({isAuthenticated, user, refresh,
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
     user: state.auth.user,
-    // profile: state.profile.profile,
+
     items: state.cart.items,
     total_items: state.cart.total_items,
-    amount: state.cart.amount,
+    // amount: state.cart.amount,
+
+    // Get price info from reducers/orders.js
+    sub_total: state.orders.sub_total,
+    delivery_fee: state.orders.delivery_fee,
+    service_fee: state.orders.service_fee,
+    total_amount: state.orders.total_amount,
+
+    loading: state.orders.loading
 
     // coupon: state.coupons.coupon,
     // shipping: state.shipping.shipping,
     // clientToken: state.payment.clientToken,
-    // made_payment: state.payment.made_payment,
-    // loading: state.payment.loading,
-    // original_price: state.payment.original_price,
-    // total_after_coupon: state.payment.total_after_coupon,
-    // total_amount: state.payment.total_amount,
-    // total_compare_amount: state.payment.total_compare_amount,
     // estimated_tax: state.payment.estimated_tax,
     // shipping_cost: state.payment.shipping_cost
 });
 
 export default connect(mapStateToProps, {
-    // check_coupon,
+
     refresh,
+    get_total_price,
+    create_order,
+
     // get_shipping_options,
     // get_payment_total,
     // get_client_token,

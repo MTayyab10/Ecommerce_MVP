@@ -104,9 +104,20 @@ export const SYNCH_CART_SUCCESS = 'SYNCH_CART_SUCCESS';
 export const SYNCH_CART_FAIL = 'SYNCH_CART_FAIL';
 
 // Orders
+
+// Get total price for order
+export const GET_TOTAL_PRICE_SUCCESS = 'GET_TOTAL_PRICE_SUCCESS';
+export const GET_TOTAL_PRICE_FAIL = 'GET_TOTAL_PRICE_FAIL';
+// Create orders
+export const CREATE_ORDER_SUCCESS = 'CREATE_ORDER_SUCCESS';
+export const CREATE_ORDER_FAIL = 'CREATE_ORDER_FAIL';
+
+// Loading for creating orders
+export const SET_CREATE_ORDER_LOADING = 'SET_CREATE_ORDER_LOADING';
+export const REMOVE_CREATE_ORDER_LOADING = 'REMOVE_CREATE_ORDER_LOADING';
+
+// Get orders after successfully create & detail
 export const GET_ORDERS_SUCCESS = 'GET_ORDERS_SUCCESS';
 export const GET_ORDERS_FAIL = 'GET_ORDERS_FAIL';
 export const GET_ORDER_DETAIL_SUCCESS = 'GET_ORDER_DETAIL_SUCCESS';
 export const GET_ORDER_DETAIL_FAIL = 'GET_ORDER_DETAIL_FAIL';
-
-
