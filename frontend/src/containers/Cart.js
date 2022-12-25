@@ -126,7 +126,7 @@ const Cart = ({
                     <div className="p-2">
 
                         <h6 className="float-end">
-                            <Link class="text-decoration-none"
+                            <Link className="text-decoration-none"
                                   to="/">
                                 <i className="fa fa-chevron-left small"></i> continue shop
                             </Link>
@@ -173,7 +173,7 @@ const Cart = ({
 
                                 <div className="btn-group">
 
-                                    <Link to="/checkout" class="me-3 me-sm-2">
+                                    <Link to="/checkout" className="me-3 me-sm-2">
                                         <button
                                             // style={{backgroundColor: "#FFD739"}}
                                             className="btn btn-success">
