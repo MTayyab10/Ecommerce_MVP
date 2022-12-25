@@ -3,16 +3,19 @@ import {Link, useParams} from "react-router-dom";
 import {connect} from "react-redux";
 import './ProductsStyle.css'
 import {get_products} from "../../actions/products"
-import {add_item,
-        get_items,
-        get_item_total,
-        get_total} from "../../actions/cart"
+import {
+    add_item,
+    get_items,
+    get_item_total,
+    get_total
+} from "../../actions/cart"
 
 import facebookImg from "../accounts/Continue with Fb Btn.PNG"
 
 
 const DisplayProducts = (
-    {loading,
+    {
+        loading,
         products,
         get_products,
         add_item,
@@ -103,83 +106,162 @@ const DisplayProducts = (
         searchItems(products).map((product) => (
             <div key={product.id} className="col-md-2 col-6 gx-1 gy-1">
 
-                <Link className="text-decoration-none text-reset"
-                      to={{
-                          pathname: `/${product.category.name}/${product.name}/${product.id}`,
-                          state: {product}
-                      }}
-                >
-                    <div className="card card1">
+                {/* If product's qty is available then show product else show sold-out*/}
 
-                        <img
-                            src={facebookImg}
-                            // data-src={product.img}
-                            // src={`https://via.placeholder.com/150?text=${ product.name }`}
-                            className="lazy card-img-top "
-                            alt={`${product.name}`}
-                        />
+                {product.quantity >= 1 ?
 
-                        {/*If product is new, show a 'new' tag */}
+                    <Link className="text-decoration-none text-reset"
+                          to={{
+                              pathname: `/${product.category.name}/${product.name}/${product.id}`,
+                              state: {product}
+                          }}
+                    >
+                        <div className="card card1">
 
-                        {product.new &&
-                            <span className="fw-light notify-badge
+                            <img
+                                src={facebookImg}
+                                // data-src={product.img}
+                                // src={`https://via.placeholder.com/150?text=${ product.name }`}
+                                className="lazy card-img-top "
+                                alt={`${product.name}`}
+                            />
+
+                            {/*If product is new, show a 'new' tag */}
+
+                            {product.new &&
+                                <span className="fw-light notify-badge
                                              bg-danger badge">
                                     new
-                            </span>
-                        }
+                            </span>}
 
-                        {/* Discount tag */}
+                            {/* Discount tag */}
 
-                        {product.discount_percent >= 5 &&
-                            <span className="notify-badge2 badge
+                            {product.discount_percent >= 5 &&
+                                <span className="notify-badge2 badge
                                     bg-dark fw-light">
                                 {product.discount_percent}% off
                             </span>
-                        }
+                            }
 
-                        <div className="product-detail">
+                            <div className="product-detail">
 
-                            {/* Product, by adding transform & lower case can get */}
+                                {/* Product, by adding transform & lower case can get */}
 
-                            <h6 className="d-inline" style={{textTransform: "Capitalize"}}>
-                                {product.name.toLowerCase()}
-                            </h6>
+                                <h6 className="d-inline" style={{textTransform: "Capitalize"}}>
+                                    {product.name.toLowerCase()}
+                                </h6>
 
-                            <div className="small text-truncate">
-                                {product.description}, build fast
-                            </div>
+                                <div className="small text-truncate">
+                                    {product.description}, build fast
+                                </div>
 
-                            {/* If product have discount then show */}
+                                {/* If product have discount then show */}
 
-                            {product.discount ?
+                                {product.discount ?
 
-                                <div className="">
+                                    <div className="">
 
-                                    <h6 className="small text-secondary me-2 d-inline">
-                                        <s className="small">
-                                            Rs. {product.price}
-                                        </s>
-                                    </h6>
+                                        <h6 className="small text-secondary me-2 d-inline">
+                                            <s className="small">
+                                                Rs. {product.price}
+                                            </s>
+                                        </h6>
 
+                                        <h6 className="small d-inline text-danger">
+                                            Rs. {product.discount_price} <small
+                                            className="text-dark">
+                                            {product.unit}
+                                        </small>
+                                        </h6>
+
+                                    </div>
+                                    :
                                     <h6 className="small d-inline text-danger">
-                                        Rs. {product.discount_price} <small
+                                        Rs. {product.price} <small
                                         className="text-dark">
                                         {product.unit}
                                     </small>
                                     </h6>
-
-                                </div>
-                                :
-                                <h6 className="small d-inline text-danger">
-                                    Rs. {product.price} <small
-                                    className="text-dark">
-                                    {product.unit}
-                                </small>
-                                </h6>
-                            }
+                                }
+                            </div>
                         </div>
-                    </div>
-                </Link>
+                    </Link>
+                    :
+                    <Link to={'#'} className="disabled text-decoration-none text-reset">
+
+                        <div className="card "
+
+                        >
+                            {/*// <!-- pic of product and sold-out -->*/}
+
+                            <div className="item" title="Not Available this item">
+
+                                <img data-src="{{ product.img.url }}"
+                                     src=" https://via.placeholder.com/950?text={{ product.name }}"
+                                     className="lazy card-img-top"
+                                     alt={product.name}/>
+
+                                <h5 className="d-inline">
+                                    <span className="fw-bold sold-out-notify badge bg-danger">
+                                        Sold <i className="fas fa-eye-slash"></i>
+                                    </span>
+                                </h5>
+
+                            </div>
+
+                            {/*// <!-- name of product -->*/}
+
+                            {/*<h6 className="text-dark ps-1 pt-1">*/}
+                            {/*    <s>{product.name}</s>*/}
+                            {/*</h6>*/}
+
+                            <div className="product-detail">
+
+                                {/* Product, by adding transform & lower case can get */}
+
+                                <h6 className="d-inline" style={{textTransform: "Capitalize"}}>
+                                    <s> {product.name.toLowerCase()} </s>
+                                </h6>
+
+                                <div className="small text-truncate">
+                                    {product.description}, build fast
+                                </div>
+
+                                {/* If product have discount then show */}
+
+                                {product.discount ?
+
+                                    <div className="">
+
+                                        <h6 className="small text-secondary me-2 d-inline">
+                                            <s className="small">
+                                                Rs. {product.price}
+                                            </s>
+                                        </h6>
+
+                                        <h6 className="small d-inline text-danger">
+                                            Rs. {product.discount_price} <small
+                                            className="text-dark">
+                                            {product.unit}
+                                        </small>
+                                        </h6>
+
+                                    </div>
+                                    :
+                                    <h6 className="small d-inline text-danger">
+                                        Rs. {product.price} <small
+                                        className="text-dark">
+                                        {product.unit}
+                                    </small>
+                                    </h6>
+                                }
+                            </div>
+
+
+                        </div>
+                    </Link>
+                }
+
 
                 {/* Add to the cart */}
 
@@ -243,7 +325,7 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
     get_products,
     add_item,
-        // get_items();
+    // get_items();
     get_item_total
-        // get_total();
+    // get_total();
 })(DisplayProducts);
