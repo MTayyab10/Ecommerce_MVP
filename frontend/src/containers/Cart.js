@@ -40,8 +40,7 @@ const Cart = ({
 
     // Breadcrumb
 
-    const breadCrumb = (
-        <nav aria-label="breadcrumb small" className="offset-md-1">
+    const breadCrumb = (<nav aria-label="breadcrumb small" className="offset-md-1">
 
             <ol className="breadcrumb small">
                 <li className="breadcrumb-item small">
@@ -57,8 +56,7 @@ const Cart = ({
                 </li>
 
             </ol>
-        </nav>
-    )
+        </nav>)
 
     // Items in cart
 
@@ -97,8 +95,7 @@ const Cart = ({
 
     // If not have a single item show this one
 
-    const emptyCart = (
-        <div className="card shadow">
+    const emptyCart = (<div className="card shadow">
             <div className="card-header">
                 Empty
             </div>
@@ -112,9 +109,7 @@ const Cart = ({
                     Buy Items Now
                 </Link>
             </div>
-        </div>
-
-    )
+        </div>)
 
     // Cart items and total + checkout btn
 

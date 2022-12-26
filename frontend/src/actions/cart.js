@@ -198,25 +198,27 @@ export const get_total = () => async dispatch => {
             console.log("get items fail")
 
         }
-    } else {
-        let total = 0.0;
-        let compare_total = 0.0;
-        let cart = [];
-
-        if (localStorage.getItem('cart')) {
-            cart = JSON.parse(localStorage.getItem('cart'));
-
-            cart.map(item => {
-                total += parseFloat(item.product.price) * parseFloat(item.count);
-                compare_total += parseFloat(item.product.compare_price) * parseFloat(item.count);
-            });
-        }
-
-        dispatch({
-            type: GET_TOTAL,
-            payload: [parseFloat(total.toFixed(2)), parseFloat(compare_total.toFixed(2))]
-        });
     }
+    // Without Login functionality
+    // } else {
+    //     let total = 0.0;
+    //     let compare_total = 0.0;
+    //     let cart = [];
+    //
+    //     if (localStorage.getItem('cart')) {
+    //         cart = JSON.parse(localStorage.getItem('cart'));
+    //
+    //         cart.map(item => {
+    //             total += parseFloat(item.product.price) * parseFloat(item.count);
+    //             compare_total += parseFloat(item.product.compare_price) * parseFloat(item.count);
+    //         });
+    //     }
+    //
+    //     dispatch({
+    //         type: GET_TOTAL,
+    //         payload: [parseFloat(total.toFixed(2)), parseFloat(compare_total.toFixed(2))]
+    //     });
+    // }
 };
 
 
