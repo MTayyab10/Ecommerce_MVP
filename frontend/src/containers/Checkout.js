@@ -65,7 +65,6 @@ const Checkout = ({
         get_total_price();
         // create_order();
 
-        // get_shipping_options();
     }, []);
 
     // Product items
@@ -110,129 +109,212 @@ const Checkout = ({
             </button>
             :
             <div className="pt-2">
-                <button onClick={() => create_order(full_name, address, city, mobile)} type='submit' className="btn btn-success">
+                <button onClick={() => create_order(full_name, address, city, mobile)} type='submit'
+                        className="btn btn-success">
                     Place an Order
                 </button>
             </div>
     )
 
+    // ('.form-check-input').click(function () {
+    //     ('.collapse').collapse('hide');
+    //     ('#' + (this).attr('aria-controls')).collapse('show');
+    // });
 
-    // If user is auth then show the all info
+    // Delivery/Shipping Info
+    const deliveryInfo = (
+        <div className="col-md-6 col-12 ">
+            <div className="card shadow">
+                {/*{#            <h5 class="card-header">Featured</h5>#}*/}
+                <div className="card-body">
 
-    const orderSummary = (<div className="container mt-5 mb-5">
-        <div className="row">
+                     {/*<form action="" method="post">*/}
 
-            <div className="col-md-6 col-12">
-                <div className="card shadow">
+                    {/*    <div className="col-12 ">*/}
 
-                    <h5 className="card-header">
-                        Order summary
-                        <span className="float-end">
-                                <Link className="btn btn-dark btn-sm"
-                                      to="/cart">
-                                    <i className="fa fa-chevron-left small"/> Cart
-                                    {/*return to cart*/}
-                                </Link>
-                            </span>
-                    </h5>
+                             {/*<div className="d-inline-block pe-2">*/}
+                            {/*    <h5>Please choose: </h5>*/}
+                             {/*</div>*/}
 
-                    {showItems()}
+                             {/* If click on Delivery, show Delivery form */}
 
-                    <div className="card-body">
+                    {/*        /!*<div className="form-check form-check-inline">*!/*/}
 
-                        {/*/!* 2 - subtotal  *!/*/}
+                             {/*    <input className="form-check-input" type="radio"*/}
+                             {/*           name="inlineRadioOptions" id="inlineRadio1"*/}
+                             {/*           value="option1"*/}
+                             {/*           data-bs-toggle="collapse" href="#collapseDelivery"*/}
+                             {/*           aria-expanded="false" aria-controls="collapseExample"/>*/}
 
-                        <div className="row pt-1 ">
+                    {/*        /!*    <label className="form-check-label" title="deliver your order to your doorstep."*!/*/}
+                    {/*        /!*           for="inlineRadio1">*!/*/}
+                    {/*        /!*        Delivery*!/*/}
+                             {/*    </label>*/}
 
-                            <div className="col">
-                                <h6 className="small">Sub-total</h6>
+                    {/*        /!*</div>*!/*/}
+
+                           {/*// <!-- If click on PickUp, show PickUp  -->*/}
+
+                    {/*        /!*<div className="form-check form-check-inline">*!/*/}
+
+                    {/*        /!*    <input className="form-check-input" type="radio"*!/*/}
+                    {/*        /!*           name="inlineRadioOptions" id="inlineRadio2"*!/*/}
+                           {/*           value="option2"*/}
+                             {/*           data-bs-toggle="collapse" href="#collapsePickup"*/}
+                            {/*           aria-expanded="false" aria-controls="collapseExample"/>*/}
+
+                    {/*        /!*    <label className="form-check-label" for="inlineRadio2">Pickup</label>*!/*/}
+                    {/*        /!*</div>*!/*/}
+
+                    {/*    </div>*/}
+
+                    {/*</form>*/}
+
+                    <div id="" className="">
+
+                        {/*// <!-- Pickup or Delivery Option -->*/}
+                        {/*<hr/>*/}
+
+                        {/*{% if shipping_info.count >= 1 %}*/}
+
+                        {/*<h5 className="card-title pb-2">Delivery Info</h5>*/}
+
+                        {/*{% endif %}*/}
+
+                        {/*// <!-- if user have address before then show addr*/}
+                        {/*//  otherwise show add address link -->*/}
+
+                        <a href="{% url 'delivery_address5:add_address' %}"
+                           className="text-decoration-none">
+
+                            <div className="text-center fw-bolder">
+
+                                <i className="fas fa-plus-circle text-danger"></i> Add shipping address
+                                <i className="float-end fas fa-angle-right text-secondary">
+                                </i>
+
                             </div>
-
-                            <div className="col">
-                                <h6 className="small">
-                                    Rs. {sub_total}
-                                    {/*{{order.cart_total}}*/}
-                                </h6>
-                            </div>
-
-                        </div>
-
-                        {/* 3 - delivery charges  */}
-
-                        <div className="row">
-
-                            <div className="col">
-                                <h6 className="small">Delivery fee</h6>
-                            </div>
-
-                            <div className="col">
-                                <h6 className="small">
-                                    Rs. {delivery_fee}
-                                    {/*{{order.delivery_charges}}*/}
-                                </h6>
-                            </div>
-
-                        </div>
-
-                        {/* 4 - service charges  */}
-
-                        <div className="row">
-
-                            <div className="col">
-                                <h6 className="small">Service fee</h6>
-                            </div>
-
-                            <div className="col">
-                                <h6 className="small">
-                                    Rs. {service_fee}
-                                </h6>
-                            </div>
-
-                        </div>
-
-                        {/*4 - All total charges*/}
-
-                        <hr className="pt-0 mt-0"/>
-
-                        <div className="row">
-
-                            <div className="col">
-                                <h6 className="fw-bolder text-danger">
-                                    Total (Pkr)</h6>
-                            </div>
-
-                            <div className="col">
-                                <h6 className="fw-bolder text-danger">
-                                    Rs. {total_amount}
-                                </h6>
-                            </div>
-
-                        </div>
-
-                        {/*<DeliveryAddressForm*/}
-                        {/*    user={user}*/}
-                        {/*    full_name={full_name}*/}
-                        {/*    address={address}*/}
-                        {/*    city={city}*/}
-                        {/*    mobile={mobile}*/}
-                        {/*    // countries={countries}*/}
-                        {/*    onChange={onChange}*/}
-                        {/*    onSubmit={onSubmit}*/}
-                        {/*/>*/}
-
-                        {placeOrderBtn}
+                        </a>
 
                     </div>
 
                 </div>
             </div>
         </div>
-    </div>)
+    )
+
+    // If user is auth then show the all info
+
+    const orderSummary = (
+        <div className="col-md-6 col-12 pt-2">
+            <div className="card shadow">
+
+                <h5 className="card-header">
+                    Order summary
+                    <span className="float-end">
+                                <Link className="btn btn-dark btn-sm"
+                                      to="/cart">
+                                    <i className="fa fa-chevron-left small"/> Cart
+                                    {/*return to cart*/}
+                                </Link>
+                            </span>
+                </h5>
+
+                {showItems()}
+
+                <div className="card-body">
+
+                    {/*/!* 2 - subtotal  *!/*/}
+
+                    <div className="row pt-1 ">
+
+                        <div className="col">
+                            <h6 className="small">Sub-total</h6>
+                        </div>
+
+                        <div className="col">
+                            <h6 className="small">
+                                Rs. {sub_total}
+                                {/*{{order.cart_total}}*/}
+                            </h6>
+                        </div>
+
+                    </div>
+
+                    {/* 3 - delivery fee  */}
+
+                    <div className="row">
+
+                        <div className="col">
+                            <h6 className="small">Delivery fee</h6>
+                        </div>
+
+                        <div className="col">
+                            <h6 className="small">
+                                Rs. {delivery_fee}
+                                {/*{{order.delivery_charges}}*/}
+                            </h6>
+                        </div>
+
+                    </div>
+
+                    {/* 4 - service fee  */}
+
+                    <div className="row">
+
+                        <div className="col">
+                            <h6 className="small">Service fee</h6>
+                        </div>
+
+                        <div className="col">
+                            <h6 className="small">
+                                Rs. {service_fee}
+                            </h6>
+                        </div>
+
+                    </div>
+
+                    {/*4 - All total charges*/}
+
+                    <hr className="pt-0 mt-0"/>
+
+                    <div className="row">
+
+                        <div className="col">
+                            <h6 className="fw-bolder text-danger">
+                                Total (Pkr)</h6>
+                        </div>
+
+                        <div className="col">
+                            <h6 className="fw-bolder text-danger">
+                                Rs. {total_amount}
+                            </h6>
+                        </div>
+
+                    </div>
+
+                    {/*<DeliveryAddressForm*/}
+                    {/*    user={user}*/}
+                    {/*    full_name={full_name}*/}
+                    {/*    address={address}*/}
+                    {/*    city={city}*/}
+                    {/*    mobile={mobile}*/}
+                    {/*    // countries={countries}*/}
+                    {/*    onChange={onChange}*/}
+                    {/*    onSubmit={onSubmit}*/}
+                    {/*/>*/}
+
+                    {placeOrderBtn}
+
+                </div>
+
+            </div>
+        </div>
+    )
 
     // If user is not login
 
-    const noAuth = (
-        <div className="mt-2 d-flex flex-column align-items-center">
+    const noAuth = (<div className="mt-2 d-flex flex-column align-items-center">
             <h1 className="mt-5">Please login first.</h1>
             <p className="lead p-1">
                 To get access this page info.
@@ -244,8 +326,7 @@ const Checkout = ({
 
     // If not have a single item show this one
 
-    const emptyCart = (
-        <div className={"container pt-4"}>
+    const emptyCart = (<div className={"container pt-4"}>
             <div className="card shadow">
                 <div className="card-header">
                     Empty
@@ -261,14 +342,12 @@ const Checkout = ({
                     </Link>
                 </div>
             </div>
-        </div>
-
-    )
+        </div>)
 
     // If user is not login, if not have more than 1 items
     // If both conditions false then render orderSummary (items)
 
-    const allRender = () => {
+    const renderAllData = () => {
 
         if (!isAuthenticated) {
             return (
@@ -288,7 +367,6 @@ const Checkout = ({
 
     }
 
-
     return (
 
         <Fragment>
@@ -304,7 +382,19 @@ const Checkout = ({
                 </div>
             }
 
-            {allRender()}
+            <div className={"container"}>
+                <div className={"row pt-3"}>
+
+                    {isAuthenticated &&
+                        total_items >= 1 &&
+                        deliveryInfo
+                    }
+
+                    {renderAllData()}
+
+                </div>
+            </div>
+
 
         </Fragment>
     )
