@@ -83,7 +83,8 @@ export const create_order = (full_name, address, city, mobile) => async dispatch
             dispatch({
                 type: CREATE_ORDER_FAIL
             });
-            dispatch(setAlert("Unable to create order, Try again.", "error"));
+            dispatch(setAlert(res.data.error, "error"))
+            // dispatch(setAlert("Unable to create order, Try again.", "error"));
         }
 
     } catch(err) {
@@ -91,6 +92,8 @@ export const create_order = (full_name, address, city, mobile) => async dispatch
         dispatch({
             type: CREATE_ORDER_FAIL
         });
+        console.log("Create order err: ", err)
+        // dispatch(setAlert(err.data, 'error'))
         dispatch(setAlert("Unable to create order, Try again.", "error"));
     }
 
