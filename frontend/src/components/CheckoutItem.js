@@ -3,20 +3,7 @@ import {Link} from 'react-router-dom';
 import moment from 'moment';
 import facebookImg from "../containers/accounts/Continue with Fb Btn.PNG";
 
-const CheckoutItem = ({
-                          isAuthenticated,
-                          item,
-                          count,
-                          update_item,
-                          remove_item,
-                          setAlert,
-                          render,
-                          setRender,
-                          // showViewProduct = true,
-                          // showRemoveProduct = true,
-                          // showUpdateProduct = true,
-                          // showQuantity = true
-                      }) => {
+const CheckoutItem = ({isAuthenticated, item, count }) => {
 
     const [formData, setFormData] = useState({
         item_count: 1
@@ -34,7 +21,6 @@ const CheckoutItem = ({
 
 
     // Cart Items like card, img, price, qty, info
-
     // Order summary
 
     const orderSummary = () => (
@@ -71,16 +57,14 @@ const CheckoutItem = ({
                                 </Link>
                             </td>
 
-                            {/* if  discount price for a product-->*/}
+                            {/* if  discount price for a product */}
 
                             {item.product.discount ?
 
                                 <td className="col-md-4 col-4 small">
                                     Rs. {item.product.discount_price} / {item.product.unit}
                                 </td>
-
                                 :
-
                                 <td className="col-md-4 col-4 small">
                                     Rs. {item.product.price} / {item.product.unit}
                                 </td>
@@ -96,18 +80,14 @@ const CheckoutItem = ({
                     </table>
 
                 </div>
-
             </div>
-
         </div>
     )
-
 
     return (
         <Fragment>
 
-            {/*// <!-- Card , Img, price, qty info -->*/}
-
+            {/* Card , Img, price, qty info */}
             {orderSummary()}
 
         </Fragment>

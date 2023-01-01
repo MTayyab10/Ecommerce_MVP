@@ -85,8 +85,7 @@ const CartItem = ({
                         {/*<label htmlFor="item_count">*/}
                         {/*    Adjust*/}
                         {/*</label>*/}
-                        <select
-                            className="form-control p-2 small"
+                        <select className="form-control p-2 small"
                             name="item_count"
                             onChange={e => onChange(e)}
                             value={item_count}
@@ -104,8 +103,7 @@ const CartItem = ({
 
                         </select>
                     </td>
-                    <button
-                        className="btn btn-sm small p-0 m-0"
+                    <button className="btn btn-sm small p-0 m-0"
                         type="submit"
                     >
                         change
@@ -154,7 +152,6 @@ const CartItem = ({
             );
         }
     };
-
 
     const cartItemImg = <div className='col-3'>
         <div style={{height: '180px', overflow: 'hidden'}}>
@@ -253,7 +250,7 @@ const CartItem = ({
 
             <div className="col-md-2 col-3 ">
 
-                <Link class="text-decoration-none text-reset"
+                <Link className="text-decoration-none text-reset"
                       to={`/${item.product.category.name}/${item.product.name}/${item.product.id}`}>
                     <img
                         style={{
@@ -317,18 +314,18 @@ const CartItem = ({
 
                         <td className="col-md-4 col-5 small">
 
-                                        <span className=""
-                                              style={{fontFamily: "sans-serif Roboto"}}>
+                            <span className=""
+                                  style={{fontFamily: "sans-serif Roboto"}}>
 
                                          {/*{quantityOrdered()}*/}
 
-                                            {showAdjustQuantityButton()}
+                                {showAdjustQuantityButton()}
 
                                             {/*<button className={"btn btn-sm"}>*/}
                                             {/*    <i className="fas fa-minus"></i>*/}
                                             {/*</button>*/}
 
-                                        </span>
+                            </span>
 
                             {/*<button data-product="{{ item.product.id }}"*/}
                             {/*        data-action="remove"*/}
@@ -345,6 +342,9 @@ const CartItem = ({
                         <td className="col-md-4 col-4 small">
                             Rs. {item && true && true &&
                             item.product && true && true &&
+                            item.product.discount > 0 ?
+                            (item.product.price - item.product.discount) * count
+                            :
                             item.product.price * count}
                         </td>
 

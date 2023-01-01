@@ -1,115 +1,108 @@
 import React, {Fragment, useState, useEffect} from 'react';
-import {Link, Navigate} from 'react-router-dom';
+import {Link, Navigate, useNavigate, useParams} from 'react-router-dom';
 import {connect} from 'react-redux';
-// import {
-//     check_coupon
-// } from '../actions/coupons';
 import moment from 'moment';
 
+import {refresh} from '../actions/auth';
+import {
+    get_delivery_address,
+    create_delivery_address,
+    update_delivery_address,
+    delete_delivery_address,
+} from '../actions/delivery_address'
 
 import {
-    refresh
-} from '../actions/auth';
+    get_all_total_price,
+    create_order, get_total_price
+} from '../actions/orders';
 
-// import {
-//     get_shipping_options
-// } from '../actions/shipping';
-
-
-import CartItem from '../components/CartItem';
 import CheckoutItem from "../components/CheckoutItem";
 
-import facebookImg from "../containers/accounts/Continue with Fb Btn.PNG"
+import DeliveryAddressForm from "../components/DeliveryAddressForm"
 
-const Checkout = ({isAuthenticated, user, refresh,
-                      items, total_items, amount}) => {
+const Checkout = ({
+                      isAuthenticated,
+                      user,
+                      refresh,
+                      items,
+                      total_items,
+                      create_order,
+                      loading,
+                      delivery_addresses,
+                      get_total_price,
+                      get_delivery_address,
+                      create_delivery_address,
+                      update_delivery_address,
+                      delete_delivery_address,
+                      sub_total,
+                      delivery_fee,
+                      service_fee,
+                      total_amount
+                  }) => {
 
     const [formData, setFormData] = useState({
-        full_name: '',
-        address_line_1: '',
-        address_line_2: '',
+        name: '',
+        address: '',
         city: '',
-        state_province_region: '',
-        postal_zip_code: '',
-        country_region: 'Canada',
-        telephone_number: '',
-        coupon_name: '',
-        shipping_id: 0,
+        mobile: '',
+        addr_status: false
     });
+
+    // for checked (addr_status) Boolean
+
+    const [isChecked, setIsChecked] = useState(false);
+
+    const checkOnChange = () => {
+        setIsChecked(!isChecked);
+    }
+
+    const {id} = useParams();
+
 
     const [data, setData] = useState({
         instance: {}
     });
 
-    const {
-        full_name,
-        address_line_1,
-        address_line_2,
-        city,
-        state_province_region,
-        postal_zip_code,
-        country_region,
-        telephone_number,
-        coupon_name,
-        shipping_id,
-    } = formData;
+    const {name, address, city, mobile, addr_status} = formData;
 
     const onChange = e => setFormData({
         ...formData,
         [e.target.name]: e.target.value
     });
 
-    useEffect(() => {
-        if (
-            user
-        ) {
-            setFormData({
-                ...formData,
-                full_name: user.first_name + ' ' + user.last_name,
-                address_line_1: 'profile.address_line_1',
-                address_line_2: 'profile.address_line_2',
-                city: 'profile.city',
-                state_province_region: 'profile.state_province_region',
-                postal_zip_code: 'profile.zipcode',
-                telephone_number: 'profile.phone',
-                country_region: 'profile.country_region'
-            });
-        }
-    }, [user]);
+    const onSubmit = (e) => {
+        e.preventDefault();
+        // toast.success("You are login, Successfully.")
+        create_delivery_address(name, address, city, mobile, isChecked) // instead of addr_status
+         // create_order(full_name, address, city, mobile);
+    };
 
+     const [render, setRender] = useState(false);
 
     useEffect(() => {
-        window.scrollTo(0, 0);
 
         refresh();
+        get_delivery_address();
+        get_total_price();
+        window.scrollTo(0, 0);
 
-        // get_shipping_options();
-    }, []);
+    }, [render]);
 
-    // Product items
 
+    // Show Product items in Order summary
     const showItems = () => {
         return (
             <Fragment>
-                {/*<h4 className='text-muted mt-3'>*/}
-                {/*    Your total {total_items} item(s)*/}
-                {/*</h4>*/}
-                {/*<hr/>*/}
-                {
-                    items && true && true &&
+                {items && true && true &&
                     items.length !== 0 &&
                     items.map((item, index) => {
                         let count = item.count;
 
                         return (
                             <Fragment key={index}>
-                                 <CheckoutItem
+                                <CheckoutItem
                                     item={item}
                                     count={count}
-                                    // showViewProduct={false}
-                                    // showRemoveProduct={false}
-                                    // showUpdateProduct={false}
-                                    // showQuantity
                                 />
                             </Fragment>
 
@@ -120,113 +113,122 @@ const Checkout = ({isAuthenticated, user, refresh,
         );
     };
 
-    // Delivery, service & total charges
 
-    const delivery_charges = (
-        amount > 10000 ? 200 : amount > 5000 ? 100 : 50
-    )
+    // Display all delivery addresses
+    const displayDeliveryAddress = () => {
 
-    const service_fee = (
-        amount > 10000 ? 0 : amount > 5000 ? 50 : 100
-    )
+        return (
+            // <div className="col-md-6 offset-1 col-10">
+            <Fragment>
 
-    const all_total_fee = amount + delivery_charges + service_fee;
+                {delivery_addresses && true && true &&
+                    delivery_addresses.map((addr) =>
+                        <>
+                            <div className={`${addr.addr_status && "border-secondary"}`}>
 
+                                {addr.addr_status ?
 
-    // If user is auth then show the all info
+                                    <>
+                                        <h5 className="d-inline">
+                                            {addr.name}
+                                        </h5>
 
-    const orderSummary = (<div className="container mt-5 mb-5">
-            <div className="row">
+                                        <h5 className="d-inline ms-4">
+                                            <span className="badge rounded-pill bg-success">
+                                                <i className="fas fa-check-circle check{{ addr.id }}
+                                             check act-btn{{ addr.id }} "> </i> Active </span>
 
-                <div className="col-md-6 col-12">
-                    <div className="card shadow">
+                                        </h5>
+                                    </>
+                                    :
+                                    <h5> {addr.name}</h5>
+                                }
 
-                        <h5 className="card-header">
-                            Order summary
-                            <span className="float-end">
-                                <Link className="btn btn-dark btn-sm"
-                              to="/cart">
-                                    <i className="fa fa-chevron-left small" /> Cart
-                                   {/*return to cart*/}
+                                <h6 className="card-subtitle mt-1 mb-2 text-muted">
+                                    {addr.mobile}
+                                </h6>
+
+                                <div className="card-text">
+                                    {addr.city}, {addr.address}
+                                </div>
+
+                                <Link to={`/update_address/${addr.id}`}
+                                      className="btn btn-secondary btn-sm mt-2
+                                       text-decoration-none">
+                                    Change
                                 </Link>
-                            </span>
-                        </h5>
 
-                        {showItems()}
-
-                        <div className="card-body">
-
-                            {/*/!* 2 - subtotal  *!/*/}
-
-                            <div className="row pt-1 ">
-
-                                <div className="col">
-                                    <h6 className="small">Sub-total</h6>
-                                </div>
-
-                                <div className="col">
-                                    <h6 className="small">
-                                        Rs. {amount}
-                                        {/*{{order.cart_total}}*/}
-                                    </h6>
-                                </div>
+                                <button onClick={(e) => delete_delivery_address(addr.id)}
+                                        className="btn btn-danger btn-sm ms-2 mt-2
+                                            text-decoration-none">
+                                    Delete
+                                </button>
 
                             </div>
 
-                            {/* 3 - delivery charges  */}
+                            <hr />
 
-                            <div className="row">
+                        </>
+                    )}
+            </Fragment>
+        )
+    }
 
-                                <div className="col">
-                                    <h6 className="small">Delivery fee</h6>
-                                </div>
 
-                                <div className="col">
-                                    <h6 className="small">
-                                        Rs. {delivery_charges}
-                                        {/*{{order.delivery_charges}}*/}
-                                    </h6>
-                                </div>
+    // Delivery/Shipping Info
+    const deliveryInfo = (
+        <Fragment>
 
-                            </div>
+            <div className="col-md-6 col-12 pt-2">
 
-                             {/* 4 - service charges  */}
+                <div className="card shadow">
+                    <div className="card-body">
 
-                            <div className="row">
+                        {displayDeliveryAddress()}
 
-                                <div className="col">
-                                    <h6 className="small">Service fee</h6>
-                                </div>
+                        <div className="col-12 ">
 
-                                <div className="col">
-                                    <h6 className="small">
-                                        Rs. {service_fee}
-                                    </h6>
-                                </div>
+                            <div id="" className="">
 
-                            </div>
+                                <a href="#"
+                                   className="text-decoration-none">
 
-                            {/*4 - All total charges*/}
+                                    <div className="text-center fw-bolder"
+                                         name="inlineRadioOptions" id="inlineRadio1"
+                                         value="option1"
+                                         data-bs-toggle="collapse" href="#collapseDelivery"
+                                         aria-expanded="false" aria-controls="collapseExample"
+                                    >
 
-                            <hr className="pt-0 mt-0"/>
+                                        <i className="fas fa-plus-circle text-danger"/> Add
+                                        delivery address
+                                        {/*<i className="float-end fas fa-angle-right text-secondary">*/}
+                                        {/*</i>*/}
 
-                            <div className="row">
-
-                                <div className="col">
-                                    <h6 className="fw-bolder text-danger">
-                                        Total (Pkr)</h6>
-                                </div>
-
-                                <div className="col">
-                                    <h6 className="fw-bolder text-danger">
-                                        Rs. {all_total_fee}
-                                    </h6>
-                                </div>
+                                    </div>
+                                </a>
 
                             </div>
 
-                            <div>
-                                <button className="btn btn-success">Place an Order</button>
+                            {/*  If click on above link then it will show below form */}
+
+                            <div id="collapseDelivery" className="collapse pt-2">
+
+                                {/* Create/Add deliver address */}
+
+                                <DeliveryAddressForm
+                                    user={user}
+                                    name={name}
+                                    address={address}
+                                    city={city}
+                                    mobile={mobile}
+                                    addr_status={addr_status}
+                                    isChecked={isChecked}
+                                    checkOnChange={checkOnChange}
+                                    onChange={onChange}
+                                    onSubmit={onSubmit}
+                                />
+
                             </div>
 
                         </div>
@@ -234,48 +236,170 @@ const Checkout = ({isAuthenticated, user, refresh,
                     </div>
                 </div>
             </div>
-        </div>)
+        </Fragment>
+    )
+
+    // After creating order redirect to desired page
+    const navigate = useNavigate();
+
+    // Loading & Place an Order btn
+    const placeOrderBtn = (
+        loading ?
+            <button className="btn btn-success mt-2" type="button" disabled>
+                <span className="spinner-border spinner-border-sm" role="status"
+                      aria-hidden="true"/> Place an Order
+            </button>
+            :
+            <button
+                onClick={() => create_order(navigate)}
+                type="button" className="btn btn-success mt-2">
+                Place an Order
+            </button>
+    )
+
+    // If user is auth, show order items, price etc
+
+    const orderSummary = (<div className="col-md-6 col-12 pt-2">
+        <div className="card shadow">
+
+            <h5 className="card-header">
+                Order summary
+                <span className="float-end">
+                    <Link className="btn btn-dark btn-sm"
+                          to="/cart">
+                        <i className="fa fa-chevron-left small"/> Cart
+                        {/*return to cart*/}
+                    </Link>
+                </span>
+            </h5>
+
+            {/*<DeliveryAddressForm*/}
+            {/*    user={user}*/}
+            {/*    full_name={full_name}*/}
+            {/*    address={address}*/}
+            {/*    city={city}*/}
+            {/*    mobile={mobile}*/}
+            {/*    onChange={onChange}*/}
+            {/*    onSubmit={onSubmit}*/}
+            {/*/>*/}
+
+            {showItems()}
+
+            <div className="card-body">
+
+                {/*  2 - subtotal  */}
+
+                <div className="row pt-1 ">
+
+                    <div className="col">
+                        <h6 className="small">Sub-total</h6>
+                    </div>
+
+                    <div className="col">
+                        <h6 className="small">
+                            Rs. {sub_total}
+                            {/*{{order.cart_total}}*/}
+                        </h6>
+                    </div>
+
+                </div>
+
+                {/* 3 - delivery fee  */}
+
+                <div className="row">
+
+                    <div className="col">
+                        <h6 className="small">Delivery fee</h6>
+                    </div>
+
+                    <div className="col">
+                        <h6 className="small">
+                            Rs. {delivery_fee}
+                            {/*{{order.delivery_charges}}*/}
+                        </h6>
+                    </div>
+
+                </div>
+
+                {/* 4 - service fee  */}
+
+                <div className="row">
+
+                    <div className="col">
+                        <h6 className="small">Service fee</h6>
+                    </div>
+
+                    <div className="col">
+                        <h6 className="small">
+                            Rs. {service_fee}
+                        </h6>
+                    </div>
+
+                </div>
+
+                <hr className="pt-0 mt-0"/>
+
+                {/*4 - All total charges*/}
+
+                <div className="row">
+
+                    <div className="col">
+                        <h6 className="fw-bolder text-danger">
+                            Total (Pkr)</h6>
+                    </div>
+
+                    <div className="col">
+                        <h6 className="fw-bolder text-danger">
+                            Rs. {total_amount}
+                        </h6>
+                    </div>
+
+                </div>
+
+                {placeOrderBtn}
+
+            </div>
+
+        </div>
+    </div>)
 
     // If user is not login
 
-    const noAuth = (
-        <div className="mt-2 d-flex flex-column align-items-center">
-            <h1 className="mt-5">Please login first.</h1>
-            <p className="lead p-1">
-                To get access this page info.
-            </p>
-            <Link to="/login" className="btn btn-primary btn-lg m-2">
-                Login
-            </Link>
-        </div>)
+    const noAuth = (<div className="mt-2 d-flex flex-column align-items-center">
+        <h1 className="mt-5">Please login first.</h1>
+        <p className="lead p-1">
+            To get access this page info.
+        </p>
+        <Link to="/login" className="btn btn-primary btn-lg m-2">
+            Login
+        </Link>
+    </div>)
 
-     // If not have a single item show this one
+    // If not have a single item show this one
 
-    const emptyCart = (
-        <div className={"container pt-4"}>
+    const emptyCart = (<div className={"container pt-4"}>
             <div className="card shadow">
-            <div className="card-header">
-                Empty
-            </div>
-            <div className="card-body">
-                {/*{#                    <h5 class="card-title">No Items</h5>#}*/}
-                <p className="card-text">
-                    You do not have added any item yet.
-                    Please, first add items.
-                </p>
-                <Link to="/" className="btn btn-primary">
-                    Buy Items Now
-                </Link>
+                <div className="card-header">
+                    Empty
+                </div>
+                <div className="card-body">
+                    {/*{#                    <h5 class="card-title">No Items</h5>#}*/}
+                    <p className="card-text">
+                        You do not have added any item yet.
+                        Please, first add items.
+                    </p>
+                    <Link to="/" className="btn btn-primary">
+                        Buy Items Now
+                    </Link>
+                </div>
             </div>
         </div>
-        </div>
-
     )
 
     // If user is not login, if not have more than 1 items
     // If both conditions false then render orderSummary (items)
 
-    const allRender = () => {
+    const renderAllData = () => {
 
         if (!isAuthenticated) {
             return (
@@ -295,7 +419,6 @@ const Checkout = ({isAuthenticated, user, refresh,
 
     }
 
-
     return (
 
         <Fragment>
@@ -311,7 +434,18 @@ const Checkout = ({isAuthenticated, user, refresh,
                 </div>
             }
 
-            {allRender()}
+            <div className={"container"}>
+                <div className={"row pt-3"}>
+
+                    {isAuthenticated &&
+                        total_items >= 1 &&
+                        deliveryInfo
+                    }
+
+                    {renderAllData()}
+
+                </div>
+            </div>
 
 
         </Fragment>
@@ -321,27 +455,37 @@ const Checkout = ({isAuthenticated, user, refresh,
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
     user: state.auth.user,
-    // profile: state.profile.profile,
+
     items: state.cart.items,
     total_items: state.cart.total_items,
-    amount: state.cart.amount,
+    // amount: state.cart.amount,
 
-    // coupon: state.coupons.coupon,
-    // shipping: state.shipping.shipping,
+    // delivery address
+    delivery_addresses: state.delivery_address.delivery_addresses,
+
+    // Get price info from reducers/orders.js
+    sub_total: state.orders.sub_total,
+    delivery_fee: state.orders.delivery_fee,
+    service_fee: state.orders.service_fee,
+    total_amount: state.orders.total_amount,
+
+    loading: state.orders.loading
+
     // clientToken: state.payment.clientToken,
-    // made_payment: state.payment.made_payment,
-    // loading: state.payment.loading,
-    // original_price: state.payment.original_price,
-    // total_after_coupon: state.payment.total_after_coupon,
-    // total_amount: state.payment.total_amount,
-    // total_compare_amount: state.payment.total_compare_amount,
-    // estimated_tax: state.payment.estimated_tax,
     // shipping_cost: state.payment.shipping_cost
 });
 
 export default connect(mapStateToProps, {
-    // check_coupon,
+
     refresh,
+    get_delivery_address,
+    create_delivery_address,
+    update_delivery_address,
+    delete_delivery_address,
+
+    get_total_price,
+    create_order,
+
     // get_shipping_options,
     // get_payment_total,
     // get_client_token,

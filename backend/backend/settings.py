@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'shops1',
     'products2',
     'cart3',
-    'orders4',
+    'delivery_address4',
+    'orders5',
 
     # DRF
     'rest_framework',

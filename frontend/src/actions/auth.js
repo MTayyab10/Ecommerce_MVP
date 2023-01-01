@@ -137,8 +137,8 @@ export const load_user = () => async dispatch => {
     }
 };
 
-// User registration/signup
 
+// User registration/signup
 
 export const signup = (username, // first_name, last_name,
     email, password, re_password, navigate) => async dispatch =>  {

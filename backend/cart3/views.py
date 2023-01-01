@@ -10,10 +10,6 @@ User = get_user_model()
 
 # from wishlist.models import WishList, WishListItem
 
-def create_cart(request):
-    if request.user.is_authenticated:
-        cart = Cart.objects.create(user=User, count=0)
-
 # Cart items
 
 class GetItemsView(APIView):
@@ -158,16 +154,22 @@ class GetTotalView(APIView):
 
             if cart_items.exists():
                 for cart_item in cart_items:
-                    total_cost += (float(cart_item.product.price) * float(cart_item.count))
 
-                    # total_compare_cost += (float(cart_item.product.compare_price)
-                    #                        * float(cart_item.count))
+                    # if product have discount then calculate like this
+
+                    if cart_item.product.discount:
+                        price = cart_item.product.price - cart_item.product.discount
+                        total_cost += float(price) * float(cart_item.count)
+
+                    else:
+                        total_cost += (float(cart_item.product.price)
+                                      * float(cart_item.count))
 
                 total_cost = round(total_cost, 2)
                 # total_compare_cost = round(total_compare_cost, 2)
 
             return Response({
-                'total_cost': total_cost},
+                'total_cost': f'{total_cost:.1f}'},
                 # 'total_compare_cost': total_compare_cost},
                 status=status.HTTP_200_OK)
         except:
@@ -292,7 +294,7 @@ class RemoveItemView(APIView):
 
             if not CartItem.objects.filter(cart=cart, product=product).exists():
                 return Response(
-                    {'error': 'This product is not in your cart'},
+                    {'error': 'This product is not in your cart.'},
                     status=status.HTTP_404_NOT_FOUND)
 
             CartItem.objects.filter(cart=cart, product=product).delete()
@@ -302,7 +304,7 @@ class RemoveItemView(APIView):
                 total_items = int(cart.total_items) - 1
                 Cart.objects.filter(user=user).update(total_items=total_items)
 
-            cart_items = CartItem.objects.order_by('product').filter(cart=cart)
+            cart_items = CartItem.objects.filter(cart=cart)
 
             result = []
 

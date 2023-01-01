@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=255)),
                 ('price', models.DecimalField(decimal_places=2, max_digits=5)),
                 ('count', models.IntegerField()),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='orders4.order')),
+                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='orders5.order')),
                 ('product', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='products2.product')),
             ],
             options={

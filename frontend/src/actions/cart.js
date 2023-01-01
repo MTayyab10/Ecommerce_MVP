@@ -198,25 +198,27 @@ export const get_total = () => async dispatch => {
             console.log("get items fail")
 
         }
-    } else {
-        let total = 0.0;
-        let compare_total = 0.0;
-        let cart = [];
-
-        if (localStorage.getItem('cart')) {
-            cart = JSON.parse(localStorage.getItem('cart'));
-
-            cart.map(item => {
-                total += parseFloat(item.product.price) * parseFloat(item.count);
-                compare_total += parseFloat(item.product.compare_price) * parseFloat(item.count);
-            });
-        }
-
-        dispatch({
-            type: GET_TOTAL,
-            payload: [parseFloat(total.toFixed(2)), parseFloat(compare_total.toFixed(2))]
-        });
     }
+    // Without Login functionality
+    // } else {
+    //     let total = 0.0;
+    //     let compare_total = 0.0;
+    //     let cart = [];
+    //
+    //     if (localStorage.getItem('cart')) {
+    //         cart = JSON.parse(localStorage.getItem('cart'));
+    //
+    //         cart.map(item => {
+    //             total += parseFloat(item.product.price) * parseFloat(item.count);
+    //             compare_total += parseFloat(item.product.compare_price) * parseFloat(item.count);
+    //         });
+    //     }
+    //
+    //     dispatch({
+    //         type: GET_TOTAL,
+    //         payload: [parseFloat(total.toFixed(2)), parseFloat(compare_total.toFixed(2))]
+    //     });
+    // }
 };
 
 
@@ -236,32 +238,39 @@ export const get_item_total = () => async dispatch => {
             const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/cart/get-item-total`, config);
 
             if (res.status === 200) {
+
                 dispatch({
                     type: GET_ITEM_TOTAL_SUCCESS,
                     payload: res.data
                 });
+
             } else {
                 dispatch({
                     type: GET_ITEM_TOTAL_FAIL
                 });
             }
+
         } catch (err) {
             dispatch({
                 type: GET_ITEM_TOTAL_FAIL
             });
         }
-    } else {
-        let total = 0;
-
-        if (localStorage.getItem('cart')) {
-            total = JSON.parse(localStorage.getItem('cart')).length;
-        }
-
-        dispatch({
-            type: GET_ITEM_TOTAL,
-            payload: total
-        });
     }
+
+    // Without login functionality
+
+    // } else {
+    //     let total = 0;
+    //
+    //     if (localStorage.getItem('cart')) {
+    //         total = JSON.parse(localStorage.getItem('cart')).length;
+    //     }
+    //
+    //     dispatch({
+    //         type: GET_ITEM_TOTAL,
+    //         payload: total
+    //     });
+    // }
 };
 
 
@@ -309,24 +318,26 @@ export const update_item = (item, count) => async dispatch => {
                 type: UPDATE_ITEM_FAIL
             });
         }
-    } else {
-        let cart = [];
-
-        if (localStorage.getItem('cart')) {
-            cart = JSON.parse(localStorage.getItem('cart'));
-
-            cart.map((cart_item, index) => {
-                if (cart_item.product.id.toString() === item.product.id.toString()) {
-                    cart[index].count = parseInt(count);
-                }
-            });
-        }
-
-        dispatch({
-            type: UPDATE_ITEM,
-            payload: cart
-        });
     }
+    // Without login functionality
+    // } else {
+    //     let cart = [];
+    //
+    //     if (localStorage.getItem('cart')) {
+    //         cart = JSON.parse(localStorage.getItem('cart'));
+    //
+    //         cart.map((cart_item, index) => {
+    //             if (cart_item.product.id.toString() === item.product.id.toString()) {
+    //                 cart[index].count = parseInt(count);
+    //             }
+    //         });
+    //     }
+    //
+    //     dispatch({
+    //         type: UPDATE_ITEM,
+    //         payload: cart
+    //     });
+    // }
 };
 
 // Remove item in Cart

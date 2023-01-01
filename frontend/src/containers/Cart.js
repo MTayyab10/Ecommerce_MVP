@@ -40,8 +40,7 @@ const Cart = ({
 
     // Breadcrumb
 
-    const breadCrumb = (
-        <nav aria-label="breadcrumb small" className="offset-md-1">
+    const breadCrumb = (<nav aria-label="breadcrumb small" className="offset-md-1">
 
             <ol className="breadcrumb small">
                 <li className="breadcrumb-item small">
@@ -57,8 +56,7 @@ const Cart = ({
                 </li>
 
             </ol>
-        </nav>
-    )
+        </nav>)
 
     // Items in cart
 
@@ -97,8 +95,7 @@ const Cart = ({
 
     // If not have a single item show this one
 
-    const emptyCart = (
-        <div className="card shadow">
+    const emptyCart = (<div className="card shadow">
             <div className="card-header">
                 Empty
             </div>
@@ -112,9 +109,7 @@ const Cart = ({
                     Buy Items Now
                 </Link>
             </div>
-        </div>
-
-    )
+        </div>)
 
     // Cart items and total + checkout btn
 
@@ -126,7 +121,7 @@ const Cart = ({
                     <div className="p-2">
 
                         <h6 className="float-end">
-                            <Link class="text-decoration-none"
+                            <Link className="text-decoration-none"
                                   to="/">
                                 <i className="fa fa-chevron-left small"></i> continue shop
                             </Link>
@@ -173,7 +168,7 @@ const Cart = ({
 
                                 <div className="btn-group">
 
-                                    <Link to="/checkout" class="me-3 me-sm-2">
+                                    <Link to="/checkout" className="me-3 me-sm-2">
                                         <button
                                             // style={{backgroundColor: "#FFD739"}}
                                             className="btn btn-success">

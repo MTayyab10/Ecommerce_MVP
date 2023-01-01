@@ -44,15 +44,8 @@ class Product(TimeStampModel):
         # return str(self.shop_owned)
         # return f"Ctgry: {self.category}, Name: {self.name}, Rs. [{str(self.price)}]"
 
-    # @staticmethod
-    # def products_by_category(category):
-    #     if category:
-    #         products = Product.objects.filter(category__name=category)
-    #     else:
-    #         products = Product.objects.all()
-    #     return products
 
-    # Calculation for discount_%
+    # Calculation for discount percent %
     @property
     def discount_percent(self):
         percent = 0
@@ -63,8 +56,17 @@ class Product(TimeStampModel):
     # Calculation for discounted_price
     @property
     def discount_price(self):
-        price = None
+        price = 0
         if self.discount:
             price = (self.price - self.discount)
         return price
+
+    # @staticmethod
+    # def products_by_category(category):
+    #     if category:
+    #         products = Product.objects.filter(category__name=category)
+    #     else:
+    #         products = Product.objects.all()
+    #     return products
+
 

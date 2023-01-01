@@ -24,8 +24,9 @@ def app_resort(func):
             "Shops1": 2,
             "Products2": 3,
             "Cart3": 4,
-            "Orders4": 5,
-            "Auth Token": 6,
+            "Delivery_Address4": 5,
+            "Orders5": 6,
+            "Auth Token": 7,
 
             # "Orders4": 5,
             # "Jobs8": 7,
@@ -47,8 +48,9 @@ def app_resort(func):
             "Cart": 1,
             "CartItem": 2,
 
-            "Order": 1,
-            "OrderItem": 2,
+            "DeliveryAddress": 1,
+            "Order": 2,
+            "OrderItem": 3,
 
             "Team": 1,
             "WorkForce": 2,
