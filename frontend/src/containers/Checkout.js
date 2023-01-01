@@ -1,82 +1,99 @@
 import React, {Fragment, useState, useEffect} from 'react';
-import {Link, Navigate} from 'react-router-dom';
+import {Link, Navigate, useNavigate, useParams} from 'react-router-dom';
 import {connect} from 'react-redux';
 import moment from 'moment';
 
 import {refresh} from '../actions/auth';
-import {get_total_price, create_order} from '../actions/orders';
+import {
+    get_delivery_address,
+    create_delivery_address,
+    update_delivery_address,
+    delete_delivery_address,
+} from '../actions/delivery_address'
+
+import {
+    get_all_total_price,
+    create_order, get_total_price
+} from '../actions/orders';
 
 import CheckoutItem from "../components/CheckoutItem";
 
 import DeliveryAddressForm from "../components/DeliveryAddressForm"
 
-
 const Checkout = ({
-                      isAuthenticated, user, refresh,
-                      items, total_items,
-                      create_order, loading,
-                      get_total_price, sub_total, delivery_fee,
-                      service_fee, total_amount
+                      isAuthenticated,
+                      user,
+                      refresh,
+                      items,
+                      total_items,
+                      create_order,
+                      loading,
+                      delivery_addresses,
+                      get_total_price,
+                      get_delivery_address,
+                      create_delivery_address,
+                      update_delivery_address,
+                      delete_delivery_address,
+                      sub_total,
+                      delivery_fee,
+                      service_fee,
+                      total_amount
                   }) => {
 
     const [formData, setFormData] = useState({
-        full_name: '',
+        name: '',
         address: '',
         city: '',
-        mobile: ''
+        mobile: '',
+        addr_status: false
     });
+
+    // for checked (addr_status) Boolean
+
+    const [isChecked, setIsChecked] = useState(false);
+
+    const checkOnChange = () => {
+        setIsChecked(!isChecked);
+    }
+
+    const {id} = useParams();
+
 
     const [data, setData] = useState({
         instance: {}
     });
 
-    const {full_name, address, city, mobile} = formData;
+    const {name, address, city, mobile, addr_status} = formData;
 
     const onChange = e => setFormData({
         ...formData,
         [e.target.name]: e.target.value
     });
 
-    const onSubmit = e => {
+    const onSubmit = (e) => {
         e.preventDefault();
         // toast.success("You are login, Successfully.")
-        create_order(full_name, address, city, mobile);
+        create_delivery_address(name, address, city, mobile, isChecked) // instead of addr_status
+         // create_order(full_name, address, city, mobile);
     };
 
-    // useEffect(() => {
-    //     if (
-    //         user
-    //     ) {
-    //         setFormData({
-    //             ...formData,
-    //             full_name: user.username,
-    //             address: '',
-    //             city: '',
-    //
-    //         });
-    //     }
-    // }, [user]);
-
+     const [render, setRender] = useState(false);
 
     useEffect(() => {
-        window.scrollTo(0, 0);
 
         refresh();
+        get_delivery_address();
         get_total_price();
-        // create_order();
+        window.scrollTo(0, 0);
 
-    }, []);
+    }, [render]);
 
-    // Product items
+
+    // Show Product items in Order summary
     const showItems = () => {
         return (
             <Fragment>
-                {/*<h4 className='text-muted mt-3'>*/}
-                {/*    Your total {total_items} item(s)*/}
-                {/*</h4>*/}
-                {/*<hr/>*/}
-                {
-                    items && true && true &&
+                {items && true && true &&
                     items.length !== 0 &&
                     items.map((item, index) => {
                         let count = item.count;
@@ -86,10 +103,6 @@ const Checkout = ({
                                 <CheckoutItem
                                     item={item}
                                     count={count}
-                                    // showViewProduct={false}
-                                    // showRemoveProduct={false}
-                                    // showUpdateProduct={false}
-                                    // showQuantity
                                 />
                             </Fragment>
 
@@ -100,229 +113,267 @@ const Checkout = ({
         );
     };
 
+
+    // Display all delivery addresses
+    const displayDeliveryAddress = () => {
+
+        return (
+            // <div className="col-md-6 offset-1 col-10">
+            <Fragment>
+
+                {delivery_addresses && true && true &&
+                    delivery_addresses.map((addr) =>
+                        <>
+                            <div className={`${addr.addr_status && "border-secondary"}`}>
+
+                                {addr.addr_status ?
+
+                                    <>
+                                        <h5 className="d-inline">
+                                            {addr.name}
+                                        </h5>
+
+                                        <h5 className="d-inline ms-4">
+                                            <span className="badge rounded-pill bg-success">
+                                                <i className="fas fa-check-circle check{{ addr.id }}
+                                             check act-btn{{ addr.id }} "> </i> Active </span>
+
+                                        </h5>
+                                    </>
+                                    :
+                                    <h5> {addr.name}</h5>
+                                }
+
+                                <h6 className="card-subtitle mt-1 mb-2 text-muted">
+                                    {addr.mobile}
+                                </h6>
+
+                                <div className="card-text">
+                                    {addr.city}, {addr.address}
+                                </div>
+
+                                <Link to={`/update_address/${addr.id}`}
+                                      className="btn btn-secondary btn-sm mt-2
+                                       text-decoration-none">
+                                    Change
+                                </Link>
+
+                                <button onClick={(e) => delete_delivery_address(addr.id)}
+                                        className="btn btn-danger btn-sm ms-2 mt-2
+                                            text-decoration-none">
+                                    Delete
+                                </button>
+
+                            </div>
+
+                            <hr />
+
+                        </>
+                    )}
+            </Fragment>
+        )
+    }
+
+
+    // Delivery/Shipping Info
+    const deliveryInfo = (
+        <Fragment>
+
+            <div className="col-md-6 col-12 pt-2">
+
+                <div className="card shadow">
+                    <div className="card-body">
+
+                        {displayDeliveryAddress()}
+
+                        <div className="col-12 ">
+
+                            <div id="" className="">
+
+                                <a href="#"
+                                   className="text-decoration-none">
+
+                                    <div className="text-center fw-bolder"
+                                         name="inlineRadioOptions" id="inlineRadio1"
+                                         value="option1"
+                                         data-bs-toggle="collapse" href="#collapseDelivery"
+                                         aria-expanded="false" aria-controls="collapseExample"
+                                    >
+
+                                        <i className="fas fa-plus-circle text-danger"/> Add
+                                        delivery address
+                                        {/*<i className="float-end fas fa-angle-right text-secondary">*/}
+                                        {/*</i>*/}
+
+                                    </div>
+                                </a>
+
+                            </div>
+
+                            {/*  If click on above link then it will show below form */}
+
+                            <div id="collapseDelivery" className="collapse pt-2">
+
+                                {/* Create/Add deliver address */}
+
+                                <DeliveryAddressForm
+                                    user={user}
+                                    name={name}
+                                    address={address}
+                                    city={city}
+                                    mobile={mobile}
+                                    addr_status={addr_status}
+                                    isChecked={isChecked}
+                                    checkOnChange={checkOnChange}
+                                    onChange={onChange}
+                                    onSubmit={onSubmit}
+                                />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </Fragment>
+    )
+
+    // After creating order redirect to desired page
+    const navigate = useNavigate();
+
     // Loading & Place an Order btn
     const placeOrderBtn = (
         loading ?
-            <button className="btn btn-success " type="button" disabled>
+            <button className="btn btn-success mt-2" type="button" disabled>
                 <span className="spinner-border spinner-border-sm" role="status"
                       aria-hidden="true"/> Place an Order
             </button>
             :
-            <div className="pt-2">
-                <button onClick={() => create_order(full_name, address, city, mobile)} type='submit'
-                        className="btn btn-success">
-                    Place an Order
-                </button>
-            </div>
+            <button
+                onClick={() => create_order(navigate)}
+                type="button" className="btn btn-success mt-2">
+                Place an Order
+            </button>
     )
 
-    // ('.form-check-input').click(function () {
-    //     ('.collapse').collapse('hide');
-    //     ('#' + (this).attr('aria-controls')).collapse('show');
-    // });
+    // If user is auth, show order items, price etc
 
-    // Delivery/Shipping Info
-    const deliveryInfo = (
-        <div className="col-md-6 col-12 ">
-            <div className="card shadow">
-                {/*{#            <h5 class="card-header">Featured</h5>#}*/}
-                <div className="card-body">
+    const orderSummary = (<div className="col-md-6 col-12 pt-2">
+        <div className="card shadow">
 
-                     {/*<form action="" method="post">*/}
+            <h5 className="card-header">
+                Order summary
+                <span className="float-end">
+                    <Link className="btn btn-dark btn-sm"
+                          to="/cart">
+                        <i className="fa fa-chevron-left small"/> Cart
+                        {/*return to cart*/}
+                    </Link>
+                </span>
+            </h5>
 
-                    {/*    <div className="col-12 ">*/}
+            {/*<DeliveryAddressForm*/}
+            {/*    user={user}*/}
+            {/*    full_name={full_name}*/}
+            {/*    address={address}*/}
+            {/*    city={city}*/}
+            {/*    mobile={mobile}*/}
+            {/*    onChange={onChange}*/}
+            {/*    onSubmit={onSubmit}*/}
+            {/*/>*/}
 
-                             {/*<div className="d-inline-block pe-2">*/}
-                            {/*    <h5>Please choose: </h5>*/}
-                             {/*</div>*/}
+            {showItems()}
 
-                             {/* If click on Delivery, show Delivery form */}
+            <div className="card-body">
 
-                    {/*        /!*<div className="form-check form-check-inline">*!/*/}
+                {/*  2 - subtotal  */}
 
-                             {/*    <input className="form-check-input" type="radio"*/}
-                             {/*           name="inlineRadioOptions" id="inlineRadio1"*/}
-                             {/*           value="option1"*/}
-                             {/*           data-bs-toggle="collapse" href="#collapseDelivery"*/}
-                             {/*           aria-expanded="false" aria-controls="collapseExample"/>*/}
+                <div className="row pt-1 ">
 
-                    {/*        /!*    <label className="form-check-label" title="deliver your order to your doorstep."*!/*/}
-                    {/*        /!*           for="inlineRadio1">*!/*/}
-                    {/*        /!*        Delivery*!/*/}
-                             {/*    </label>*/}
+                    <div className="col">
+                        <h6 className="small">Sub-total</h6>
+                    </div>
 
-                    {/*        /!*</div>*!/*/}
-
-                           {/*// <!-- If click on PickUp, show PickUp  -->*/}
-
-                    {/*        /!*<div className="form-check form-check-inline">*!/*/}
-
-                    {/*        /!*    <input className="form-check-input" type="radio"*!/*/}
-                    {/*        /!*           name="inlineRadioOptions" id="inlineRadio2"*!/*/}
-                           {/*           value="option2"*/}
-                             {/*           data-bs-toggle="collapse" href="#collapsePickup"*/}
-                            {/*           aria-expanded="false" aria-controls="collapseExample"/>*/}
-
-                    {/*        /!*    <label className="form-check-label" for="inlineRadio2">Pickup</label>*!/*/}
-                    {/*        /!*</div>*!/*/}
-
-                    {/*    </div>*/}
-
-                    {/*</form>*/}
-
-                    <div id="" className="">
-
-                        {/*// <!-- Pickup or Delivery Option -->*/}
-                        {/*<hr/>*/}
-
-                        {/*{% if shipping_info.count >= 1 %}*/}
-
-                        {/*<h5 className="card-title pb-2">Delivery Info</h5>*/}
-
-                        {/*{% endif %}*/}
-
-                        {/*// <!-- if user have address before then show addr*/}
-                        {/*//  otherwise show add address link -->*/}
-
-                        <a href="{% url 'delivery_address5:add_address' %}"
-                           className="text-decoration-none">
-
-                            <div className="text-center fw-bolder">
-
-                                <i className="fas fa-plus-circle text-danger"></i> Add shipping address
-                                <i className="float-end fas fa-angle-right text-secondary">
-                                </i>
-
-                            </div>
-                        </a>
-
+                    <div className="col">
+                        <h6 className="small">
+                            Rs. {sub_total}
+                            {/*{{order.cart_total}}*/}
+                        </h6>
                     </div>
 
                 </div>
-            </div>
-        </div>
-    )
 
-    // If user is auth then show the all info
+                {/* 3 - delivery fee  */}
 
-    const orderSummary = (
-        <div className="col-md-6 col-12 pt-2">
-            <div className="card shadow">
+                <div className="row">
 
-                <h5 className="card-header">
-                    Order summary
-                    <span className="float-end">
-                                <Link className="btn btn-dark btn-sm"
-                                      to="/cart">
-                                    <i className="fa fa-chevron-left small"/> Cart
-                                    {/*return to cart*/}
-                                </Link>
-                            </span>
-                </h5>
-
-                {showItems()}
-
-                <div className="card-body">
-
-                    {/*/!* 2 - subtotal  *!/*/}
-
-                    <div className="row pt-1 ">
-
-                        <div className="col">
-                            <h6 className="small">Sub-total</h6>
-                        </div>
-
-                        <div className="col">
-                            <h6 className="small">
-                                Rs. {sub_total}
-                                {/*{{order.cart_total}}*/}
-                            </h6>
-                        </div>
-
+                    <div className="col">
+                        <h6 className="small">Delivery fee</h6>
                     </div>
 
-                    {/* 3 - delivery fee  */}
-
-                    <div className="row">
-
-                        <div className="col">
-                            <h6 className="small">Delivery fee</h6>
-                        </div>
-
-                        <div className="col">
-                            <h6 className="small">
-                                Rs. {delivery_fee}
-                                {/*{{order.delivery_charges}}*/}
-                            </h6>
-                        </div>
-
+                    <div className="col">
+                        <h6 className="small">
+                            Rs. {delivery_fee}
+                            {/*{{order.delivery_charges}}*/}
+                        </h6>
                     </div>
-
-                    {/* 4 - service fee  */}
-
-                    <div className="row">
-
-                        <div className="col">
-                            <h6 className="small">Service fee</h6>
-                        </div>
-
-                        <div className="col">
-                            <h6 className="small">
-                                Rs. {service_fee}
-                            </h6>
-                        </div>
-
-                    </div>
-
-                    {/*4 - All total charges*/}
-
-                    <hr className="pt-0 mt-0"/>
-
-                    <div className="row">
-
-                        <div className="col">
-                            <h6 className="fw-bolder text-danger">
-                                Total (Pkr)</h6>
-                        </div>
-
-                        <div className="col">
-                            <h6 className="fw-bolder text-danger">
-                                Rs. {total_amount}
-                            </h6>
-                        </div>
-
-                    </div>
-
-                    {/*<DeliveryAddressForm*/}
-                    {/*    user={user}*/}
-                    {/*    full_name={full_name}*/}
-                    {/*    address={address}*/}
-                    {/*    city={city}*/}
-                    {/*    mobile={mobile}*/}
-                    {/*    // countries={countries}*/}
-                    {/*    onChange={onChange}*/}
-                    {/*    onSubmit={onSubmit}*/}
-                    {/*/>*/}
-
-                    {placeOrderBtn}
 
                 </div>
 
+                {/* 4 - service fee  */}
+
+                <div className="row">
+
+                    <div className="col">
+                        <h6 className="small">Service fee</h6>
+                    </div>
+
+                    <div className="col">
+                        <h6 className="small">
+                            Rs. {service_fee}
+                        </h6>
+                    </div>
+
+                </div>
+
+                <hr className="pt-0 mt-0"/>
+
+                {/*4 - All total charges*/}
+
+                <div className="row">
+
+                    <div className="col">
+                        <h6 className="fw-bolder text-danger">
+                            Total (Pkr)</h6>
+                    </div>
+
+                    <div className="col">
+                        <h6 className="fw-bolder text-danger">
+                            Rs. {total_amount}
+                        </h6>
+                    </div>
+
+                </div>
+
+                {placeOrderBtn}
+
             </div>
+
         </div>
-    )
+    </div>)
 
     // If user is not login
 
     const noAuth = (<div className="mt-2 d-flex flex-column align-items-center">
-            <h1 className="mt-5">Please login first.</h1>
-            <p className="lead p-1">
-                To get access this page info.
-            </p>
-            <Link to="/login" className="btn btn-primary btn-lg m-2">
-                Login
-            </Link>
-        </div>)
+        <h1 className="mt-5">Please login first.</h1>
+        <p className="lead p-1">
+            To get access this page info.
+        </p>
+        <Link to="/login" className="btn btn-primary btn-lg m-2">
+            Login
+        </Link>
+    </div>)
 
     // If not have a single item show this one
 
@@ -342,7 +393,8 @@ const Checkout = ({
                     </Link>
                 </div>
             </div>
-        </div>)
+        </div>
+    )
 
     // If user is not login, if not have more than 1 items
     // If both conditions false then render orderSummary (items)
@@ -408,6 +460,9 @@ const mapStateToProps = state => ({
     total_items: state.cart.total_items,
     // amount: state.cart.amount,
 
+    // delivery address
+    delivery_addresses: state.delivery_address.delivery_addresses,
+
     // Get price info from reducers/orders.js
     sub_total: state.orders.sub_total,
     delivery_fee: state.orders.delivery_fee,
@@ -416,16 +471,18 @@ const mapStateToProps = state => ({
 
     loading: state.orders.loading
 
-    // coupon: state.coupons.coupon,
-    // shipping: state.shipping.shipping,
     // clientToken: state.payment.clientToken,
-    // estimated_tax: state.payment.estimated_tax,
     // shipping_cost: state.payment.shipping_cost
 });
 
 export default connect(mapStateToProps, {
 
     refresh,
+    get_delivery_address,
+    create_delivery_address,
+    update_delivery_address,
+    delete_delivery_address,
+
     get_total_price,
     create_order,
 

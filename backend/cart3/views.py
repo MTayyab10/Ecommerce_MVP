@@ -294,7 +294,7 @@ class RemoveItemView(APIView):
 
             if not CartItem.objects.filter(cart=cart, product=product).exists():
                 return Response(
-                    {'error': 'This product is not in your cart'},
+                    {'error': 'This product is not in your cart.'},
                     status=status.HTTP_404_NOT_FOUND)
 
             CartItem.objects.filter(cart=cart, product=product).delete()
@@ -304,7 +304,7 @@ class RemoveItemView(APIView):
                 total_items = int(cart.total_items) - 1
                 Cart.objects.filter(user=user).update(total_items=total_items)
 
-            cart_items = CartItem.objects.order_by('product').filter(cart=cart)
+            cart_items = CartItem.objects.filter(cart=cart)
 
             result = []
 

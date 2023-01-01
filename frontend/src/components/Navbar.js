@@ -42,6 +42,8 @@ const Navbar = ({logout, isAuthenticated, user, total_items}) => {
     const authLinks = () => (
         <Fragment>
 
+            {/* cart */}
+
             <li className="nav-item">
                 <NavLink className="nav-link position-relative"
                          to="/cart">
@@ -53,6 +55,15 @@ const Navbar = ({logout, isAuthenticated, user, total_items}) => {
                             total items
                         </span>
                     </span>
+                </NavLink>
+            </li>
+
+                {/* Checkout link */}
+
+            <li className="nav-item">
+                <NavLink className="nav-link"
+                         to="/checkout">
+                    Checkout
                 </NavLink>
             </li>
 

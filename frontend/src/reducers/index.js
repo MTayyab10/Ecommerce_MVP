@@ -5,6 +5,7 @@ import categories from "./categories"
 import shops from "./shops"
 import products from "./products"
 import cart from "./cart"
+import delivery_address from "./delivery_address"
 import orders from "./orders"
 
 export default combineReducers({
@@ -14,5 +15,6 @@ export default combineReducers({
     shops,
     products,
     cart,
+    delivery_address,
     orders,
 });
