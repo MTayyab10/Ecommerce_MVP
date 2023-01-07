@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import moment from 'moment';
 import facebookImg from "../containers/accounts/Continue with Fb Btn.PNG";
 
-const CheckoutItem = ({isAuthenticated, item, count }) => {
+const CheckoutItem = ({isAuthenticated, item, quantity }) => {
 
     const [formData, setFormData] = useState({
         item_count: 1
@@ -12,12 +12,12 @@ const CheckoutItem = ({isAuthenticated, item, count }) => {
     const {item_count} = formData;
 
     useEffect(() => {
-        if (count)
+        if (quantity)
             setFormData({
                 ...formData,
-                item_count: count
+                item_count: quantity
             });
-    }, [count]);
+    }, [quantity]);
 
 
     // Cart Items like card, img, price, qty, info
@@ -28,7 +28,7 @@ const CheckoutItem = ({isAuthenticated, item, count }) => {
 
             {/* 1 - Items */}
 
-            <div className="row ">
+            <div className="row small">
 
                 <div className="col-md-2 col-3 ">
                     <Link to="/cart">
@@ -71,7 +71,7 @@ const CheckoutItem = ({isAuthenticated, item, count }) => {
                             }
 
                             <td className="col-md-4 col-2 small">
-                                x {item.count}
+                                x {item.quantity}
                             </td>
 
                         </tr>

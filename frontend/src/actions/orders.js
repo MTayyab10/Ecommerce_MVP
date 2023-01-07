@@ -91,10 +91,9 @@ export const create_order = (navigate) => async dispatch => {
                 dispatch({
                     type: REMOVE_CREATE_ORDER_LOADING
                 });
-
+                dispatch(get_orders())
                 dispatch(setAlert('Your Order has been created, Successfully.', 'success'));
-                // return <Navigate to='/activate/sent'/>;
-                return navigate("/", {replace: true})
+                return navigate("/my_orders", {replace: true})
 
             } else {
                 dispatch({
@@ -130,63 +129,10 @@ export const create_order = (navigate) => async dispatch => {
     }
 };
 
-// export const create_order = (full_name, address, city, mobile) => async dispatch => {
-//
-//     dispatch ({
-//         type: SET_CREATE_ORDER_LOADING
-//     });
-//
-//     const config = {
-//         headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json',
-//             'Authorization': `JWT ${localStorage.getItem('access')}`
-//         }
-//     };
-//
-//     const body = JSON.stringify({full_name, address, city, mobile});
-//
-//
-//     try {
-//         const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/order/create-order`, body, config);
-//
-//         if (res.status === 200 && res.data.success) {
-//
-//             dispatch({
-//                 type: CREATE_ORDER_SUCCESS
-//             });
-//
-//             dispatch(setAlert('Your Order has been created, Successfully.', 'success'));
-//             dispatch(get_item_total());
-//
-//         } else {
-//             dispatch({
-//                 type: CREATE_ORDER_FAIL
-//             });
-//             dispatch(setAlert(res.data.error, "error"))
-//             // dispatch(setAlert("Unable to create order, Try again.", "error"));
-//         }
-//
-//     } catch (err) {
-//
-//         dispatch({
-//             type: CREATE_ORDER_FAIL
-//         });
-//         console.log("Create order err: ", err)
-//         // dispatch(setAlert(err.data, 'error'))
-//         dispatch(setAlert("Unable to create order, Try again.", "error"));
-//     }
-//
-//     dispatch({
-//         type: REMOVE_CREATE_ORDER_LOADING
-//     });
-//
-//     window.scrollTo(0, 0);
-// };
 
 
 // Get all orders
-export const list_orders = () => async dispatch => {
+export const get_orders = () => async dispatch => {
 
     if (localStorage.getItem('access')) {
         const config = {
@@ -204,6 +150,7 @@ export const list_orders = () => async dispatch => {
                     type: GET_ORDERS_SUCCESS,
                     payload: res.data
                 });
+                console.log("Get orders success.")
 
             } else {
                 dispatch({
@@ -218,8 +165,9 @@ export const list_orders = () => async dispatch => {
     }
 };
 
+
 // Get one specific order detail
-export const get_order_detail = transactionId => async dispatch => {
+export const get_specific_order = order_id => async dispatch => {
 
     if (localStorage.getItem('access')) {
         const config = {
@@ -230,7 +178,7 @@ export const get_order_detail = transactionId => async dispatch => {
         };
 
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/order/get-order/${transactionId}`, config);
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/order/get-order/${order_id}`, config);
 
             if (res.status === 200) {
                 dispatch({
@@ -251,3 +199,4 @@ export const get_order_detail = transactionId => async dispatch => {
         }
     }
 };
+

@@ -4,12 +4,12 @@ from .models import Cart, CartItem
 
 class CartAdmin(admin.ModelAdmin):
 
-    list_display = ('user', 'total_items')
+    list_display = ('user', 'id', 'total_items')
 
 
 class CartItemAdmin(admin.ModelAdmin):
 
-    list_display = ('cart', 'product', 'count')
+    list_display = ('cart', 'product', 'quantity')
 
 
 admin.site.register(Cart, CartAdmin)

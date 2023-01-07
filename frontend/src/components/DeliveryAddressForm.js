@@ -1,7 +1,7 @@
 import React from "react";
 
 const DeliveryAddressForm = ({
-                                 user, name,
+                                 name,
                                  address,
                                  city,
                                  mobile, addr_status,

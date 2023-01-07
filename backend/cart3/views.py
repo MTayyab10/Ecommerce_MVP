@@ -8,8 +8,6 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-# from wishlist.models import WishList, WishListItem
-
 # Cart items
 
 class GetItemsView(APIView):
@@ -27,7 +25,7 @@ class GetItemsView(APIView):
                     item = {}
 
                     item['id'] = cart_item.id
-                    item['count'] = cart_item.count
+                    item['quantity'] = cart_item.quantity
                     product = Product.objects.get(id=cart_item.product.id)
                     product = ProductSerializer(product)
 
@@ -61,7 +59,7 @@ class AddItemView(APIView):
                 {'error': 'Product ID must be an integer.'},
                 status=status.HTTP_404_NOT_FOUND)
 
-        count = 1
+        quantity = 1
 
         try:
             if not Product.objects.filter(id=product_id).exists():
@@ -80,7 +78,7 @@ class AddItemView(APIView):
 
             if int(product.quantity) > 0:
                 CartItem.objects.create(
-                    product=product, cart=cart, count=count
+                    product=product, cart=cart, quantity=quantity
                 )
 
                 if CartItem.objects.filter(cart=cart, product=product).exists():
@@ -90,26 +88,7 @@ class AddItemView(APIView):
                         total_items=total_items
                     )
 
-                    # Remove Item From WishList
-                    # wishlist = WishList.objects.get(user=user)
-
-                    # Does this Item exist in the wishlist
-                    # if WishListItem.objects.filter(wishlist=wishlist, product=product).exists():
-                    #     # Delete the wishlist item
-                    #     WishListItem.objects.filter(
-                    #         wishlist=wishlist,
-                    #         product=product
-                    #     ).delete()
-
-                    # if not WishListItem.objects.filter(wishlist=wishlist, product=product).exists():
-                    #     # Update total items in wishlist
-                    #     total_items = int(wishlist.total_items) - 1
-                    #     WishList.objects.filter(user=user).update(
-                    #         total_items=total_items
-                    #     )
-
-                cart_items = CartItem.objects.order_by(
-                    'product').filter(cart=cart)
+                cart_items = CartItem.objects.filter(cart=cart)
 
                 result = []
 
@@ -117,7 +96,7 @@ class AddItemView(APIView):
                     item = {}
 
                     item['id'] = cart_item.id
-                    item['count'] = cart_item.count
+                    item['quantity'] = cart_item.quantity
                     product = Product.objects.get(id=cart_item.product.id)
                     product = ProductSerializer(product)
 
@@ -159,11 +138,11 @@ class GetTotalView(APIView):
 
                     if cart_item.product.discount:
                         price = cart_item.product.price - cart_item.product.discount
-                        total_cost += float(price) * float(cart_item.count)
+                        total_cost += float(price) * float(cart_item.quantity)
 
                     else:
                         total_cost += (float(cart_item.product.price)
-                                      * float(cart_item.count))
+                                      * float(cart_item.quantity))
 
                 total_cost = round(total_cost, 2)
                 # total_compare_cost = round(total_compare_cost, 2)
@@ -213,10 +192,10 @@ class UpdateItemView(APIView):
                 status=status.HTTP_404_NOT_FOUND)
 
         try:
-            count = int(data['count'])
+            quantity = int(data['quantity'])
         except:
             return Response(
-                {'error': 'Count value must be an integer'},
+                {'error': 'Quantity value must be an integer.'},
                 status=status.HTTP_404_NOT_FOUND)
 
         try:
@@ -234,12 +213,14 @@ class UpdateItemView(APIView):
                     {'error': 'This product is not in your cart'},
                     status=status.HTTP_404_NOT_FOUND)
 
-            quantity = product.quantity
+            product_quantity = product.quantity
 
-            if count <= quantity:
+            if quantity <= product_quantity:
                 CartItem.objects.filter(
                     product=product, cart=cart
-                ).update(count=count)
+                ).update(quantity=quantity)
+
+                print("In car, product item has been updated.")
 
                 cart_items = CartItem.objects.order_by(
                     'product').filter(cart=cart)
@@ -250,7 +231,7 @@ class UpdateItemView(APIView):
                     item = {}
 
                     item['id'] = cart_item.id
-                    item['count'] = cart_item.count
+                    item['quantity'] = cart_item.quantity
                     product = Product.objects.get(id=cart_item.product.id)
                     product = ProductSerializer(product)
 
@@ -313,7 +294,7 @@ class RemoveItemView(APIView):
                     item = {}
 
                     item['id'] = cart_item.id
-                    item['count'] = cart_item.count
+                    item['quantity'] = cart_item.quantity
                     product = Product.objects.get(id=cart_item.product.id)
                     product = ProductSerializer(product)
 
@@ -379,35 +360,35 @@ class SynchCartView(APIView):
                         status=status.HTTP_404_NOT_FOUND)
 
                 product = Product.objects.get(id=product_id)
-                quantity = product.quantity
+                product_quantity = product.quantity
 
                 if CartItem.objects.filter(cart=cart, product=product).exists():
                     # Updating of the cart item to user's cart
                     item = CartItem.objects.get(cart=cart, product=product)
-                    count = item.count
+                    quantity = item.quantity
 
                     try:
-                        cart_item_count = int(cart_item['count'])
+                        cart_item_quantity = int(cart_item['quantity'])
                     except:
-                        cart_item_count = 1
+                        cart_item_quantity = 1
 
                     # Check if local cart count plus the database cart count is less
                     # than or equal to product quantity
-                    if (cart_item_count + int(count)) <= int(quantity):
-                        updated_count = cart_item_count + int(count)
+                    if (cart_item_quantity + int(product_quantity)) <= int(quantity):
+                        updated_quantity = cart_item_count + int(quantity)
                         CartItem.objects.filter(
                             cart=cart, product=product
-                        ).update(count=updated_count)
+                        ).update(quantity=updated_quantity)
                 else:
                     # Adding of the cart item to user's cart
                     try:
-                        cart_item_count = int(cart_item['count'])
+                        cart_item_count = int(cart_item['quantity'])
                     except:
                         cart_item_count = 1
 
                     if cart_item_count <= quantity:
                         CartItem.objects.create(
-                            product=product, cart=cart, count=cart_item_count
+                            product=product, cart=cart, quantity=cart_item_count
                         )
 
                         if CartItem.objects.filter(cart=cart, product=product).exists():

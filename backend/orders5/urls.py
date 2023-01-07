@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ListOrdersView, ListOrderDetailView, CreateOrderView
+from .views import GetOrdersView, GetSpecificOrderView, CreateOrderView
     # GetTotalPriceView
 
 urlpatterns = [
@@ -10,6 +10,6 @@ urlpatterns = [
 
     # Get orders after created successfully.
 
-    path('get-orders', ListOrdersView.as_view()),
-    path('get-order/<transactionId>', ListOrderDetailView.as_view()),
+    path('get-orders', GetOrdersView.as_view()),
+    path('get-order/<int:order_id>', GetSpecificOrderView.as_view()),
 ]

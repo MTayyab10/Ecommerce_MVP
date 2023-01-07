@@ -6,7 +6,7 @@ from .models import Product
 
 class ProductAdmin(admin.ModelAdmin):
 
-    list_display = ('name', 'category',
+    list_display = ('id', 'name', 'category',
                     # 'category_link', 'shop_link',
                     'new', 'quantity',
                     'created_date', # 'updated_date',
@@ -17,6 +17,8 @@ class ProductAdmin(admin.ModelAdmin):
 
     list_filter = ('shop_owned', 'new')
     # list_editable = ('category', 'price')
+
+    list_display_links = ('id', 'name', 'category')
 
     # @staticmethod
     # def shop_link(obj):

@@ -149,7 +149,7 @@ const CategorizedProducts = ({loading, products, get_products}) => {
                             <span className="fw-light notify-badge
                                              bg-danger badge">
                                            new
-                                    </span>
+                            </span>
                         }
 
                         {/* Discount tag */}

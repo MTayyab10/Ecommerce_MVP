@@ -82,6 +82,7 @@ export const create_delivery_address = (name, address, city, mobile, addr_status
                 dispatch({
                     type: CREATE_DELIVERY_ADDRESS_FAIL
                 });
+
                 dispatch(setAlert(res.data.error, "error"))
                 window.scroll(0, 0)
 
@@ -93,6 +94,7 @@ export const create_delivery_address = (name, address, city, mobile, addr_status
             dispatch({
                 type: CREATE_DELIVERY_ADDRESS_FAIL
             });
+            dispatch(get_delivery_address())
             dispatch(setAlert(err.response.data.error, "error"))
             console.log("create addr err: ", err.response)
             window.scroll(0, 0)

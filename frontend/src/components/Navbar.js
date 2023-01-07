@@ -58,7 +58,7 @@ const Navbar = ({logout, isAuthenticated, user, total_items}) => {
                 </NavLink>
             </li>
 
-                {/* Checkout link */}
+            {/* Checkout link */}
 
             <li className="nav-item">
                 <NavLink className="nav-link"
@@ -143,8 +143,14 @@ const Navbar = ({logout, isAuthenticated, user, total_items}) => {
                         {/*If user is login then Hi, username otherwise hi guest*/}
 
                         <li className="nav-item">
+                            <NavLink to={"/my_orders"} className="nav-link" href="#">
+                                My Orders
+                            </NavLink>
+                        </li>
+
+                         <li className="nav-item">
                             <NavLink to={"/user_profile"} className="nav-link" href="#">
-                                {userName()}
+                                <i className="fas fa-user"></i> {userName()}
                             </NavLink>
                         </li>
 

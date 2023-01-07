@@ -2,6 +2,9 @@ import {
     SET_CREATE_ORDER_LOADING,
     REMOVE_CREATE_ORDER_LOADING,
 
+    CREATE_ORDER_SUCCESS,
+    CREATE_ORDER_FAIL,
+
     GET_ORDERS_SUCCESS,
     GET_ORDERS_FAIL,
     GET_ORDER_DETAIL_SUCCESS,
@@ -13,7 +16,6 @@ import {
 } from '../actions/types';
 
 const initialState = {
-
     // Get total price
     sub_total: 0.0,
     delivery_fee: 0.0,
@@ -23,9 +25,14 @@ const initialState = {
     // For loading while creating order
     loading: false,
 
-    // Get orders & Order detail
+    // For all Orders & OrderItem
     orders: null,
-    order: null,
+    order_items: null,
+
+    // For one specific Order & OrderItem
+    specific_order: null,
+    specific_order_items: null,
+
 };
 
 export default function(state = initialState, action) {
@@ -63,16 +70,23 @@ export default function(state = initialState, action) {
                 loading: false
             }
 
-        // case CREATE_ORDER_SUCCESS:
-        //     return {
-        //         ...state,
-        //         orders: payload.orders
-        //     }
+        case CREATE_ORDER_SUCCESS:
+            return {
+                ...state,
+                orders: payload.orders
+            }
+
+        case CREATE_ORDER_FAIL:
+            return  {
+                ...state,
+                orders: null
+            }
 
         case GET_ORDERS_SUCCESS:
             return {
                 ...state,
-                orders: payload.orders
+                orders: payload.orders,
+                order_items: payload.order_items
             }
 
         case GET_ORDERS_FAIL:
@@ -84,13 +98,15 @@ export default function(state = initialState, action) {
         case GET_ORDER_DETAIL_SUCCESS:
             return {
                 ...state,
-                order: payload.order
+                specific_order: payload.specific_order,
+                specific_order_items: payload.specific_order_items
             }
 
         case GET_ORDER_DETAIL_FAIL:
             return {
                 ...state,
-                order: {}
+                specific_order: {},
+                specific_order_items: {},
             }
 
         default:

@@ -27,7 +27,10 @@ import ShopProducts from "./containers/products/ShopProducts";
 import CategorizedProducts from "./containers/products/CategorizedProducts"
 import Cart from "./containers/Cart"
 import Checkout from "./containers/Checkout"
+import DeliveryAddress from "./containers/DeliveryAddress"
 import UpdateDeliveryAddress from "./components/UpdateDeliveryAddress"
+import DisplayOrders from "./containers/orders/DisplayOrders"
+import SpecificOrderDetail from "./containers/orders/SpecificOrderDetail"
 
 
 const App = () => (
@@ -74,9 +77,19 @@ const App = () => (
                 {/* Cart */}
                 <Route exact path={'/cart'} element={<Cart />} />
 
+                {/* Checkout */}
                 <Route exact path={'/checkout'} element={<Checkout />} />
 
+                {/* Delivery address's */}
+                <Route exact path={'/delivery_address'} element={<DeliveryAddress />} />
                 <Route exact path={'/update_address/:id'} element={<UpdateDeliveryAddress />} />
+
+                {/* Get orders */}
+                <Route exact path={'/my_orders'} element={<DisplayOrders />} />
+
+                <Route exact path={'/order/:id'} element={<SpecificOrderDetail />} />
+
+
 
                 {/* If none path matched then redirect to NotFound */}
                 <Route path="*" element={<NotFound/>}/>

@@ -7,7 +7,7 @@ import facebookImg from "../containers/accounts/Continue with Fb Btn.PNG"
 const CartItem = ({
                       isAuthenticated,
                       item,
-                      count,
+                      quantity,
                       update_item,
                       remove_item,
                       setAlert,
@@ -26,12 +26,12 @@ const CartItem = ({
     const {item_count} = formData;
 
     useEffect(() => {
-        if (count)
+        if (quantity)
             setFormData({
                 ...formData,
-                item_count: count
+                item_count: quantity
             });
-    }, [count]);
+    }, [quantity]);
 
     const onChange = e => setFormData({
         ...formData,
@@ -47,7 +47,7 @@ const CartItem = ({
                     await update_item(item, item_count);
                     // setAlert("Your product item updated.", "info")
                 } else {
-                    console.log("Not fucking enough in stock")
+                    console.log("Not enough items in stock")
                     setAlert(`Not enough in stock, only 
                     ${item.product.quantity} available.`, "error")
 
@@ -64,11 +64,11 @@ const CartItem = ({
 
     const quantityOrdered = () => {
 
-        if (showQuantity && count) {
+        if (showQuantity && quantity) {
             return (
                 <td className='text-muted fw-bold'>
                     {/*Quantity Requested:*/}
-                    {count}
+                    {quantity}
                 </td>
             );
         }
@@ -99,7 +99,6 @@ const CartItem = ({
                             <option>7</option>
                             <option>8</option>
                             <option>9</option>
-                            <option>10</option>
 
                         </select>
                     </td>
@@ -147,7 +146,7 @@ const CartItem = ({
                     onClick={removeItemHandler}
                 >
                     {/*Remove Product*/}
-                    <i className="far fa-trash-alt"></i>
+                    <i className="far fa-trash-alt small"></i>
                 </button>
             );
         }
@@ -244,7 +243,7 @@ const CartItem = ({
     // Cart Items like card, img, price, qty, info
 
     const cartItems = () => (
-        <div className="row">
+        <div className="row small">
 
             {/* Img & name */}
 
@@ -314,7 +313,7 @@ const CartItem = ({
 
                         <td className="col-md-4 col-5 small">
 
-                            <span className=""
+                            <span className="small"
                                   style={{fontFamily: "sans-serif Roboto"}}>
 
                                          {/*{quantityOrdered()}*/}
@@ -343,9 +342,9 @@ const CartItem = ({
                             Rs. {item && true && true &&
                             item.product && true && true &&
                             item.product.discount > 0 ?
-                            (item.product.price - item.product.discount) * count
+                            (item.product.price - item.product.discount) * quantity
                             :
-                            item.product.price * count}
+                            item.product.price * quantity}
                         </td>
 
                         <td className="col-md-4 col-4 small">
@@ -366,14 +365,13 @@ const CartItem = ({
     return (
         <Fragment>
 
-            {/*// <!-- Card , Img, price, qty info -->*/}
+            {/*  Card , Img, price, qty info */}
 
             <div className="row">
 
                 {cartItems()}
 
             </div>
-
 
         </Fragment>
 

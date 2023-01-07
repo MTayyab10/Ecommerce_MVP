@@ -71,14 +71,14 @@ const Cart = ({
                     items && true && true &&
                     items.length !== 0 &&
                     items.map((item, index) => {
-                        let count = item.count;
+                        let quantity = item.quantity;
 
                         return (
                             <Fragment key={index}>
                                 <CartItem
                                     isAuthenticated={isAuthenticated}
                                     item={item}
-                                    count={count}
+                                    quantity={quantity}
                                     update_item={update_item}
                                     remove_item={remove_item}
                                     setAlert={setAlert}
@@ -120,7 +120,7 @@ const Cart = ({
 
                     <div className="p-2">
 
-                        <h6 className="float-end">
+                        <h6 className="float-end small">
                             <Link className="text-decoration-none"
                                   to="/">
                                 <i className="fa fa-chevron-left small"></i> continue shop
@@ -131,32 +131,39 @@ const Cart = ({
 
                     {/*{#                                <hr/>#}*/}
 
-                    <div className="row">
+                    <div className="row ">
 
-                        {/*// <!-- 1 Items -->*/}
+                        {/*  1 Total items */}
 
                         <div className="row">
 
                             <div className="col ">
-                                <h6>Total items</h6>
+                                <h6 className={"small"}>
+                                    Total items</h6>
                             </div>
 
                             <div className="col"
                                  style={{fontFamily: "sans-serif"}}>
-                                <h6>{total_items}</h6>
+                                <h6 className={"small"}>
+                                    {total_items}
+                                </h6>
                             </div>
 
                         </div>
 
-                        {/*// <!-- 2 Total -->*/}
+                        {/* 2 Total cart price */}
 
                         <div className="row">
                             <div className="col">
-                                <h6>Total (Pkr)</h6>
+                                <h6 className={"small"}>
+                                    Total (Pkr)
+                                </h6>
                             </div>
                             <div className="col"
                                  style={{fontFamily: "sans-serif"}}>
-                                <h6>Rs. {amount}</h6>
+                                <h6 className={"small"}>
+                                    Rs. {amount}
+                                </h6>
                             </div>
 
                         </div>
@@ -179,9 +186,9 @@ const Cart = ({
                                 </div>
                             </div>
 
-                            <div className="col p-2 mb-1 mt-1">
+                            <div className="col p-2 mb-1 mt-1 small">
                                  <span className="small text-danger">
-                                     <i>Delivery & service fee will add on the checkout* </i>
+                                     <i>Delivery fee will add at checkout*</i>
                                  </span>
                             </div>
 

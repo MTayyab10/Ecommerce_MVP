@@ -276,7 +276,7 @@ export const get_item_total = () => async dispatch => {
 
 // Update quantity of item in Cart
 
-export const update_item = (item, count) => async dispatch => {
+export const update_item = (item, quantity) => async dispatch => {
 
     if (localStorage.getItem('access')) {
 
@@ -289,7 +289,7 @@ export const update_item = (item, count) => async dispatch => {
         };
 
         const product_id = item.product.id;
-        const body = JSON.stringify({product_id, count});
+        const body = JSON.stringify({product_id, quantity});
 
         try {
             const res = await axios.put(`${process.env.REACT_APP_API_URL}/api/cart/update-item`, body, config);
@@ -317,6 +317,7 @@ export const update_item = (item, count) => async dispatch => {
             dispatch({
                 type: UPDATE_ITEM_FAIL
             });
+            dispatch(setAlert("Error in updating item.", "error"))
         }
     }
     // Without login functionality

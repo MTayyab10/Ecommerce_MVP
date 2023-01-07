@@ -64,8 +64,8 @@ const Categories = ({loading, categories, get_categories}) => {
                         {!loading &&
 
                             <button
-                                onClick={() => setBgColor(bgColor => bgColor !== Number && null)}
-                                className={bgColor === null ?
+                                onClick={() => setBgColor( null)}
+                                className={bgColor == null ?
                                     "btn btn-primary rounded-pill " +
                                     "btn-sm mt-2 tags"
                                     :

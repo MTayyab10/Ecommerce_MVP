@@ -12,8 +12,8 @@ import {
 } from '../actions/delivery_address'
 
 import {
-    get_all_total_price,
-    create_order, get_total_price
+    get_total_price,
+    create_order,
 } from '../actions/orders';
 
 import CheckoutItem from "../components/CheckoutItem";
@@ -96,13 +96,13 @@ const Checkout = ({
                 {items && true && true &&
                     items.length !== 0 &&
                     items.map((item, index) => {
-                        let count = item.count;
+                        let quantity = item.quantity;
 
                         return (
                             <Fragment key={index}>
                                 <CheckoutItem
                                     item={item}
-                                    count={count}
+                                    quantity={quantity}
                                 />
                             </Fragment>
 
@@ -273,23 +273,13 @@ const Checkout = ({
                 </span>
             </h5>
 
-            {/*<DeliveryAddressForm*/}
-            {/*    user={user}*/}
-            {/*    full_name={full_name}*/}
-            {/*    address={address}*/}
-            {/*    city={city}*/}
-            {/*    mobile={mobile}*/}
-            {/*    onChange={onChange}*/}
-            {/*    onSubmit={onSubmit}*/}
-            {/*/>*/}
-
             {showItems()}
 
             <div className="card-body">
 
                 {/*  2 - subtotal  */}
 
-                <div className="row pt-1 ">
+                <div className="row pt-1 small">
 
                     <div className="col">
                         <h6 className="small">Sub-total</h6>
@@ -306,7 +296,7 @@ const Checkout = ({
 
                 {/* 3 - delivery fee  */}
 
-                <div className="row">
+                <div className="row small">
 
                     <div className="col">
                         <h6 className="small">Delivery fee</h6>
@@ -323,7 +313,7 @@ const Checkout = ({
 
                 {/* 4 - service fee  */}
 
-                <div className="row">
+                <div className="row small">
 
                     <div className="col">
                         <h6 className="small">Service fee</h6>
@@ -341,9 +331,9 @@ const Checkout = ({
 
                 {/*4 - All total charges*/}
 
-                <div className="row">
+                <div className="row small">
 
-                    <div className="col">
+                    <div className="col small">
                         <h6 className="fw-bolder text-danger">
                             Total (Pkr)</h6>
                     </div>
@@ -361,6 +351,8 @@ const Checkout = ({
             </div>
 
         </div>
+
+        <br />
     </div>)
 
     // If user is not login
@@ -377,7 +369,8 @@ const Checkout = ({
 
     // If not have a single item show this one
 
-    const emptyCart = (<div className={"container pt-4"}>
+    const emptyCart = (<div className={"row pt-4"}>
+            <div className={"offset-md-2 col-md-8 col-12"}>
             <div className="card shadow">
                 <div className="card-header">
                     Empty
@@ -392,6 +385,7 @@ const Checkout = ({
                         Buy Items Now
                     </Link>
                 </div>
+            </div>
             </div>
         </div>
     )

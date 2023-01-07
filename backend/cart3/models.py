@@ -16,7 +16,7 @@ class Cart(TimeStampModel):
 class CartItem(TimeStampModel):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    count = models.IntegerField()
+    quantity = models.IntegerField()
 
     def __str__(self):
         return f"{self.product.name}"  # product name

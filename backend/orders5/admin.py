@@ -6,13 +6,18 @@ class OrderAdmin(admin.ModelAdmin):
     # def has_delete_permission(self, request, obj=None):
     #     return False
 
-    list_display = ('id', 'user',
-                    'unique_id', # 'amount', 'status',
-                    'shop_detail', 'order_item_details',
+    list_display = ('id', # 'user',
+                    'unique_id', 'status',
+                    'sub_total',
+                   # 'delivery_fee', 'service_fee',
+                    'total_amount',
+                    'shop_detail', 'product_detail',
+                    'order_item_details',
                     # 'created_date'
                     )
-    list_display_links = ('id', 'user',  'unique_id')
-    # list_filter = ('status', )
+    list_display_links = ('id', 'unique_id')
+    # list_filter = ('id', 'status', )
+
     # list_editable = ('status', )
     list_per_page = 25
     search_fields = ('unique_id', )
@@ -25,10 +30,11 @@ class OrderItemAdmin(admin.ModelAdmin):
     # def has_delete_permission(self, request, obj=None):
     #     return False
 
-    list_display = ('order', 'id', 'name', 'price',
-                    'count', 'order_item_details'
+    list_display = ('order', 'id', 'product', 'price',
+                    # 'count',
+                    'order_items', 'order_item_details'
                     )
-    list_display_links = ('order', 'id', 'name', )
+    list_display_links = ('order', 'id', 'product', )
     list_per_page = 25
 
 
